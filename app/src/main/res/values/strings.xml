@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CourseWork</string>
+    <string name="coach">Teacher/Coach</string>
+    <string name="student">Student</string>
+    <string name="schoolkid">Schoolkid</string>
+    <string name="choose_occupation">Choose your type of activity</string>
+</resources>
