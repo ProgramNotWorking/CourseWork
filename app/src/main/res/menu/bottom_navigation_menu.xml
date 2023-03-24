@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/all_days"
+        android:icon="@drawable/all_days_icon"
+        android:orderInCategory="1"
+        android:title="@string/all_days"
+        />
+
+    <item
+        android:id="@+id/add_student"
+        android:icon="@drawable/add_student_icon"
+        android:orderInCategory="2"
+        android:title="@string/add_student"
+        />
+
+</menu>

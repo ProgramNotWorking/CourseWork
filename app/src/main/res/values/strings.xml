@@ -4,4 +4,9 @@
     <string name="student">Student</string>
     <string name="schoolkid">Schoolkid</string>
     <string name="choose_occupation">Choose your type of activity</string>
+    <string name="add_student">Add student</string>
+    <string name="all_days">All days</string>
+    <string name="stumb" translatable="false">STUMB</string>
+    <string name="edit_student">Edit</string>
+    <string name="delete_student">Delete</string>
 </resources>

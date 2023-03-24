@@ -5,4 +5,8 @@
     <string name="student">Студент</string>
     <string name="schoolkid">Школьник</string>
     <string name="choose_occupation">Выберете ваш род деятельности</string>
+    <string name="add_student">Добавить ученика</string>
+    <string name="all_days">Все дни</string>
+    <string name="edit_student">Редактировать</string>
+    <string name="delete_student">Удалить</string>
 </resources>
