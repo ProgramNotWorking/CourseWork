@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -37,6 +38,8 @@ class CoachActivity : AppCompatActivity(),
 
     private var whatDayIndex = -1
     private lateinit var studentsList: MutableList<StudentData>
+    private var editStudentName = "Stub"
+    private var editLessonTime = "Stub"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,12 +116,43 @@ class CoachActivity : AppCompatActivity(),
                             val lessonTime = intent.getStringExtra(CoachIntentConstants.LESSON_TIME)
 
                             val student = StudentData(studentName, lessonTime, getDay())
-                            studentsList?.add(student)
+                            studentsList.add(student)
 
                             val lesson = Lesson(studentName, lessonTime)
                             adapter.addLesson(lesson)
                         } else {
+                            val studentName = intent.getStringExtra(CoachIntentConstants.STUDENT_NAME)
+                            val lessonTime = intent.getStringExtra(CoachIntentConstants.LESSON_TIME)
 
+                            for (item in binding.rcView) {
+                                if (
+                                    item.findViewById<TextView>(R.id.nameTextViewItem).text.toString()
+                                    == editStudentName &&
+                                    item.findViewById<TextView>(R.id.timeTextViewItem).text.toString()
+                                    == editLessonTime
+                                ) {
+                                    item.findViewById<TextView>(R.id.nameTextViewItem).text =
+                                        studentName
+                                    item.findViewById<TextView>(R.id.timeTextViewItem).text =
+                                        lessonTime
+
+                                    break
+                                }
+                            }
+
+                            val editStudent = StudentData(
+                                studentName, lessonTime, getDay()
+                            )
+                            for (student in studentsList.indices) {
+                                if (
+                                    studentsList[student].name.equals(editStudentName) &&
+                                    studentsList[student].time.equals(editLessonTime) &&
+                                    studentsList[student].day.equals(getDay())
+                                ) {
+                                    studentsList[student] = editStudent
+                                    break
+                                }
+                            }
                         }
                     }
                     if (result.resultCode == RESULT_CANCELED) {
@@ -154,7 +188,15 @@ class CoachActivity : AppCompatActivity(),
     }
 
     override fun onEditClick(lesson: Lesson) {
+        val intent = Intent(this@CoachActivity, EditStudentInfoActivity::class.java)
+        intent.putExtra(CoachIntentConstants.STUDENT_NAME, lesson.name)
+        intent.putExtra(CoachIntentConstants.LESSON_TIME, lesson.time)
+        intent.putExtra(CoachIntentConstants.IS_EDIT, true)
 
+        editStudentName = lesson.name.toString()
+        editLessonTime = lesson.time.toString()
+
+        editStudentInfoLauncher.launch(intent)
     }
 
     private fun displayLessons(isStart: Boolean) {

@@ -23,7 +23,12 @@ class EditStudentInfoActivity : AppCompatActivity() {
         onTouchCloseKeyboard()
 
         if (intent.getBooleanExtra(CoachIntentConstants.IS_EDIT, false)) {
-            // TODO: Fill Plain text fields
+            binding.editNamePlainTextView.setText(
+                intent.getStringExtra(CoachIntentConstants.STUDENT_NAME)
+            )
+            binding.editTimePlainTextView.setText(
+                intent.getStringExtra(CoachIntentConstants.LESSON_TIME)
+            )
 
             intent.putExtra(CoachIntentConstants.IS_ADDED, false)
         } else {
