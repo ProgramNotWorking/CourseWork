@@ -9,4 +9,8 @@
     <string name="stumb" translatable="false">STUMB</string>
     <string name="edit_student">Edit</string>
     <string name="delete_student">Delete</string>
+    <string name="save">Save</string>
+    <string name="input_data">Input data</string>
+    <string name="enter_name">Enter name</string>
+    <string name="enter_time">Enter time</string>
 </resources>

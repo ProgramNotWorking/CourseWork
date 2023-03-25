@@ -17,17 +17,15 @@ class LessonAdapter(
     inner class LessonHolder(view: View): RecyclerView.ViewHolder(view) {
         private val binding = LessonCoachItemBinding.bind(view)
 
-        fun bind(
-            lesson: Lesson, deleteClickListener: OnDeleteClickListener, editClickListener: OnEditClickListener
-        ) = with(binding) {
+        fun bind(lesson: Lesson) = with(binding) {
             nameTextViewItem.text = lesson.name
             timeTextViewItem.text = lesson.time
 
-            deleteStudentButton.setOnClickListener {
+            deleteStudentButtonItem.setOnClickListener {
                 onDeleteListener.onDeleteClick(lesson)
             }
 
-            editStudentButton.setOnClickListener {
+            editStudentButtonItem.setOnClickListener {
                 onEditListener.onEditClick(lesson)
             }
         }
@@ -49,7 +47,7 @@ class LessonAdapter(
     }
 
     override fun onBindViewHolder(holder: LessonHolder, position: Int) {
-        holder.bind(lessonsList[position], onDeleteListener, onEditListener)
+        holder.bind(lessonsList[position])
     }
 
     override fun getItemCount(): Int = lessonsList.size

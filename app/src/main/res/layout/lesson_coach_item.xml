@@ -7,7 +7,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="6dp"
         android:backgroundTint="@color/black"
+        app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,35 +24,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/editStudentButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
+                <ImageView
+                    android:id="@+id/editStudentButtonItem"
+                    android:layout_width="90dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/ubuntu_bold"
-                    android:text="@string/edit_student"
-                    android:textColor="@color/white"
-                    android:textSize="22sp"
+                    android:background="@drawable/rounded_corners"
+                    android:backgroundTint="@color/white"
+
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/edit_pen_icon" />
 
-                <TextView
-                    android:id="@+id/deleteStudentButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:id="@+id/deleteStudentButtonItem"
+                    android:layout_width="90dp"
+                    android:layout_height="35dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/ubuntu_bold"
-                    android:text="@string/delete_student"
-                    android:textColor="@color/white"
-                    android:textSize="22sp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/rounded_corners"
+                    android:backgroundTint="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/delete_trash_can_icon" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -63,7 +62,7 @@
                 android:paddingBottom="10dp"
                 android:text="@string/stumb"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/timeTextViewItem"
@@ -74,7 +73,7 @@
                 android:paddingBottom="10dp"
                 android:text="@string/stumb"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

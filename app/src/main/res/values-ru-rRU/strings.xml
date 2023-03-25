@@ -9,4 +9,8 @@
     <string name="all_days">Все дни</string>
     <string name="edit_student">Редактировать</string>
     <string name="delete_student">Удалить</string>
+    <string name="save">Сохранить</string>
+    <string name="input_data">Ввод данных</string>
+    <string name="enter_name">Введите имя</string>
+    <string name="enter_time">Введите время</string>
 </resources>
