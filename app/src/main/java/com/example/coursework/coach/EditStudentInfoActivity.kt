@@ -1,7 +1,15 @@
 package com.example.coursework.coach
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import com.example.coursework.R
+import com.example.coursework.constants.CoachIntentConstants
 import com.example.coursework.databinding.ActivityEditStudentInfoBinding
 
 class EditStudentInfoActivity : AppCompatActivity() {
@@ -12,8 +20,53 @@ class EditStudentInfoActivity : AppCompatActivity() {
         binding = ActivityEditStudentInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.apply {
+        onTouchCloseKeyboard()
 
+        binding.apply {
+            backButton.setOnClickListener {
+                val intent = Intent(
+                    this@EditStudentInfoActivity, CoachActivity::class.java
+                )
+                setResult(RESULT_CANCELED, intent)
+                finish()
+            }
+            saveButton.setOnClickListener {
+                if (editNamePlainTextView.text.toString().isEmpty()) {
+                    Toast.makeText(
+                        this@EditStudentInfoActivity,
+                        getString(R.string.name_field_is_empty),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else if (editTimePlainTextView.text.toString().isEmpty()) {
+                    Toast.makeText(
+                        this@EditStudentInfoActivity,
+                        getString(R.string.time_field_is_empty),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    intent.putExtra(
+                        CoachIntentConstants.STUDENT_NAME, editNamePlainTextView.text.toString()
+                    )
+                    intent.putExtra(
+                        CoachIntentConstants.LESSON_TIME, editTimePlainTextView.text.toString()
+                    )
+
+                    setResult(RESULT_OK, intent)
+                    finish()
+                }
+            }
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun onTouchCloseKeyboard() {
+        binding.mainHolder.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                keyboard.hideSoftInputFromWindow(binding.mainHolder.windowToken, 0)
+            }
+
+            true
         }
     }
 }

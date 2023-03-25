@@ -13,4 +13,13 @@
     <string name="input_data">Ввод данных</string>
     <string name="enter_name">Введите имя</string>
     <string name="enter_time">Введите время</string>
+    <string name="name_field_is_empty">Поле ввода имени пустое</string>
+    <string name="time_field_is_empty">Поле ввода времени пустое</string>
+    <string name="monday">Понедельник</string>
+    <string name="tuesday">Вторник</string>
+    <string name="wednesday">Среда</string>
+    <string name="thursday">Четверг</string>
+    <string name="friday">Пятница</string>
+    <string name="saturday">Суббота</string>
+    <string name="options">Настройки</string>
 </resources>
