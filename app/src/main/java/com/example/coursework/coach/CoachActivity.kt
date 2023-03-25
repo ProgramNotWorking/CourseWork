@@ -16,6 +16,7 @@ import androidx.core.view.iterator
 import androidx.core.view.size
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coursework.R
+import com.example.coursework.coach.db.CoachDatabaseManager
 import com.example.coursework.constants.CoachIntentConstants
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SharedPreferencesConstants
@@ -29,12 +30,13 @@ class CoachActivity : AppCompatActivity(),
     private val adapter = LessonAdapter(this@CoachActivity, this@CoachActivity)
 
     private lateinit var editStudentInfoLauncher: ActivityResultLauncher<Intent>
+    private val db = CoachDatabaseManager(this)
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
 
     private var whatDayIndex = -1
-    private var studentsList: MutableList<StudentData>? = null
+    private lateinit var studentsList: MutableList<StudentData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,12 @@ class CoachActivity : AppCompatActivity(),
         )
         setDayText()
 
+        db.open()
+        studentsList = db.read()
+        db.close()
+
+        displayLessons(true)
+
         binding.apply {
             rcView.layoutManager = GridLayoutManager(this@CoachActivity, 1)
             rcView.adapter = adapter
@@ -63,7 +71,7 @@ class CoachActivity : AppCompatActivity(),
                 }
 
                 setDayText()
-                displayLessons()
+                displayLessons(false)
             }
             previousDayButton.setOnClickListener {
                 if (whatDayIndex == 0) {
@@ -73,7 +81,7 @@ class CoachActivity : AppCompatActivity(),
                 }
 
                 setDayText()
-                displayLessons()
+                displayLessons(false)
             }
 
             bottomNavigationView.setOnItemSelectedListener {
@@ -125,83 +133,85 @@ class CoachActivity : AppCompatActivity(),
 
         editor.putInt(SharedPreferencesConstants.COACH_WHAT_DAY, whatDayIndex)
         editor.apply()
+
+        db.open()
+        db.repopulate(studentsList)
+        db.close()
     }
 
     override fun onDeleteClick(lesson: Lesson) {
-        Toast.makeText(
-            this@CoachActivity, lesson.time, Toast.LENGTH_SHORT
-        ).show()
+        adapter.removeLessonByData(lesson.name, lesson.time)
+
+        for (student in studentsList.indices) {
+            if (studentsList[student].name.equals(lesson.name) &&
+                studentsList[student].time.equals(lesson.time) &&
+                studentsList[student].day.equals(getDay())
+            ) {
+                studentsList.removeAt(student)
+                break
+            }
+        }
     }
 
     override fun onEditClick(lesson: Lesson) {
 
     }
 
-    private fun displayLessons() {
-        if (binding.rcView.isNotEmpty()) {
-            for (item in binding.rcView.size - 1 downTo 0) {
-                adapter.removeLesson(item)
+    private fun displayLessons(isStart: Boolean) {
+        if (!isStart) {
+            if (binding.rcView.isNotEmpty()) {
+                for (item in binding.rcView.size - 1 downTo 0) {
+                    adapter.removeLesson(item)
+                }
             }
         }
 
         when (whatDayIndex) {
             0 -> {
-                if (studentsList?.isNotEmpty() == true) {
-                    for (student in studentsList!!) {
-                        if (student.day == DaysConstants.MONDAY) {
-                            val lesson = Lesson(student.name, student.time)
-                            adapter.addLesson(lesson)
-                        }
+                for (student in studentsList) {
+                    if (student.day == DaysConstants.MONDAY) {
+                        val lesson = Lesson(student.name, student.time)
+                        adapter.addLesson(lesson)
                     }
                 }
             }
             1 -> {
-                if (studentsList?.isNotEmpty() == true) {
-                    for (student in studentsList!!) {
-                        if (student.day == DaysConstants.TUESDAY) {
-                            val lesson = Lesson(student.name, student.time)
-                            adapter.addLesson(lesson)
-                        }
+                for (student in studentsList) {
+                    if (student.day == DaysConstants.TUESDAY) {
+                        val lesson = Lesson(student.name, student.time)
+                        adapter.addLesson(lesson)
                     }
                 }
             }
             2 -> {
-                if (studentsList?.isNotEmpty() == true) {
-                    for (student in studentsList!!) {
-                        if (student.day == DaysConstants.WEDNESDAY) {
-                            val lesson = Lesson(student.name, student.time)
-                            adapter.addLesson(lesson)
-                        }
+                for (student in studentsList) {
+                    if (student.day == DaysConstants.WEDNESDAY) {
+                        val lesson = Lesson(student.name, student.time)
+                        adapter.addLesson(lesson)
                     }
                 }
             }
             3 -> {
-                if (studentsList?.isNotEmpty() == true) {
-                    for (student in studentsList!!) {
-                        if (student.day == DaysConstants.THURSDAY) {
-                            val lesson = Lesson(student.name, student.time)
-                            adapter.addLesson(lesson)
-                        }
+                for (student in studentsList) {
+                    if (student.day == DaysConstants.THURSDAY) {
+                        val lesson = Lesson(student.name, student.time)
+                        adapter.addLesson(lesson)
                     }
                 }
             }
             4 -> {
-                if (studentsList?.isNotEmpty() == true) {
-                    for (student in studentsList!!) {
-                        if (student.day == DaysConstants.FRIDAY) {
-                            val lesson = Lesson(student.name, student.time)
-                            adapter.addLesson(lesson)
-                        }
+                for (student in studentsList) {
+                    if (student.day == DaysConstants.FRIDAY) {
+                        val lesson = Lesson(student.name, student.time)
+                        adapter.addLesson(lesson)
                     }
                 }
             }
             5 -> {
-                if (studentsList?.isNotEmpty() == true) {
-                    for (student in studentsList!!) {
-                        if (student.day == DaysConstants.SATURDAY) {
-                            val lesson = Lesson(student.name, student.time)
-                            adapter.addLesson(lesson)
-                        }
+                for (student in studentsList) {
+                    if (student.day == DaysConstants.SATURDAY) {
+                        val lesson = Lesson(student.name, student.time)
+                        adapter.addLesson(lesson)
                     }
                 }
             }

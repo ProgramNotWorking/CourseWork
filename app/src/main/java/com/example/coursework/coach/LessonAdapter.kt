@@ -62,4 +62,15 @@ class LessonAdapter(
         lessonsList.removeAt(position)
         notifyItemRemoved(position)
     }
+
+    fun removeLessonByData(studentName: String?, studentTime: String?) {
+        for (item in lessonsList.indices) {
+            if (lessonsList[item].name == studentName && lessonsList[item].time == studentTime) {
+                lessonsList.removeAt(item)
+                notifyItemRemoved(item)
+
+                break
+            }
+        }
+    }
 }
