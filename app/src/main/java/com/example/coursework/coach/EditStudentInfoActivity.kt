@@ -22,6 +22,14 @@ class EditStudentInfoActivity : AppCompatActivity() {
 
         onTouchCloseKeyboard()
 
+        if (intent.getBooleanExtra(CoachIntentConstants.IS_EDIT, false)) {
+            // TODO: Fill Plain text fields
+
+            intent.putExtra(CoachIntentConstants.IS_ADDED, false)
+        } else {
+            intent.putExtra(CoachIntentConstants.IS_ADDED, true)
+        }
+
         binding.apply {
             backButton.setOnClickListener {
                 val intent = Intent(
@@ -30,6 +38,8 @@ class EditStudentInfoActivity : AppCompatActivity() {
                 setResult(RESULT_CANCELED, intent)
                 finish()
             }
+
+            // TODO: Work on normal time type work(like if time = 123123 -> save is not working or smth)
             saveButton.setOnClickListener {
                 if (editNamePlainTextView.text.toString().isEmpty()) {
                     Toast.makeText(
