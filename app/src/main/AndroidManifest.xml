@@ -13,9 +13,16 @@
         android:theme="@style/Theme.CourseWork"
         tools:targetApi="31">
         <activity
+            android:name=".CoachAllDays"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".coach.EditStudentInfoActivity"
-            android:screenOrientation="portrait"
             android:exported="false"
+            android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.app.lib_name"
@@ -37,16 +44,16 @@
         </activity>
         <activity
             android:name=".coach.CoachActivity"
-            android:screenOrientation="fullSensor"
-            android:exported="false">
+            android:exported="false"
+            android:screenOrientation="fullSensor">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="fullSensor"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

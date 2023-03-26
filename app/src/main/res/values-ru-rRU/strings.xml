@@ -22,4 +22,10 @@
     <string name="friday">Пятница</string>
     <string name="saturday">Суббота</string>
     <string name="options">Настройки</string>
+    <string name="monday_reduction">Пн</string>
+    <string name="tuesday_reduction">Вт</string>
+    <string name="wednesday_reduction">Ср</string>
+    <string name="thursday_reduction">Чт</string>
+    <string name="friday_reduction">Пт</string>
+    <string name="saturday_reduction">Сб</string>
 </resources>

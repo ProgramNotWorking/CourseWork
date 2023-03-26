@@ -22,4 +22,10 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="options">Options</string>
+    <string name="monday_reduction">Mon</string>
+    <string name="tuesday_reduction">Tue</string>
+    <string name="wednesday_reduction">Wed</string>
+    <string name="thursday_reduction">Thu</string>
+    <string name="friday_reduction">Fri</string>
+    <string name="saturday_reduction">Sat</string>
 </resources>
