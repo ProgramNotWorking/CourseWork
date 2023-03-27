@@ -29,4 +29,6 @@
     <string name="friday_reduction">Пт</string>
     <string name="saturday_reduction">Сб</string>
     <string name="change_role">Сменить род деятельности</string>
+    <string name="sort_by_time">Сортировать по времени</string>
+    <string name="clear_data">Очистить информацию текущей роли</string>
 </resources>

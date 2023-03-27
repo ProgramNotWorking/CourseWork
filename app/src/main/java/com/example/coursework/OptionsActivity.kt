@@ -24,14 +24,26 @@ class OptionsActivity : AppCompatActivity() {
 
         binding.apply {
             when (from) {
-                OptionsDataNames.COACH ->
+                OptionsDataNames.COACH -> {
                     currentTypeOfActivityImage.setImageResource(R.drawable.coach)
-                OptionsDataNames.STUDENT ->
+                    currentTypeOfActivityTextView.text = OptionsDataNames.COACH
+                }
+                OptionsDataNames.STUDENT -> {
                     currentTypeOfActivityImage.setImageResource(R.drawable.student)
-                OptionsDataNames.SCHOOLKID ->
+                    currentTypeOfActivityTextView.text = OptionsDataNames.STUDENT
+                }
+                OptionsDataNames.SCHOOLKID -> {
                     currentTypeOfActivityImage.setImageResource(R.drawable.schoolkid)
+                    currentTypeOfActivityTextView.text = OptionsDataNames.SCHOOLKID
+                }
                 OptionsDataNames.ITS_BAD ->
                     Log.d("From options:", "Trouble with image")
+            }
+
+            deleteButton.setOnClickListener {
+                Toast.makeText(
+                    this@OptionsActivity, "SUS?", Toast.LENGTH_SHORT
+                ).show()
             }
 
             backButtonOptions.setOnClickListener {
@@ -66,9 +78,9 @@ class OptionsActivity : AppCompatActivity() {
 }
 
 object OptionsDataNames {
-    const val COACH = "coach"
-    const val STUDENT = "student"
-    const val SCHOOLKID = "schoolkid"
+    const val COACH = "Coach/Teacher"
+    const val STUDENT = "Student"
+    const val SCHOOLKID = "Schoolkid"
 
     const val ITS_BAD = "Error"
 }
