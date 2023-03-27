@@ -6,4 +6,6 @@ object CoachIntentConstants {
     const val LESSON_TIME = "lesson_time"
 
     const val IS_ADDED = "is_added"
+
+    const val FROM_COACH = "from_coach"
 }

@@ -6,7 +6,7 @@
     <string name="choose_occupation">Choose your type of activity</string>
     <string name="add_student">Add student</string>
     <string name="all_days">All days</string>
-    <string name="stumb" translatable="false">STUB</string>
+    <string name="stub" translatable="false">STUB</string>
     <string name="edit_student">Edit</string>
     <string name="delete_student">Delete</string>
     <string name="save">Save</string>
@@ -28,4 +28,5 @@
     <string name="thursday_reduction">Thu</string>
     <string name="friday_reduction">Fri</string>
     <string name="saturday_reduction">Sat</string>
+    <string name="change_role">Change type of activity</string>
 </resources>

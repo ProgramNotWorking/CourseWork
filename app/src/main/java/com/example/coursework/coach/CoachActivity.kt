@@ -16,6 +16,7 @@ import androidx.core.view.isNotEmpty
 import androidx.core.view.iterator
 import androidx.core.view.size
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.coursework.OptionsActivity
 import com.example.coursework.R
 import com.example.coursework.coach.db.CoachDatabaseManager
 import com.example.coursework.constants.CoachIntentConstants
@@ -90,10 +91,20 @@ class CoachActivity : AppCompatActivity(),
             bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.options -> {
-                        // TODO: Options activity and save data too
+                        saveData()
+
+                        val intent = Intent(
+                            this@CoachActivity, OptionsActivity::class.java
+                        )
+                        intent.putExtra(CoachIntentConstants.FROM_COACH, true)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                        finish()
                     }
                     R.id.add_student -> {
-                        val intent = Intent(this@CoachActivity, EditStudentInfoActivity::class.java)
+                        val intent = Intent(
+                            this@CoachActivity, EditStudentInfoActivity::class.java
+                        )
                         intent.putExtra(CoachIntentConstants.IS_EDIT, false)
                         editStudentInfoLauncher.launch(intent)
                     }
@@ -164,13 +175,7 @@ class CoachActivity : AppCompatActivity(),
 
     override fun onStop() {
         super.onStop()
-
-        editor.putInt(SharedPreferencesConstants.COACH_WHAT_DAY, whatDayIndex)
-        editor.apply()
-
-        db.open()
-        db.repopulate(studentsList)
-        db.close()
+        saveData()
     }
 
     override fun onDeleteClick(lesson: Lesson) {
@@ -281,5 +286,14 @@ class CoachActivity : AppCompatActivity(),
             5 -> DaysConstants.SATURDAY
             else -> "NONE"
         }
+    }
+
+    private fun saveData() {
+        editor.putInt(SharedPreferencesConstants.COACH_WHAT_DAY, whatDayIndex)
+        editor.apply()
+
+        db.open()
+        db.repopulate(studentsList)
+        db.close()
     }
 }

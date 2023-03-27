@@ -28,4 +28,5 @@
     <string name="thursday_reduction">Чт</string>
     <string name="friday_reduction">Пт</string>
     <string name="saturday_reduction">Сб</string>
+    <string name="change_role">Сменить род деятельности</string>
 </resources>
