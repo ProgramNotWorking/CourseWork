@@ -166,9 +166,6 @@ class CoachActivity : AppCompatActivity(),
                             }
                         }
                     }
-                    if (result.resultCode == RESULT_CANCELED) {
-                        // TODO: Think may be?...
-                    }
                 }
         }
     }
@@ -295,5 +292,9 @@ class CoachActivity : AppCompatActivity(),
         db.open()
         db.repopulate(studentsList)
         db.close()
+    }
+
+    private fun sortStudentList() {
+
     }
 }

@@ -6,11 +6,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.coursework.coach.CoachActivity
+import com.example.coursework.coach.db.CoachDatabaseManager
 import com.example.coursework.constants.CoachIntentConstants
 import com.example.coursework.databinding.ActivityOptionsBinding
+import com.example.coursework.schoolkid.SchoolkidActivity
+import com.example.coursework.student.StudentActivity
 
 class OptionsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOptionsBinding
+
+    private val coachDbManager = CoachDatabaseManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +47,22 @@ class OptionsActivity : AppCompatActivity() {
 
             deleteButton.setOnClickListener {
                 Toast.makeText(
-                    this@OptionsActivity, "SUS?", Toast.LENGTH_SHORT
+                    this@OptionsActivity, getString(R.string.data_cleared), Toast.LENGTH_SHORT
                 ).show()
+
+                when (from) {
+                    OptionsDataNames.COACH -> {
+                        coachDbManager.open()
+                        coachDbManager.clear()
+                        coachDbManager.close()
+                    }
+                    OptionsDataNames.STUDENT -> {
+
+                    }
+                    OptionsDataNames.SCHOOLKID -> {
+
+                    }
+                }
             }
 
             backButtonOptions.setOnClickListener {
@@ -57,10 +76,20 @@ class OptionsActivity : AppCompatActivity() {
                         finish()
                     }
                     OptionsDataNames.STUDENT -> {
-
+                        val intent = Intent(
+                            this@OptionsActivity, StudentActivity::class.java
+                        )
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                        finish()
                     }
                     OptionsDataNames.SCHOOLKID -> {
-
+                        val intent = Intent(
+                            this@OptionsActivity, SchoolkidActivity::class.java
+                        )
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                        finish()
                     }
                 }
             }

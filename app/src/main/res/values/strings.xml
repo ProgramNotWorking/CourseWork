@@ -31,4 +31,5 @@
     <string name="change_role">Change type of activity</string>
     <string name="sort_by_time">Sort by time</string>
     <string name="clear_data">Clear current role data</string>
+    <string name="data_cleared">Data cleared</string>
 </resources>
