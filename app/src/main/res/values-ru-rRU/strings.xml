@@ -32,4 +32,10 @@
     <string name="sort_by_time">Сортировать по времени</string>
     <string name="clear_data">Очистить информацию текущей роли</string>
     <string name="data_cleared">Данные очищены</string>
+    <string name="enter_couple_title">Введите название пары</string>
+    <string name="enter_couple_time">Введите время пары</string>
+    <string name="enter_audience_number">Введите аудиторию</string>
+    <string name="couple_title_field_is_empty">Поле ввода названия пары пустое</string>
+    <string name="couple_time_field_is_empty">Поле ввода времени пары пустое</string>
+    <string name="audience_number_field_is_empty">Поле ввода номера аудитории пустое</string>
 </resources>

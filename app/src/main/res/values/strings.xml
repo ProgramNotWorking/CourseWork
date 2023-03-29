@@ -32,4 +32,10 @@
     <string name="sort_by_time">Sort by time</string>
     <string name="clear_data">Clear current role data</string>
     <string name="data_cleared">Data cleared</string>
+    <string name="enter_couple_title">Enter couple title</string>
+    <string name="enter_couple_time">Enter couple time</string>
+    <string name="enter_audience_number">Enter audience number</string>
+    <string name="couple_title_field_is_empty">Couple title field is empty</string>
+    <string name="couple_time_field_is_empty">Couple time field is empty</string>
+    <string name="audience_number_field_is_empty">Audience number field is empty</string>
 </resources>

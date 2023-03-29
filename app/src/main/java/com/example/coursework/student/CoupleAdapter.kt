@@ -10,7 +10,8 @@ import com.example.coursework.databinding.CoupleStudentItemBinding
 
 
 class CoupleAdapter(
-    private val onLayoutClickListener: OnLayoutClickListener
+    private val onLayoutClickListener: OnLayoutClickListener,
+    private val onDeleteClickListener: OnTrashCanClickListener
 ): RecyclerView.Adapter<CoupleAdapter.CoupleHolder>() {
     private val couplesList = ArrayList<Couple>()
 
@@ -24,6 +25,10 @@ class CoupleAdapter(
 
             coupleHolder.setOnClickListener {
                 onLayoutClickListener.onLayoutClick(couple)
+            }
+
+            deleteCoupleItemButton.setOnClickListener {
+                onDeleteClickListener.onTrashCanClick(couple)
             }
         }
     }
@@ -47,7 +52,16 @@ class CoupleAdapter(
         notifyDataSetChanged()
     }
 
+    fun removeCouple(position: Int) {
+        couplesList.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     interface OnLayoutClickListener {
         fun onLayoutClick(couple: Couple)
+    }
+
+    interface OnTrashCanClickListener {
+        fun onTrashCanClick(couple: Couple)
     }
 }

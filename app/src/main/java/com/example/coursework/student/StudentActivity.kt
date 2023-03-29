@@ -5,16 +5,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coursework.OptionsActivity
 import com.example.coursework.R
 import com.example.coursework.constants.StudentIntentConstants
 import com.example.coursework.databinding.ActivityStudentBinding
 
-class StudentActivity : AppCompatActivity(), CoupleAdapter.OnLayoutClickListener {
+class StudentActivity : AppCompatActivity(),
+    CoupleAdapter.OnLayoutClickListener, CoupleAdapter.OnTrashCanClickListener {
     private lateinit var binding: ActivityStudentBinding
 
-    private val mondayAdapter = CoupleAdapter(this@StudentActivity)
+    private lateinit var editCoupleInfoLauncher: ActivityResultLauncher<Intent>
+
+    private val mondayAdapter = CoupleAdapter(
+        this@StudentActivity, this@StudentActivity
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,13 +71,38 @@ class StudentActivity : AppCompatActivity(), CoupleAdapter.OnLayoutClickListener
             }
 
             addMondayButton.setOnClickListener {
-                val couple = Couple("Test", "12:30", "428")
-                mondayAdapter.addCouple(couple)
+                val intent = Intent(
+                    this@StudentActivity, EditCoupleInfoActivity::class.java
+                )
+                intent.putExtra(StudentIntentConstants.IS_EDIT, false)
+                editCoupleInfoLauncher.launch(intent)
             }
+
+            editCoupleInfoLauncher =
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                    result: ActivityResult ->
+                    if (result.resultCode == RESULT_OK) {
+                        intent = result.data
+
+                        if (intent.getBooleanExtra(StudentIntentConstants.IS_ADDED, false)) {
+                            val couple = Couple(
+                                intent.getStringExtra(StudentIntentConstants.COUPLE_TITLE),
+                                intent.getStringExtra(StudentIntentConstants.COUPLE_TIME),
+                                intent.getStringExtra(StudentIntentConstants.AUDIENCE_NUMBER)
+                            )
+                            mondayAdapter.addCouple(couple)
+                        }
+                    }
+
+                }
         }
     }
 
     override fun onLayoutClick(couple: Couple) {
+
+    }
+
+    override fun onTrashCanClick(couple: Couple) {
 
     }
 }
