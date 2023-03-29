@@ -6,18 +6,94 @@
     android:layout_height="match_parent"
     tools:context=".student.StudentActivity">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="203dp"
-        android:layout_marginTop="321dp"
-        android:layout_marginEnd="150dp"
-        android:layout_marginBottom="391dp"
-        android:text="@string/student"
+        app:backgroundTint="@color/black"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
+        app:menu="@menu/bottom_navigation_view_v2" />
+
+    <ScrollView
+        android:id="@+id/mainHolderScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/mondayHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mondayHeader"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="@color/black">
+
+                <ImageView
+                    android:id="@+id/openMondayButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="60dp"
+                    app:layout_constraintBottom_toTopOf="@+id/mondayRcView"
+                    app:layout_constraintEnd_toStartOf="@+id/mondayTextView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/arrow_down_icon" />
+
+                <TextView
+                    android:id="@+id/mondayTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/ubuntu_bold"
+                    android:paddingBottom="10dp"
+                    android:text="@string/monday"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/addMondayButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginEnd="10dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@+id/mondayRcView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/mondayTextView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/add_plus_icon" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mondayRcView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corners_layout"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mondayTextView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
