@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.example.coursework.coach.CoachActivity
 import com.example.coursework.coach.db.CoachDatabaseManager
 import com.example.coursework.constants.CoachIntentConstants
+import com.example.coursework.constants.StudentIntentConstants
 import com.example.coursework.databinding.ActivityOptionsBinding
 import com.example.coursework.schoolkid.SchoolkidActivity
 import com.example.coursework.student.StudentActivity
@@ -24,6 +25,8 @@ class OptionsActivity : AppCompatActivity() {
 
         val from = if (intent.getBooleanExtra(CoachIntentConstants.FROM_COACH, false))
             OptionsDataNames.COACH
+        else if (intent.getBooleanExtra(StudentIntentConstants.FROM_STUDENT, false))
+            OptionsDataNames.STUDENT
         else
             OptionsDataNames.ITS_BAD
 

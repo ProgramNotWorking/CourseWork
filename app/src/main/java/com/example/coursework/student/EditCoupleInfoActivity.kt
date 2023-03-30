@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.example.coursework.R
+import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.StudentIntentConstants
 import com.example.coursework.databinding.ActivityEditCoupleInfoBinding
 
@@ -48,11 +49,35 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                     intent.putExtra(
                         StudentIntentConstants.AUDIENCE_NUMBER, audienceNumberEditTextField.text.toString()
                     )
+                    setDay()
 
                     setResult(RESULT_OK, intent)
                     finish()
                 }
             }
+        }
+    }
+
+    private fun setDay() {
+        when (intent.getStringExtra(StudentIntentConstants.WHAT_DAY)) {
+            DaysConstants.MONDAY -> intent.putExtra(
+                StudentIntentConstants.WHAT_DAY, DaysConstants.MONDAY
+            )
+            DaysConstants.TUESDAY -> intent.putExtra(
+                StudentIntentConstants.WHAT_DAY, DaysConstants.TUESDAY
+            )
+            DaysConstants.WEDNESDAY -> intent.putExtra(
+                StudentIntentConstants.WHAT_DAY, DaysConstants.WEDNESDAY
+            )
+            DaysConstants.THURSDAY -> intent.putExtra(
+                StudentIntentConstants.WHAT_DAY, DaysConstants.THURSDAY
+            )
+            DaysConstants.FRIDAY -> intent.putExtra(
+                StudentIntentConstants.WHAT_DAY, DaysConstants.FRIDAY
+            )
+            DaysConstants.SATURDAY -> intent.putExtra(
+                StudentIntentConstants.WHAT_DAY, DaysConstants.SATURDAY
+            )
         }
     }
 

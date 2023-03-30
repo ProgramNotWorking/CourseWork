@@ -11,13 +11,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coursework.OptionsActivity
 import com.example.coursework.R
+import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.StudentIntentConstants
 import com.example.coursework.databinding.ActivityStudentBinding
+import com.example.coursework.student.db.StudentDatabaseManager
 
 class StudentActivity : AppCompatActivity(),
     CoupleAdapter.OnLayoutClickListener, CoupleAdapter.OnTrashCanClickListener {
     private lateinit var binding: ActivityStudentBinding
 
+    private lateinit var couplesList: MutableList<CoupleData>
+
+    private val db = StudentDatabaseManager(this)
     private lateinit var editCoupleInfoLauncher: ActivityResultLauncher<Intent>
 
     private val mondayAdapter = CoupleAdapter(
@@ -28,6 +33,10 @@ class StudentActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         binding = ActivityStudentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        db.open()
+        couplesList = db.read()
+        db.close()
 
         binding.apply {
             mondayRcView.layoutManager = GridLayoutManager(this@StudentActivity, 1)
@@ -63,10 +72,32 @@ class StudentActivity : AppCompatActivity(),
                     mondayRcView.visibility = View.VISIBLE
                     addMondayButton.visibility = View.VISIBLE
                     openMondayButton.setImageResource(R.drawable.arrow_up_icon)
+
+                    for (couple in couplesList) {
+                        if (couple.day.equals(DaysConstants.MONDAY)) {
+                            val addedCouple = Couple(
+                                couple.coupleTitle, couple.coupleTime, couple.audienceNumber
+                            )
+                            mondayAdapter.addCouple(addedCouple)
+                        }
+                    }
                 } else {
                     mondayRcView.visibility = View.GONE
                     addMondayButton.visibility = View.GONE
                     openMondayButton.setImageResource(R.drawable.arrow_down_icon)
+
+                    var tempIndex = -1
+                    for (couple in couplesList) {
+                        if (couple.day.equals(DaysConstants.MONDAY)) {
+                            tempIndex++
+                        }
+                    }
+
+                    if (tempIndex != -1) {
+                        for (item in tempIndex downTo 0) {
+                            mondayAdapter.removeCouple(item)
+                        }
+                    }
                 }
             }
 
@@ -75,6 +106,7 @@ class StudentActivity : AppCompatActivity(),
                     this@StudentActivity, EditCoupleInfoActivity::class.java
                 )
                 intent.putExtra(StudentIntentConstants.IS_EDIT, false)
+                intent.putExtra(StudentIntentConstants.WHAT_DAY, DaysConstants.MONDAY)
                 editCoupleInfoLauncher.launch(intent)
             }
 
@@ -85,17 +117,33 @@ class StudentActivity : AppCompatActivity(),
                         intent = result.data
 
                         if (intent.getBooleanExtra(StudentIntentConstants.IS_ADDED, false)) {
+                            val coupleTitle = intent.getStringExtra(StudentIntentConstants.COUPLE_TITLE)
+                            val coupleTime = intent.getStringExtra(StudentIntentConstants.COUPLE_TIME)
+                            val audienceNumber = intent.getStringExtra(StudentIntentConstants.AUDIENCE_NUMBER)
+                            val day = intent.getStringExtra(StudentIntentConstants.WHAT_DAY)
+
                             val couple = Couple(
-                                intent.getStringExtra(StudentIntentConstants.COUPLE_TITLE),
-                                intent.getStringExtra(StudentIntentConstants.COUPLE_TIME),
-                                intent.getStringExtra(StudentIntentConstants.AUDIENCE_NUMBER)
+                                coupleTitle, coupleTime, audienceNumber
                             )
                             mondayAdapter.addCouple(couple)
+
+                            val addedCouple = CoupleData(
+                                coupleTitle, coupleTime, audienceNumber, day
+                            )
+                            couplesList.add(addedCouple)
                         }
                     }
 
                 }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        db.open()
+        db.repopulate(couplesList)
+        db.close()
     }
 
     override fun onLayoutClick(couple: Couple) {

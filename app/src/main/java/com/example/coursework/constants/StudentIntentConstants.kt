@@ -8,6 +8,7 @@ object StudentIntentConstants {
     const val COUPLE_TITLE = "couple_title"
     const val COUPLE_TIME = "couple_time"
     const val AUDIENCE_NUMBER = "audience_number"
+    const val WHAT_DAY = "what_day"
 
     const val IS_ADDED = "is added"
 }
