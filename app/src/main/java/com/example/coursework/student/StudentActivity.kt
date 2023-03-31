@@ -3,17 +3,17 @@ package com.example.coursework.student
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.iterator
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.OptionsActivity
 import com.example.coursework.R
-import com.example.coursework.coach.EditStudentInfoActivity
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.StudentIntentConstants
 import com.example.coursework.databinding.ActivityStudentBinding
@@ -28,9 +28,7 @@ class StudentActivity : AppCompatActivity(),
     private val db = StudentDatabaseManager(this)
     private lateinit var editCoupleInfoLauncher: ActivityResultLauncher<Intent>
 
-    private val mondayAdapter = CoupleAdapter(
-        this@StudentActivity, this@StudentActivity
-    )
+    private val adaptersList = convertAdaptersIntoList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +40,7 @@ class StudentActivity : AppCompatActivity(),
         db.close()
 
         binding.apply {
-            mondayRcView.layoutManager = GridLayoutManager(this@StudentActivity, 1)
-            mondayRcView.adapter = mondayAdapter
+            connectAdaptersToRcViews()
 
             bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {
@@ -70,7 +67,7 @@ class StudentActivity : AppCompatActivity(),
                 true
             }
 
-            openButtonsClickListenerSetter()
+            buttonsClickListenersInit()
 
             editCoupleInfoLauncher =
                 registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -87,7 +84,15 @@ class StudentActivity : AppCompatActivity(),
                             val couple = Couple(
                                 coupleTitle, coupleTime, audienceNumber
                             )
-                            mondayAdapter.addCouple(couple)
+
+                            when (day) {
+                                DaysConstants.MONDAY -> adaptersList[0].addCouple(couple)
+                                DaysConstants.TUESDAY -> adaptersList[1].addCouple(couple)
+                                DaysConstants.WEDNESDAY -> adaptersList[2].addCouple(couple)
+                                DaysConstants.THURSDAY -> adaptersList[3].addCouple(couple)
+                                DaysConstants.FRIDAY -> adaptersList[4].addCouple(couple)
+                                DaysConstants.SATURDAY -> adaptersList[5].addCouple(couple)
+                            }
 
                             val addedCouple = CoupleData(
                                 coupleTitle, coupleTime, audienceNumber, day
@@ -116,12 +121,63 @@ class StudentActivity : AppCompatActivity(),
 
     }
 
-    private fun openButtonsClickListenerSetter() {
+    private fun convertAdaptersIntoList(): ArrayList<CoupleAdapter> {
+        val mondayAdapter = CoupleAdapter(
+            this@StudentActivity, this@StudentActivity
+        )
+        val tuesdayAdapter = CoupleAdapter(
+            this@StudentActivity, this@StudentActivity
+        )
+        val wednesdayAdapter = CoupleAdapter(
+            this@StudentActivity, this@StudentActivity
+        )
+        val thursdayAdapter = CoupleAdapter(
+            this@StudentActivity, this@StudentActivity
+        )
+        val fridayAdapter = CoupleAdapter(
+            this@StudentActivity, this@StudentActivity
+        )
+        val saturdayAdapter = CoupleAdapter(
+            this@StudentActivity, this@StudentActivity
+        )
+
+        return arrayListOf(
+            mondayAdapter, tuesdayAdapter, wednesdayAdapter, thursdayAdapter,
+            fridayAdapter, saturdayAdapter
+        )
+    }
+
+    private fun connectAdaptersToRcViews() {
+        binding.apply {
+            mondayRcView.layoutManager = GridLayoutManager(this@StudentActivity, 1)
+            mondayRcView.adapter = adaptersList[0]
+            tuesdayRcView.layoutManager = GridLayoutManager(this@StudentActivity, 1)
+            tuesdayRcView.adapter = adaptersList[1]
+            wednesdayRcView.layoutManager = GridLayoutManager(this@StudentActivity, 1)
+            wednesdayRcView.adapter = adaptersList[2]
+            thursdayRcView.layoutManager = GridLayoutManager(this@StudentActivity, 1)
+            thursdayRcView.adapter = adaptersList[3]
+            fridayRcView.layoutManager = GridLayoutManager(this@StudentActivity, 1)
+            fridayRcView.adapter = adaptersList[4]
+            saturdayRcView.layoutManager = GridLayoutManager(this@StudentActivity, 1)
+            saturdayRcView.adapter = adaptersList[5]
+        }
+    }
+
+    private fun buttonsClickListenersInit() {
         binding.apply {
             openMondayButton.setOnClickListener { openInit(DaysConstants.MONDAY) }
             addMondayButton.setOnClickListener { startEditActivity(DaysConstants.MONDAY) }
             openTuesdayButton.setOnClickListener { openInit(DaysConstants.TUESDAY) }
             addTuesdayButton.setOnClickListener { startEditActivity(DaysConstants.TUESDAY) }
+            openWednesdayButton.setOnClickListener { openInit(DaysConstants.WEDNESDAY) }
+            addWednesdayButton.setOnClickListener { startEditActivity(DaysConstants.WEDNESDAY) }
+            openThursdayButton.setOnClickListener { openInit(DaysConstants.THURSDAY) }
+            addThursdayButton.setOnClickListener { startEditActivity(DaysConstants.THURSDAY) }
+            openFridayButton.setOnClickListener { openInit(DaysConstants.FRIDAY) }
+            addFridayButton.setOnClickListener { startEditActivity(DaysConstants.FRIDAY) }
+            openSaturdayButton.setOnClickListener { openInit(DaysConstants.SATURDAY) }
+            addSaturdayButton.setOnClickListener { startEditActivity(DaysConstants.SATURDAY) }
         }
     }
 
@@ -129,36 +185,54 @@ class StudentActivity : AppCompatActivity(),
         binding.apply {
             when (day) {
                 DaysConstants.MONDAY -> {
-                    if (addMondayButton.visibility == View.GONE) {
-                        mondayRcView.visibility = View.VISIBLE
-                        addMondayButton.visibility = View.VISIBLE
-                        openMondayButton.setImageResource(R.drawable.arrow_up_icon)
-
-                        displayOnOpen(DaysConstants.MONDAY)
-                    } else {
-                        mondayRcView.visibility = View.GONE
-                        addMondayButton.visibility = View.GONE
-                        openMondayButton.setImageResource(R.drawable.arrow_down_icon)
-
-                        clearRcViewOnClose(DaysConstants.MONDAY)
-                    }
+                    changeItemAppearance(
+                        addMondayButton, mondayRcView, openMondayButton, DaysConstants.MONDAY
+                    )
                 }
                 DaysConstants.TUESDAY -> {
-                    if (addTuesdayButton.visibility == View.GONE) {
-                        tuesdayRcView.visibility = View.VISIBLE
-                        addTuesdayButton.visibility = View.VISIBLE
-                        openTuesdayButton.setImageResource(R.drawable.arrow_up_icon)
-
-                        displayOnOpen(DaysConstants.TUESDAY)
-                    } else {
-                        tuesdayRcView.visibility = View.GONE
-                        addTuesdayButton.visibility = View.GONE
-                        openTuesdayButton.setImageResource(R.drawable.arrow_down_icon)
-
-                        clearRcViewOnClose(DaysConstants.TUESDAY)
-                    }
+                    changeItemAppearance(
+                        addTuesdayButton, tuesdayRcView, openTuesdayButton, DaysConstants.TUESDAY
+                    )
+                }
+                DaysConstants.WEDNESDAY -> {
+                    changeItemAppearance(
+                        addWednesdayButton, wednesdayRcView, openWednesdayButton, DaysConstants.WEDNESDAY
+                    )
+                }
+                DaysConstants.THURSDAY -> {
+                    changeItemAppearance(
+                        addThursdayButton, thursdayRcView, openThursdayButton, DaysConstants.THURSDAY
+                    )
+                }
+                DaysConstants.FRIDAY -> {
+                    changeItemAppearance(
+                        addFridayButton, fridayRcView, openFridayButton, DaysConstants.FRIDAY
+                    )
+                }
+                DaysConstants.SATURDAY -> {
+                    changeItemAppearance(
+                        addSaturdayButton, saturdayRcView, openSaturdayButton, DaysConstants.SATURDAY
+                    )
                 }
             }
+        }
+    }
+
+    private fun changeItemAppearance(
+        addButton: ImageView, rcView: RecyclerView, openButton: ImageView, day: String
+    ) {
+        if (addButton.visibility == View.GONE) {
+            rcView.visibility = View.VISIBLE
+            addButton.visibility = View.VISIBLE
+            openButton.setImageResource(R.drawable.arrow_up_icon)
+
+            displayOnOpen(day)
+        } else {
+            rcView.visibility = View.GONE
+            addButton.visibility = View.GONE
+            openButton.setImageResource(R.drawable.arrow_down_icon)
+
+            clearRcViewOnClose(day)
         }
     }
 
@@ -168,7 +242,14 @@ class StudentActivity : AppCompatActivity(),
                 val showCouple = Couple(
                     couple.coupleTitle, couple.coupleTime, couple.audienceNumber
                 )
-                mondayAdapter.addCouple(showCouple)
+                when (day) {
+                    DaysConstants.MONDAY -> adaptersList[0].addCouple(showCouple)
+                    DaysConstants.TUESDAY -> adaptersList[1].addCouple(showCouple)
+                    DaysConstants.WEDNESDAY -> adaptersList[2].addCouple(showCouple)
+                    DaysConstants.THURSDAY -> adaptersList[3].addCouple(showCouple)
+                    DaysConstants.FRIDAY -> adaptersList[4].addCouple(showCouple)
+                    DaysConstants.SATURDAY -> adaptersList[5].addCouple(showCouple)
+                }
             }
         }
     }
@@ -181,9 +262,19 @@ class StudentActivity : AppCompatActivity(),
             }
         }
 
+        val tempAdapter = when (day) {
+            DaysConstants.MONDAY -> adaptersList[0]
+            DaysConstants.TUESDAY -> adaptersList[1]
+            DaysConstants.WEDNESDAY -> adaptersList[2]
+            DaysConstants.THURSDAY -> adaptersList[3]
+            DaysConstants.FRIDAY -> adaptersList[4]
+            DaysConstants.SATURDAY -> adaptersList[5]
+            else -> adaptersList[5]
+        }
+
         if (tempIndex != -1) {
             for (item in tempIndex downTo 0) {
-                mondayAdapter.removeCouple(item)
+                tempAdapter.removeCouple(item)
             }
         }
     }
