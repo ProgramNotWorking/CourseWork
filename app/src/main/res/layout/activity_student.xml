@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainStudentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".student.StudentActivity">
@@ -92,6 +93,64 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mondayTextView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/tuesdayHeader"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="@color/black">
+
+                <ImageView
+                    android:id="@+id/openTuesdayButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="60dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tuesdayTextView"
+                    app:layout_constraintEnd_toStartOf="@+id/tuesdayTextView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/arrow_down_icon" />
+
+                <TextView
+                    android:id="@+id/tuesdayTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/ubuntu_bold"
+                    android:paddingBottom="10dp"
+                    android:text="@string/tuesday"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/addTuesdayButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginEnd="10dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tuesdayTextView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/add_plus_icon" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tuesdayRcView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corners_layout"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tuesdayTextView" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>

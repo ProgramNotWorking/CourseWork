@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.example.coursework.coach.db.DatabaseNames
 import com.example.coursework.student.CoupleData
 
 class StudentDatabaseManager(context: Context) {
