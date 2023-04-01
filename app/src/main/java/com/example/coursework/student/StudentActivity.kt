@@ -4,12 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.iterator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.OptionsActivity
@@ -29,11 +30,18 @@ class StudentActivity : AppCompatActivity(),
     private lateinit var editCoupleInfoLauncher: ActivityResultLauncher<Intent>
 
     private val adaptersList = convertAdaptersIntoList()
+    private lateinit var rcViewsList: ArrayList<RecyclerView>
+
+    var editCoupleTitle = "STUB!"
+    var editCoupleTime = "STUB!"
+    var editAudienceNumber = "STUB!"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStudentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        rcViewsList = getRcViewsList()
 
         db.open()
         couplesList = db.read() // Fuck this shit
@@ -75,17 +83,17 @@ class StudentActivity : AppCompatActivity(),
                     if (result.resultCode == RESULT_OK) {
                         intent = result.data
 
-                        if (intent.getBooleanExtra(StudentIntentConstants.IS_ADDED, false)) {
-                            val coupleTitle = intent.getStringExtra(StudentIntentConstants.COUPLE_TITLE)
-                            val coupleTime = intent.getStringExtra(StudentIntentConstants.COUPLE_TIME)
-                            val audienceNumber = intent.getStringExtra(StudentIntentConstants.AUDIENCE_NUMBER)
-                            val day = intent.getStringExtra(StudentIntentConstants.WHAT_DAY)
+                        val coupleTitleIntent = intent.getStringExtra(StudentIntentConstants.COUPLE_TITLE)
+                        val coupleTimeIntent = intent.getStringExtra(StudentIntentConstants.COUPLE_TIME)
+                        val audienceNumberIntent = intent.getStringExtra(StudentIntentConstants.AUDIENCE_NUMBER)
+                        val dayIntent = intent.getStringExtra(StudentIntentConstants.WHAT_DAY)
 
+                        if (intent.getBooleanExtra(StudentIntentConstants.IS_ADDED, false)) {
                             val couple = Couple(
-                                coupleTitle, coupleTime, audienceNumber
+                                coupleTitleIntent, coupleTimeIntent, audienceNumberIntent, dayIntent
                             )
 
-                            when (day) {
+                            when (dayIntent) {
                                 DaysConstants.MONDAY -> adaptersList[0].addCouple(couple)
                                 DaysConstants.TUESDAY -> adaptersList[1].addCouple(couple)
                                 DaysConstants.WEDNESDAY -> adaptersList[2].addCouple(couple)
@@ -95,9 +103,56 @@ class StudentActivity : AppCompatActivity(),
                             }
 
                             val addedCouple = CoupleData(
-                                coupleTitle, coupleTime, audienceNumber, day
+                                coupleTitleIntent, coupleTimeIntent, audienceNumberIntent, dayIntent
                             )
                             couplesList.add(addedCouple)
+                        } else {
+                            for (couple in couplesList.indices) {
+                                if (
+                                    couplesList[couple].coupleTitle.equals(coupleTitleIntent) &&
+                                    couplesList[couple].coupleTime.equals(coupleTimeIntent) &&
+                                    couplesList[couple].audienceNumber.equals(audienceNumberIntent) &&
+                                    couplesList[couple].day.equals(dayIntent)
+                                ) {
+                                    val editedCouple = CoupleData(
+                                        coupleTitleIntent, coupleTimeIntent,
+                                        audienceNumberIntent, dayIntent
+                                    )
+                                    couplesList[couple] = editedCouple
+
+                                    break
+                                }
+                            }
+
+                            val neededRcViewIndex = when (dayIntent) {
+                                DaysConstants.MONDAY -> 0
+                                DaysConstants.TUESDAY -> 1
+                                DaysConstants.WEDNESDAY -> 2
+                                DaysConstants.THURSDAY -> 3
+                                DaysConstants.FRIDAY -> 4
+                                DaysConstants.SATURDAY -> 5
+                                else -> -1
+                            }
+
+                            for (item in rcViewsList[neededRcViewIndex]) {
+                                if (item.findViewById<TextView>(R.id.coupleTitleTextViewItem).text.toString()
+                                        == editCoupleTitle &&
+                                    item.findViewById<TextView>(R.id.coupleTimeTextViewItem).text.toString()
+                                        == editCoupleTime &&
+                                    item.findViewById<TextView>(R.id.audienceTextView).text.toString()
+                                        == editAudienceNumber) {
+
+                                    item.findViewById<TextView>(
+                                        R.id.coupleTitleTextViewItem
+                                    ).text = coupleTitleIntent
+                                    item.findViewById<TextView>(
+                                        R.id.coupleTimeTextViewItem
+                                    ).text = coupleTimeIntent
+                                    item.findViewById<TextView>(
+                                        R.id.audienceTextView
+                                    ).text = audienceNumberIntent
+                                }
+                            }
                         }
                     }
 
@@ -114,7 +169,20 @@ class StudentActivity : AppCompatActivity(),
     }
 
     override fun onLayoutClick(couple: Couple) { // Edit method
+        val intent = Intent(
+            this@StudentActivity, EditCoupleInfoActivity::class.java
+        )
+        intent.putExtra(StudentIntentConstants.COUPLE_TITLE, couple.coupleTitle)
+        intent.putExtra(StudentIntentConstants.COUPLE_TIME, couple.coupleTime)
+        intent.putExtra(StudentIntentConstants.AUDIENCE_NUMBER, couple.audienceNumber)
+        intent.putExtra(StudentIntentConstants.WHAT_DAY, couple.day)
+        intent.putExtra(StudentIntentConstants.IS_EDIT, true)
 
+        editCoupleTitle = couple.coupleTitle.toString()
+        editCoupleTime = couple.coupleTime.toString()
+        editAudienceNumber = couple.audienceNumber.toString()
+
+        editCoupleInfoLauncher.launch(intent)
     }
 
     override fun onTrashCanClick(couple: Couple) {
@@ -145,6 +213,19 @@ class StudentActivity : AppCompatActivity(),
             mondayAdapter, tuesdayAdapter, wednesdayAdapter, thursdayAdapter,
             fridayAdapter, saturdayAdapter
         )
+    }
+
+    private fun getRcViewsList(): ArrayList<RecyclerView> {
+        binding.apply {
+            return arrayListOf(
+                mondayRcView,
+                tuesdayRcView,
+                wednesdayRcView,
+                thursdayRcView,
+                fridayRcView,
+                saturdayRcView
+            )
+        }
     }
 
     private fun connectAdaptersToRcViews() {
@@ -240,7 +321,7 @@ class StudentActivity : AppCompatActivity(),
         for (couple in couplesList) {
             if (couple.day.equals(day)) {
                 val showCouple = Couple(
-                    couple.coupleTitle, couple.coupleTime, couple.audienceNumber
+                    couple.coupleTitle, couple.coupleTime, couple.audienceNumber, couple.day
                 )
                 when (day) {
                     DaysConstants.MONDAY -> adaptersList[0].addCouple(showCouple)

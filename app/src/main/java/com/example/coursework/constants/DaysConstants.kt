@@ -1,10 +1,10 @@
 package com.example.coursework.constants
 
 object DaysConstants {
-    const val MONDAY = "monday"
-    const val TUESDAY = "tuesday"
-    const val WEDNESDAY = "wednesday"
-    const val THURSDAY = "thursday"
-    const val FRIDAY = "friday"
-    const val SATURDAY = "saturday"
+    const val MONDAY = "Monday"
+    const val TUESDAY = "Tuesday"
+    const val WEDNESDAY = "Wednesday"
+    const val THURSDAY = "Thursday"
+    const val FRIDAY = "Friday"
+    const val SATURDAY = "Saturday"
 }

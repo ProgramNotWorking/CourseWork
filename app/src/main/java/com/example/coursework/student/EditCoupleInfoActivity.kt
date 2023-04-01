@@ -23,19 +23,35 @@ class EditCoupleInfoActivity : AppCompatActivity() {
 
         onTouchCloseKeyboard()
 
-        if (intent.getBooleanExtra(StudentIntentConstants.IS_EDIT, false)) {
+        val isEdit = if (intent.getBooleanExtra(StudentIntentConstants.IS_EDIT, false)) {
             intent.putExtra(StudentIntentConstants.IS_ADDED, false)
+            true
         } else {
             intent.putExtra(StudentIntentConstants.IS_ADDED, true)
+            false
         }
 
         binding.apply {
+            dayTitleCoupleTextView.text = setDayText()
+
             backButtonCouple.setOnClickListener {
                 val intent = Intent(
                     this@EditCoupleInfoActivity, StudentActivity::class.java
                 )
                 setResult(RESULT_CANCELED)
                 finish()
+            }
+
+            if (isEdit) {
+                coupleTitleEditTextField.setText(
+                    intent.getStringExtra(StudentIntentConstants.COUPLE_TITLE)
+                )
+                coupleTimeEditTextField.setText(
+                    intent.getStringExtra(StudentIntentConstants.COUPLE_TIME)
+                )
+                audienceNumberEditTextField.setText(
+                    intent.getStringExtra(StudentIntentConstants.AUDIENCE_NUMBER)
+                )
             }
 
             saveCoupleButton.setOnClickListener {
@@ -118,6 +134,18 @@ class EditCoupleInfoActivity : AppCompatActivity() {
             }
 
             true
+        }
+    }
+
+    private fun setDayText(): String {
+        return when (intent.getStringExtra(StudentIntentConstants.WHAT_DAY)) {
+            DaysConstants.MONDAY -> getString(R.string.monday)
+            DaysConstants.TUESDAY -> getString(R.string.tuesday)
+            DaysConstants.WEDNESDAY -> getString(R.string.wednesday)
+            DaysConstants.THURSDAY -> getString(R.string.thursday)
+            DaysConstants.FRIDAY -> getString(R.string.friday)
+            DaysConstants.SATURDAY -> getString(R.string.saturday)
+            else -> getString(R.string.stub)
         }
     }
 }
