@@ -57,6 +57,20 @@ class CoupleAdapter(
         notifyItemRemoved(position)
     }
 
+    fun removeCoupleByData(title: String?, time: String?, audience: String?) {
+        for (item in couplesList.indices) {
+            if (couplesList[item].coupleTitle.equals(title) &&
+                couplesList[item].coupleTime.equals(time) &&
+                couplesList[item].audienceNumber.equals(audience)) {
+
+                couplesList.removeAt(item)
+                notifyItemRemoved(item)
+
+                break
+            }
+        }
+    }
+
     interface OnLayoutClickListener {
         fun onLayoutClick(couple: Couple)
     }

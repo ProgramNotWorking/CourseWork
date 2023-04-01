@@ -9,7 +9,7 @@ object StudentDatabaseNames: BaseColumns {
     const val COLUMN_AUDIENCE_NUMBER = "audience_number"
     const val COLUMN_DAY = "day"
 
-    const val DATABASE_VERSION = 2
+    const val DATABASE_VERSION = 1
     const val DATABASE = "Student.db"
 
     const val CREATE_TABLE = "CREATE TABLE $TABLE_NAME (" +

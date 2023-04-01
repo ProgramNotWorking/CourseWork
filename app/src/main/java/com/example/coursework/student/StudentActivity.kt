@@ -3,6 +3,7 @@ package com.example.coursework.student
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -32,9 +33,9 @@ class StudentActivity : AppCompatActivity(),
     private val adaptersList = convertAdaptersIntoList()
     private lateinit var rcViewsList: ArrayList<RecyclerView>
 
-    var editCoupleTitle = "STUB!"
-    var editCoupleTime = "STUB!"
-    var editAudienceNumber = "STUB!"
+    private var editCoupleTitle = "STUB!"
+    private var editCoupleTime = "STUB!"
+    private var editAudienceNumber = "STUB!"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +43,7 @@ class StudentActivity : AppCompatActivity(),
         setContentView(binding.root)
 
         rcViewsList = getRcViewsList()
-
-        db.open()
-        couplesList = db.read() // Fuck this shit
-        db.close()
+        couplesList = getData()
 
         binding.apply {
             connectAdaptersToRcViews()
@@ -53,7 +51,7 @@ class StudentActivity : AppCompatActivity(),
             bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.options -> {
-                        // TODO: make saveData() method there
+                        saveData()
 
                         val intent = Intent(
                             this@StudentActivity, OptionsActivity::class.java
@@ -163,9 +161,21 @@ class StudentActivity : AppCompatActivity(),
     override fun onStop() {
         super.onStop()
 
+        saveData()
+    }
+
+    private fun saveData() {
         db.open()
         db.repopulate(couplesList)
         db.close()
+    }
+
+    private fun getData(): MutableList<CoupleData> {
+        db.open()
+        val data = db.read()
+        db.close()
+
+        return data
     }
 
     override fun onLayoutClick(couple: Couple) { // Edit method
@@ -186,7 +196,38 @@ class StudentActivity : AppCompatActivity(),
     }
 
     override fun onTrashCanClick(couple: Couple) {
+        when (couple.day) {
+            DaysConstants.MONDAY -> adaptersList[0].removeCoupleByData(
+                couple.coupleTitle, couple.coupleTime, couple.audienceNumber
+            )
+            DaysConstants.TUESDAY -> adaptersList[1].removeCoupleByData(
+                couple.coupleTitle, couple.coupleTime, couple.audienceNumber
+            )
+            DaysConstants.WEDNESDAY -> adaptersList[2].removeCoupleByData(
+                couple.coupleTitle, couple.coupleTime, couple.audienceNumber
+            )
+            DaysConstants.THURSDAY -> adaptersList[3].removeCoupleByData(
+                couple.coupleTitle, couple.coupleTime, couple.audienceNumber
+            )
+            DaysConstants.FRIDAY -> adaptersList[4].removeCoupleByData(
+                couple.coupleTitle, couple.coupleTime, couple.audienceNumber
+            )
+            DaysConstants.SATURDAY -> adaptersList[5].removeCoupleByData(
+                couple.coupleTitle, couple.coupleTime, couple.audienceNumber
+            )
+        }
 
+        for (item in couplesList.indices) {
+            if (
+                couplesList[item].coupleTitle.equals(couple.coupleTitle) &&
+                couplesList[item].coupleTime.equals(couple.coupleTime) &&
+                couplesList[item].audienceNumber.equals(couple.audienceNumber) &&
+                couplesList[item].day.equals(couple.day)
+            ) {
+                couplesList.removeAt(item)
+                break
+            }
+        }
     }
 
     private fun convertAdaptersIntoList(): ArrayList<CoupleAdapter> {
