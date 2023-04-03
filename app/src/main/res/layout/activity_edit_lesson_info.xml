@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLessonLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".schoolkid.EditLessonInfoActivity">
+
+    <Button
+        android:id="@+id/saveCoupleButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/black"
+        android:fontFamily="@font/ubuntu_bold"
+        android:text="@string/save"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/dayTitleCoupleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/ubuntu_bold"
+            android:text="@string/stub"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/coupleTitleEditTextField"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="170dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/black"
+        android:ems="10"
+        android:fontFamily="@font/ubuntu_bold"
+        android:gravity="center"
+        android:hint="@string/enter_couple_title"
+        android:inputType="textPersonName"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+    <EditText
+        android:id="@+id/coupleTimeEditTextField"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/black"
+        android:ems="10"
+        android:fontFamily="@font/ubuntu_bold"
+        android:gravity="center"
+        android:hint="@string/enter_couple_time"
+        android:inputType="time"
+        android:textColorHint="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/coupleTitleEditTextField"
+        app:layout_constraintStart_toStartOf="@+id/coupleTitleEditTextField"
+        app:layout_constraintTop_toBottomOf="@+id/coupleTitleEditTextField" />
+
+    <EditText
+        android:id="@+id/audienceNumberEditTextField"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/black"
+        android:ems="10"
+        android:fontFamily="@font/ubuntu_bold"
+        android:gravity="center"
+        android:hint="@string/enter_audience_number"
+        android:inputType="number"
+        android:textColorHint="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/coupleTimeEditTextField"
+        app:layout_constraintStart_toStartOf="@+id/coupleTimeEditTextField"
+        app:layout_constraintTop_toBottomOf="@+id/coupleTimeEditTextField" />
+
+    <ImageView
+        android:id="@+id/backButtonCouple"
+        android:layout_width="65dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back_arrow_icon" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

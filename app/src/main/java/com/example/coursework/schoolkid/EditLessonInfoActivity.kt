@@ -1,4 +1,4 @@
-package com.example.coursework.student
+package com.example.coursework.schoolkid
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,28 +8,29 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.getSystemService
 import com.example.coursework.R
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SchoolkidIntentConstants
 import com.example.coursework.constants.StudentIntentConstants
 import com.example.coursework.databinding.ActivityEditCoupleInfoBinding
-import com.example.coursework.schoolkid.SchoolLesson
+import com.example.coursework.databinding.ActivityEditLessonInfoBinding
 
-class EditCoupleInfoActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityEditCoupleInfoBinding
+class EditLessonInfoActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityEditLessonInfoBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityEditCoupleInfoBinding.inflate(layoutInflater)
+        binding = ActivityEditLessonInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         onTouchCloseKeyboard()
 
-        val isEditStudent = if (intent.getBooleanExtra(StudentIntentConstants.IS_EDIT, false)) {
-            intent.putExtra(StudentIntentConstants.IS_ADDED, false)
+        val isEdit = if (intent.getBooleanExtra(SchoolkidIntentConstants.IS_EDIT, false)) {
+            intent.putExtra(SchoolkidIntentConstants.IS_ADDED, false)
             true
         } else {
-            intent.putExtra(StudentIntentConstants.IS_ADDED, true)
+            intent.putExtra(SchoolkidIntentConstants.IS_ADDED, true)
             false
         }
 
@@ -38,34 +39,34 @@ class EditCoupleInfoActivity : AppCompatActivity() {
 
             backButtonCouple.setOnClickListener {
                 val intent = Intent(
-                    this@EditCoupleInfoActivity, StudentActivity::class.java
+                    this@EditLessonInfoActivity, SchoolkidActivity::class.java
                 )
                 setResult(RESULT_CANCELED)
                 finish()
             }
 
-            if (isEditStudent) {
+            if (isEdit) {
                 coupleTitleEditTextField.setText(
-                    intent.getStringExtra(StudentIntentConstants.COUPLE_TITLE)
+                    intent.getStringExtra(SchoolkidIntentConstants.LESSON_TITLE)
                 )
                 coupleTimeEditTextField.setText(
-                    intent.getStringExtra(StudentIntentConstants.COUPLE_TIME)
+                    intent.getStringExtra(SchoolkidIntentConstants.LESSON_TIME)
                 )
                 audienceNumberEditTextField.setText(
-                    intent.getStringExtra(StudentIntentConstants.AUDIENCE_NUMBER)
+                    intent.getStringExtra(SchoolkidIntentConstants.AUDIENCE_NUMBER)
                 )
             }
 
             saveCoupleButton.setOnClickListener {
                 if (completenessOfInformationTest()) {
                     intent.putExtra(
-                        StudentIntentConstants.COUPLE_TITLE, coupleTitleEditTextField.text.toString()
+                        SchoolkidIntentConstants.LESSON_TITLE, coupleTitleEditTextField.text.toString()
                     )
                     intent.putExtra(
-                        StudentIntentConstants.COUPLE_TIME, coupleTimeEditTextField.text.toString()
+                        SchoolkidIntentConstants.LESSON_TIME, coupleTimeEditTextField.text.toString()
                     )
                     intent.putExtra(
-                        StudentIntentConstants.AUDIENCE_NUMBER, audienceNumberEditTextField.text.toString()
+                        SchoolkidIntentConstants.AUDIENCE_NUMBER, audienceNumberEditTextField.text.toString()
                     )
                     setDay()
 
@@ -77,26 +78,34 @@ class EditCoupleInfoActivity : AppCompatActivity() {
     }
 
     private fun setDay() {
-        when (intent.getStringExtra(StudentIntentConstants.WHAT_DAY)) {
+        when (intent.getStringExtra(SchoolkidIntentConstants.WHAT_DAY)) {
             DaysConstants.MONDAY -> intent.putExtra(
-                StudentIntentConstants.WHAT_DAY, DaysConstants.MONDAY
+                SchoolkidIntentConstants.WHAT_DAY, DaysConstants.MONDAY
             )
             DaysConstants.TUESDAY -> intent.putExtra(
-                StudentIntentConstants.WHAT_DAY, DaysConstants.TUESDAY
+                SchoolkidIntentConstants.WHAT_DAY, DaysConstants.TUESDAY
             )
             DaysConstants.WEDNESDAY -> intent.putExtra(
-                StudentIntentConstants.WHAT_DAY, DaysConstants.WEDNESDAY
+                SchoolkidIntentConstants.WHAT_DAY, DaysConstants.WEDNESDAY
             )
             DaysConstants.THURSDAY -> intent.putExtra(
-                StudentIntentConstants.WHAT_DAY, DaysConstants.THURSDAY
+                SchoolkidIntentConstants.WHAT_DAY, DaysConstants.THURSDAY
             )
             DaysConstants.FRIDAY -> intent.putExtra(
-                StudentIntentConstants.WHAT_DAY, DaysConstants.FRIDAY
+                SchoolkidIntentConstants.WHAT_DAY, DaysConstants.FRIDAY
             )
             DaysConstants.SATURDAY -> intent.putExtra(
-                StudentIntentConstants.WHAT_DAY, DaysConstants.SATURDAY
+                SchoolkidIntentConstants.WHAT_DAY, DaysConstants.SATURDAY
             )
         }
+    }
+
+    private fun showText(text: String) {
+        Toast.makeText(
+            this@EditLessonInfoActivity,
+            text,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun completenessOfInformationTest(): Boolean {
@@ -119,20 +128,12 @@ class EditCoupleInfoActivity : AppCompatActivity() {
         }
     }
 
-    private fun showText(text: String) {
-        Toast.makeText(
-            this@EditCoupleInfoActivity,
-            text,
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     private fun onTouchCloseKeyboard() {
-        binding.mainCoupleLayout.setOnTouchListener { _, event ->
+        binding.mainLessonLayout.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                keyboard.hideSoftInputFromWindow(binding.mainCoupleLayout.windowToken, 0)
+                keyboard.hideSoftInputFromWindow(binding.mainLessonLayout.windowToken, 0)
             }
 
             true
@@ -140,7 +141,7 @@ class EditCoupleInfoActivity : AppCompatActivity() {
     }
 
     private fun setDayText(): String {
-        return when (intent.getStringExtra(StudentIntentConstants.WHAT_DAY)) {
+        return when (intent.getStringExtra(SchoolkidIntentConstants.WHAT_DAY)) {
             DaysConstants.MONDAY -> getString(R.string.monday)
             DaysConstants.TUESDAY -> getString(R.string.tuesday)
             DaysConstants.WEDNESDAY -> getString(R.string.wednesday)
