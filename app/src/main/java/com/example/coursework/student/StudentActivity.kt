@@ -19,7 +19,7 @@ import com.example.coursework.R
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.StudentIntentConstants
 import com.example.coursework.databinding.ActivityStudentBinding
-import com.example.coursework.student.db.StudentDatabaseManager
+import com.example.coursework.db.DatabaseManager
 
 class StudentActivity : AppCompatActivity(),
     CoupleAdapter.OnLayoutClickListener, CoupleAdapter.OnTrashCanClickListener {
@@ -27,7 +27,7 @@ class StudentActivity : AppCompatActivity(),
 
     private lateinit var couplesList: MutableList<CoupleData>
 
-    private val db = StudentDatabaseManager(this)
+    private val db = DatabaseManager(this)
     private lateinit var editCoupleInfoLauncher: ActivityResultLauncher<Intent>
 
     private val adaptersList = convertAdaptersIntoList()
@@ -62,6 +62,8 @@ class StudentActivity : AppCompatActivity(),
                         finish()
                     }
                     R.id.all_days -> {
+                        saveData()
+
                         // TODO: YEAH
 
                         Toast.makeText(
@@ -166,13 +168,13 @@ class StudentActivity : AppCompatActivity(),
 
     private fun saveData() {
         db.open()
-        db.repopulate(couplesList)
+        db.repopulateStudent(couplesList)
         db.close()
     }
 
     private fun getData(): MutableList<CoupleData> {
         db.open()
-        val data = db.read()
+        val data = db.readStudent()
         db.close()
 
         return data

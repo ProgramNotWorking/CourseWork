@@ -6,18 +6,18 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.coursework.coach.CoachActivity
-import com.example.coursework.coach.db.CoachDatabaseManager
 import com.example.coursework.constants.CoachIntentConstants
 import com.example.coursework.constants.SchoolkidIntentConstants
 import com.example.coursework.constants.StudentIntentConstants
 import com.example.coursework.databinding.ActivityOptionsBinding
+import com.example.coursework.db.DatabaseManager
 import com.example.coursework.schoolkid.SchoolkidActivity
 import com.example.coursework.student.StudentActivity
 
 class OptionsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOptionsBinding
 
-    private val coachDbManager = CoachDatabaseManager(this)
+    private val db = DatabaseManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,19 +56,19 @@ class OptionsActivity : AppCompatActivity() {
                     this@OptionsActivity, getString(R.string.data_cleared), Toast.LENGTH_SHORT
                 ).show()
 
-                when (from) {
-                    OptionsDataNames.COACH -> {
-                        coachDbManager.open()
-                        coachDbManager.clear()
-                        coachDbManager.close()
-                    }
-                    OptionsDataNames.STUDENT -> {
-
-                    }
-                    OptionsDataNames.SCHOOLKID -> {
-
-                    }
-                }
+//                when (from) {
+//                    OptionsDataNames.COACH -> {
+//                        coachDbManager.open()
+//                        coachDbManager.clear()
+//                        coachDbManager.close()
+//                    }
+//                    OptionsDataNames.STUDENT -> {
+//
+//                    }
+//                    OptionsDataNames.SCHOOLKID -> {
+//
+//                    }
+//                }
             }
 
             backButtonOptions.setOnClickListener {

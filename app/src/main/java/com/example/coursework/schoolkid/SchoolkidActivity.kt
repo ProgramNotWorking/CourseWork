@@ -17,6 +17,7 @@ import com.example.coursework.R
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SchoolkidIntentConstants
 import com.example.coursework.databinding.ActivitySchoolkidBinding
+import com.example.coursework.db.DatabaseManager
 import com.example.coursework.student.EditCoupleInfoActivity
 
 class SchoolkidActivity : AppCompatActivity(),
@@ -30,6 +31,8 @@ class SchoolkidActivity : AppCompatActivity(),
     private val adaptersList = convertAdaptersIntoList()
     private lateinit var rcViewsList: ArrayList<RecyclerView>
 
+    private val db = DatabaseManager(this)
+
     private var editLessonTitle = "STUB!"
     private var editLessonTime = "STUB!"
     private var editAudienceNumber = "STUB!"
@@ -40,12 +43,7 @@ class SchoolkidActivity : AppCompatActivity(),
         setContentView(binding.root)
 
         rcViewsList = getRcViewsList()
-
-        val tempLesson = LessonData(
-            "AMOGUS", "12:30", "403", DaysConstants.SATURDAY
-        )
-        val test = arrayListOf( tempLesson )
-        lessonsList = test
+        lessonsList = getData()
 
         binding.apply {
             connectAdapterToRcViews()
@@ -53,7 +51,7 @@ class SchoolkidActivity : AppCompatActivity(),
             bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.options -> {
-                        // saveData() method there
+                        saveData()
 
                         val intent = Intent(
                             this@SchoolkidActivity, OptionsActivity::class.java
@@ -64,6 +62,8 @@ class SchoolkidActivity : AppCompatActivity(),
                         finish()
                     }
                     R.id.all_days -> {
+                        saveData()
+
                         // YEAH YEAH YEAH YEAH YEAH YEAH YEAH
                     }
                 }
@@ -164,9 +164,9 @@ class SchoolkidActivity : AppCompatActivity(),
     }
 
     override fun onStop() {
-        // saveData() method there
-
         super.onStop()
+
+        saveData()
     }
 
     override fun onLayoutClick(lesson: SchoolLesson) {
@@ -399,5 +399,19 @@ class SchoolkidActivity : AppCompatActivity(),
             saturdayRcView.layoutManager = GridLayoutManager(this@SchoolkidActivity, 1)
             saturdayRcView.adapter = adaptersList[5]
         }
+    }
+
+    private fun saveData() {
+        db.open()
+        db.repopulateSchoolkid(lessonsList)
+        db.close()
+    }
+
+    private fun getData(): MutableList<LessonData> {
+        db.open()
+        val dataList = db.readSchoolkid()
+        db.close()
+
+        return dataList
     }
 }

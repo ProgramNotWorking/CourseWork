@@ -11,18 +11,17 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.indices
 import androidx.core.view.isNotEmpty
 import androidx.core.view.iterator
 import androidx.core.view.size
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coursework.OptionsActivity
 import com.example.coursework.R
-import com.example.coursework.coach.db.CoachDatabaseManager
 import com.example.coursework.constants.CoachIntentConstants
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SharedPreferencesConstants
 import com.example.coursework.databinding.ActivityCoachBinding
+import com.example.coursework.db.DatabaseManager
 
 class CoachActivity : AppCompatActivity(),
     LessonAdapter.OnDeleteClickListener,
@@ -32,7 +31,7 @@ class CoachActivity : AppCompatActivity(),
     private val adapter = LessonAdapter(this@CoachActivity, this@CoachActivity)
 
     private lateinit var editStudentInfoLauncher: ActivityResultLauncher<Intent>
-    private val db = CoachDatabaseManager(this)
+    private val db = DatabaseManager(this)
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
@@ -58,7 +57,7 @@ class CoachActivity : AppCompatActivity(),
         setDayText()
 
         db.open()
-        studentsList = db.read()
+        studentsList = db.readCoach()
         db.close()
 
         displayLessons(true)
@@ -290,8 +289,11 @@ class CoachActivity : AppCompatActivity(),
         editor.apply()
 
         db.open()
-        db.repopulate(studentsList)
+        db.repopulateCoach(studentsList)
         db.close()
+//        db.open()
+//        db.repopulate(studentsList)
+//        db.close()
     }
 
     private fun sortStudentList() {
