@@ -6,14 +6,25 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.AnimationUtils
+import android.view.animation.RotateAnimation
+import android.view.animation.TranslateAnimation
 import com.example.coursework.coach.CoachActivity
 import com.example.coursework.constants.SharedPreferencesConstants
 import com.example.coursework.databinding.ActivityMainBinding
 import com.example.coursework.schoolkid.SchoolkidActivity
 import com.example.coursework.student.StudentActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Animation.AnimationListener {
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var inAnimation: Animation
+
+    private lateinit var role: String
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,10 +32,41 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        inAnimation = AnimationUtils.loadAnimation(this, R.anim.animation_in_main_role_choosing)
+        inAnimation.setAnimationListener(this)
+
         val sharedPreferences = getSharedPreferences(
             SharedPreferencesConstants.MAIN_KEY, Context.MODE_PRIVATE
         )
         val editor = sharedPreferences.edit()
+
+         val slideOutAnimation = TranslateAnimation(
+             0f,
+             0f,
+             0f,
+             -1500f
+         )
+        slideOutAnimation.duration = 750
+
+        val alphaAnimation = AlphaAnimation(1f, 0f)
+        alphaAnimation.duration = 650
+
+        val pivotX = binding.backLayout.width.toFloat() / 2
+        val pivotY = 1000f
+
+        val rotateAnimation = RotateAnimation(
+            0f,
+            20f,
+            pivotX,
+            pivotY
+        )
+        rotateAnimation.duration = 1000
+
+        val animationSet = AnimationSet(true)
+        animationSet.addAnimation(slideOutAnimation)
+        animationSet.addAnimation(alphaAnimation)
+        // animationSet.addAnimation(rotateAnimation)
+        animationSet.setAnimationListener(this)
 
         // Clear this if u want test the result of all app
         //--------------------------------------------------//
@@ -48,7 +90,8 @@ class MainActivity : AppCompatActivity() {
                 )
                 editor.apply()
 
-                startCoach()
+                role = WhatStart.COACH
+                playAnimation(animationSet)
 
                 true
             }
@@ -58,7 +101,8 @@ class MainActivity : AppCompatActivity() {
                 )
                 editor.apply()
 
-                startStudent()
+                role = WhatStart.STUDENT
+                playAnimation(animationSet)
 
                 true
             }
@@ -68,10 +112,17 @@ class MainActivity : AppCompatActivity() {
                 )
                 editor.apply()
 
-                startSchoolkid()
+                role = WhatStart.SCHOOLKID
+                playAnimation(animationSet)
 
                 true
             }
+        }
+    }
+
+    private fun playAnimation(animation: AnimationSet) {
+        binding.apply {
+            backLayout.startAnimation(animation)
         }
     }
 
@@ -95,4 +146,34 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    override fun onAnimationStart(p0: Animation?) {
+
+    }
+
+    override fun onAnimationEnd(p0: Animation?) {
+        binding.apply {
+            coachImage.visibility = View.INVISIBLE
+            coachDesc.visibility = View.INVISIBLE
+            studentImage.visibility = View.INVISIBLE
+            studentDesc.visibility = View.INVISIBLE
+            schoolkidImage.visibility = View.INVISIBLE
+            schoolkidDesc.visibility = View.INVISIBLE
+            choseTextView.visibility = View.INVISIBLE
+        }
+
+        when (role) {
+            WhatStart.COACH -> startCoach()
+            WhatStart.STUDENT -> startStudent()
+            WhatStart.SCHOOLKID -> startSchoolkid()
+        }
+    }
+
+    override fun onAnimationRepeat(p0: Animation?) {}
+}
+
+object WhatStart {
+    const val COACH = "coach"
+    const val STUDENT = "student"
+    const val SCHOOLKID = "schoolkid"
 }

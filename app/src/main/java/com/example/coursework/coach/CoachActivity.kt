@@ -69,12 +69,8 @@ class CoachActivity : AppCompatActivity(),
             rcView.adapter = adapter
 
             rcView.setOnTouchListener(object : OnSwipeTouchListener(this@CoachActivity) {
-                override fun onSwipeRight() {
-                    toThePrevious()
-                }
-                override fun onSwipeLeft() {
-                    toTheNext()
-                }
+                override fun onSwipeRight() = toThePrevious()
+                override fun onSwipeLeft() = toTheNext()
             })
 
             nextDayButton.setOnClickListener {

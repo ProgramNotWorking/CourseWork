@@ -12,7 +12,9 @@ class CoachAllDays : AppCompatActivity() {
         binding = ActivityCoachAllDaysBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.apply {
 
+        }
         // TODO: Check dialog with Sage(valorant) and add horizontal ListView in Gradle
     }
 }
