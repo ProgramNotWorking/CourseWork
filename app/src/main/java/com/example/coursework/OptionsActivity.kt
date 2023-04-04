@@ -56,19 +56,7 @@ class OptionsActivity : AppCompatActivity() {
                     this@OptionsActivity, getString(R.string.data_cleared), Toast.LENGTH_SHORT
                 ).show()
 
-//                when (from) {
-//                    OptionsDataNames.COACH -> {
-//                        coachDbManager.open()
-//                        coachDbManager.clear()
-//                        coachDbManager.close()
-//                    }
-//                    OptionsDataNames.STUDENT -> {
-//
-//                    }
-//                    OptionsDataNames.SCHOOLKID -> {
-//
-//                    }
-//                }
+                clearData(from)
             }
 
             backButtonOptions.setOnClickListener {
@@ -109,6 +97,18 @@ class OptionsActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private fun clearData(from: String) {
+        db.open()
+
+        when (from) {
+            OptionsDataNames.COACH -> db.clearCoachTable()
+            OptionsDataNames.STUDENT -> db.clearStudentTable()
+            OptionsDataNames.SCHOOLKID -> db.clearSchoolkidTable()
+        }
+
+        db.close()
     }
 }
 

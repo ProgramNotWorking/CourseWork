@@ -1,5 +1,6 @@
 package com.example.coursework.coach
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -41,6 +42,7 @@ class CoachActivity : AppCompatActivity(),
     private var editStudentName = "Stub"
     private var editLessonTime = "Stub"
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCoachBinding.inflate(layoutInflater)
@@ -66,25 +68,20 @@ class CoachActivity : AppCompatActivity(),
             rcView.layoutManager = GridLayoutManager(this@CoachActivity, 1)
             rcView.adapter = adapter
 
-            nextDayButton.setOnClickListener {
-                if (whatDayIndex == 5) {
-                    whatDayIndex = 0
-                } else {
-                    whatDayIndex++
+            rcView.setOnTouchListener(object : OnSwipeTouchListener(this@CoachActivity) {
+                override fun onSwipeRight() {
+                    toThePrevious()
                 }
+                override fun onSwipeLeft() {
+                    toTheNext()
+                }
+            })
 
-                setDayText()
-                displayLessons(false)
+            nextDayButton.setOnClickListener {
+                toTheNext()
             }
             previousDayButton.setOnClickListener {
-                if (whatDayIndex == 0) {
-                    whatDayIndex = 5
-                } else {
-                    whatDayIndex--
-                }
-
-                setDayText()
-                displayLessons(false)
+                toThePrevious()
             }
 
             bottomNavigationView.setOnItemSelectedListener {
@@ -172,6 +169,28 @@ class CoachActivity : AppCompatActivity(),
     override fun onStop() {
         super.onStop()
         saveData()
+    }
+
+    private fun toTheNext() {
+        if (whatDayIndex == 5) {
+            whatDayIndex = 0
+        } else {
+            whatDayIndex++
+        }
+
+        setDayText()
+        displayLessons(false)
+    }
+
+    private fun toThePrevious() {
+        if (whatDayIndex == 0) {
+            whatDayIndex = 5
+        } else {
+            whatDayIndex--
+        }
+
+        setDayText()
+        displayLessons(false)
     }
 
     override fun onDeleteClick(lesson: Lesson) {
@@ -291,9 +310,6 @@ class CoachActivity : AppCompatActivity(),
         db.open()
         db.repopulateCoach(studentsList)
         db.close()
-//        db.open()
-//        db.repopulate(studentsList)
-//        db.close()
     }
 
     private fun sortStudentList() {
