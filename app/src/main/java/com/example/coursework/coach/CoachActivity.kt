@@ -189,7 +189,7 @@ class CoachActivity : AppCompatActivity(),
         displayLessons(false)
     }
 
-    override fun onDeleteClick(lesson: Lesson) {
+    override fun onDeleteClick(lesson: Lesson) { // TODO: Check this
         adapter.removeLessonByData(lesson.name, lesson.time)
 
         for (student in studentsList.indices) {

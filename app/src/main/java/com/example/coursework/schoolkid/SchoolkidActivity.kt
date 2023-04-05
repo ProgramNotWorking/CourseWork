@@ -18,7 +18,6 @@ import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SchoolkidIntentConstants
 import com.example.coursework.databinding.ActivitySchoolkidBinding
 import com.example.coursework.db.DatabaseManager
-import com.example.coursework.student.EditCoupleInfoActivity
 
 class SchoolkidActivity : AppCompatActivity(),
     SchoolAdapter.OnLayoutClickListener, SchoolAdapter.OnTrashCanClickListener {

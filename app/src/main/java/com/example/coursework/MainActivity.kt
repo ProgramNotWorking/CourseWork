@@ -10,8 +10,6 @@ import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
-import android.view.animation.AnimationUtils
-import android.view.animation.RotateAnimation
 import android.view.animation.TranslateAnimation
 import com.example.coursework.coach.CoachActivity
 import com.example.coursework.constants.SharedPreferencesConstants
@@ -22,8 +20,6 @@ import com.example.coursework.student.StudentActivity
 class MainActivity : AppCompatActivity(), Animation.AnimationListener {
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var inAnimation: Animation
-
     private lateinit var role: String
 
     @SuppressLint("ClickableViewAccessibility")
@@ -31,9 +27,6 @@ class MainActivity : AppCompatActivity(), Animation.AnimationListener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        inAnimation = AnimationUtils.loadAnimation(this, R.anim.animation_in_main_role_choosing)
-        inAnimation.setAnimationListener(this)
 
         val sharedPreferences = getSharedPreferences(
             SharedPreferencesConstants.MAIN_KEY, Context.MODE_PRIVATE
@@ -51,21 +44,9 @@ class MainActivity : AppCompatActivity(), Animation.AnimationListener {
         val alphaAnimation = AlphaAnimation(1f, 0f)
         alphaAnimation.duration = 650
 
-        val pivotX = binding.backLayout.width.toFloat() / 2
-        val pivotY = 1000f
-
-        val rotateAnimation = RotateAnimation(
-            0f,
-            20f,
-            pivotX,
-            pivotY
-        )
-        rotateAnimation.duration = 1000
-
         val animationSet = AnimationSet(true)
         animationSet.addAnimation(slideOutAnimation)
         animationSet.addAnimation(alphaAnimation)
-        // animationSet.addAnimation(rotateAnimation)
         animationSet.setAnimationListener(this)
 
         // Clear this if u want test the result of all app

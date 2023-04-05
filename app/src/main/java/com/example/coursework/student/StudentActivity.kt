@@ -5,6 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
+import android.view.animation.TranslateAnimation
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -22,7 +26,7 @@ import com.example.coursework.databinding.ActivityStudentBinding
 import com.example.coursework.db.DatabaseManager
 
 class StudentActivity : AppCompatActivity(),
-    CoupleAdapter.OnLayoutClickListener, CoupleAdapter.OnTrashCanClickListener {
+    CoupleAdapter.OnLayoutClickListener, CoupleAdapter.OnTrashCanClickListener, Animation.AnimationListener {
     private lateinit var binding: ActivityStudentBinding
 
     private lateinit var couplesList: MutableList<CoupleData>
@@ -37,10 +41,21 @@ class StudentActivity : AppCompatActivity(),
     private var editCoupleTime = "STUB!"
     private var editAudienceNumber = "STUB!"
 
+    private lateinit var rotateAnimation: RotateAnimation
+    private lateinit var rotateBackAnimation: RotateAnimation
+    private lateinit var alphaInAnimation: AlphaAnimation
+    private lateinit var alphaOutAnimations: AlphaAnimation
+    private lateinit var slideInAnimation: TranslateAnimation
+    private lateinit var slideOutAnimation: TranslateAnimation
+
+    private var whatDay = "STUB!"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStudentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        animationsInit()
 
         rcViewsList = getRcViewsList()
         couplesList = getData()
@@ -180,7 +195,7 @@ class StudentActivity : AppCompatActivity(),
         return data
     }
 
-    override fun onLayoutClick(couple: Couple) { // Edit method
+    override fun onLayoutClick(couple: Couple) {
         val intent = Intent(
             this@StudentActivity, EditCoupleInfoActivity::class.java
         )
@@ -310,32 +325,38 @@ class StudentActivity : AppCompatActivity(),
             when (day) {
                 DaysConstants.MONDAY -> {
                     changeItemAppearance(
-                        addMondayButton, mondayRcView, openMondayButton, DaysConstants.MONDAY
+                        addMondayButton, mondayRcView, openMondayButton,
+                        DaysConstants.MONDAY
                     )
                 }
                 DaysConstants.TUESDAY -> {
                     changeItemAppearance(
-                        addTuesdayButton, tuesdayRcView, openTuesdayButton, DaysConstants.TUESDAY
+                        addTuesdayButton, tuesdayRcView, openTuesdayButton,
+                        DaysConstants.TUESDAY
                     )
                 }
                 DaysConstants.WEDNESDAY -> {
                     changeItemAppearance(
-                        addWednesdayButton, wednesdayRcView, openWednesdayButton, DaysConstants.WEDNESDAY
+                        addWednesdayButton, wednesdayRcView, openWednesdayButton,
+                        DaysConstants.WEDNESDAY
                     )
                 }
                 DaysConstants.THURSDAY -> {
                     changeItemAppearance(
-                        addThursdayButton, thursdayRcView, openThursdayButton, DaysConstants.THURSDAY
+                        addThursdayButton, thursdayRcView, openThursdayButton,
+                        DaysConstants.THURSDAY
                     )
                 }
                 DaysConstants.FRIDAY -> {
                     changeItemAppearance(
-                        addFridayButton, fridayRcView, openFridayButton, DaysConstants.FRIDAY
+                        addFridayButton, fridayRcView, openFridayButton,
+                        DaysConstants.FRIDAY
                     )
                 }
                 DaysConstants.SATURDAY -> {
                     changeItemAppearance(
-                        addSaturdayButton, saturdayRcView, openSaturdayButton, DaysConstants.SATURDAY
+                        addSaturdayButton, saturdayRcView, openSaturdayButton,
+                        DaysConstants.SATURDAY
                     )
                 }
             }
@@ -345,18 +366,30 @@ class StudentActivity : AppCompatActivity(),
     private fun changeItemAppearance(
         addButton: ImageView, rcView: RecyclerView, openButton: ImageView, day: String
     ) {
+        slideAnimationInit(day)
+        whatDay = day
+
         if (addButton.visibility == View.GONE) {
-            rcView.visibility = View.VISIBLE
+            addButton.startAnimation(alphaInAnimation)
             addButton.visibility = View.VISIBLE
+
+            openButton.startAnimation(rotateAnimation)
             openButton.setImageResource(R.drawable.arrow_up_icon)
+
+            rcView.startAnimation(slideInAnimation)
 
             displayOnOpen(day)
         } else {
-            rcView.visibility = View.GONE
+            addButton.startAnimation(alphaOutAnimations)
             addButton.visibility = View.GONE
+
+            openButton.startAnimation(rotateBackAnimation)
             openButton.setImageResource(R.drawable.arrow_down_icon)
 
             clearRcViewOnClose(day)
+
+            rcView.startAnimation(slideOutAnimation)
+            rcView.visibility = View.GONE
         }
     }
 
@@ -410,5 +443,94 @@ class StudentActivity : AppCompatActivity(),
         intent.putExtra(StudentIntentConstants.IS_EDIT, false)
         intent.putExtra(StudentIntentConstants.WHAT_DAY, day)
         editCoupleInfoLauncher.launch(intent)
+    }
+
+    private fun animationsInit() {
+        rotateAnimation = RotateAnimation(
+            180f,
+            0f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        rotateAnimation.duration = 500
+
+        rotateBackAnimation = RotateAnimation(
+            -180f,
+            0f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        rotateBackAnimation.duration = 500
+
+        alphaInAnimation = AlphaAnimation(0f, 1f)
+        alphaInAnimation.duration = 500
+        alphaOutAnimations = AlphaAnimation(1f, 0f)
+        alphaOutAnimations.duration = 500
+    }
+
+    private fun slideAnimationInit(day: String) {
+        val neededRcView = when (day) {
+            DaysConstants.MONDAY -> binding.mondayRcView
+            DaysConstants.TUESDAY -> binding.tuesdayRcView
+            DaysConstants.WEDNESDAY -> binding.wednesdayRcView
+            DaysConstants.THURSDAY -> binding.thursdayRcView
+            DaysConstants.FRIDAY -> binding.fridayRcView
+            DaysConstants.SATURDAY -> binding.saturdayRcView
+            else -> binding.saturdayRcView
+        }
+
+        val neededButton = when (day) {
+            DaysConstants.MONDAY -> binding.openMondayButton
+            DaysConstants.TUESDAY -> binding.openTuesdayButton
+            DaysConstants.WEDNESDAY -> binding.openWednesdayButton
+            DaysConstants.THURSDAY -> binding.openThursdayButton
+            DaysConstants.FRIDAY -> binding.openFridayButton
+            DaysConstants.SATURDAY -> binding.openSaturdayButton
+            else -> binding.openSaturdayButton
+        }
+
+        Log.d("Test height:", neededRcView.height.toFloat().toString())
+
+        slideInAnimation = TranslateAnimation(
+            0f,
+            0f,
+            -neededRcView.height.toFloat(),
+            -neededButton.y
+        )
+        slideInAnimation.duration = 500
+
+        slideInAnimation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(p0: Animation?) {
+                neededRcView.visibility = View.VISIBLE
+            }
+            override fun onAnimationEnd(p0: Animation?) {
+                // displayOnOpen(day) // TODO: Think about this
+            }
+            override fun onAnimationRepeat(p0: Animation?) {}
+        })
+
+        slideOutAnimation = TranslateAnimation(
+            0f,
+            0f,
+            neededRcView.height.toFloat(),
+            0f
+        )
+        slideOutAnimation.duration = 500
+    }
+
+    override fun onAnimationStart(p0: Animation?) {
+
+    }
+
+    override fun onAnimationEnd(p0: Animation?) {
+
+    }
+
+    override fun onAnimationRepeat(p0: Animation?) {
+
     }
 }
