@@ -1,6 +1,7 @@
 package com.example.coursework.student
 
 import android.annotation.SuppressLint
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +36,14 @@ class EditCoupleInfoActivity : AppCompatActivity() {
 
         binding.apply {
             dayTitleCoupleTextView.text = setDayText()
+
+            enterCoupleTimeButton.setOnClickListener {
+                val timePickerDialog = TimePickerDialog(this@EditCoupleInfoActivity, { _, hour, minute ->
+                    val time = String.format("%02d:%02d", hour, minute)
+                    enterCoupleTimeButton.text = time
+                }, 0, 0, true)
+                timePickerDialog.show()
+            }
 
             backButtonCouple.setOnClickListener {
                 val intent = Intent(

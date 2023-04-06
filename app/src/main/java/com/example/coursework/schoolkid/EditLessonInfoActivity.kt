@@ -1,6 +1,7 @@
 package com.example.coursework.schoolkid
 
 import android.annotation.SuppressLint
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -37,6 +38,14 @@ class EditLessonInfoActivity : AppCompatActivity() {
         binding.apply {
             dayTitleCoupleTextView.text = setDayText()
 
+            enterLessonTimeButton.setOnClickListener {
+                val timePickerDialog = TimePickerDialog(this@EditLessonInfoActivity, { _, hour, minute ->
+                    val time = String.format("%02d:%02d", hour, minute)
+                    enterLessonTimeButton.text = time
+                }, 0, 0, true)
+                timePickerDialog.show()
+            }
+
             backButtonCouple.setOnClickListener {
                 val intent = Intent(
                     this@EditLessonInfoActivity, SchoolkidActivity::class.java
@@ -49,7 +58,7 @@ class EditLessonInfoActivity : AppCompatActivity() {
                 coupleTitleEditTextField.setText(
                     intent.getStringExtra(SchoolkidIntentConstants.LESSON_TITLE)
                 )
-                coupleTimeEditTextField.setText(
+                enterLessonTimeButton.text = (
                     intent.getStringExtra(SchoolkidIntentConstants.LESSON_TIME)
                 )
                 audienceNumberEditTextField.setText(
@@ -63,7 +72,7 @@ class EditLessonInfoActivity : AppCompatActivity() {
                         SchoolkidIntentConstants.LESSON_TITLE, coupleTitleEditTextField.text.toString()
                     )
                     intent.putExtra(
-                        SchoolkidIntentConstants.LESSON_TIME, coupleTimeEditTextField.text.toString()
+                        SchoolkidIntentConstants.LESSON_TIME, enterLessonTimeButton.text.toString()
                     )
                     intent.putExtra(
                         SchoolkidIntentConstants.AUDIENCE_NUMBER, audienceNumberEditTextField.text.toString()
@@ -114,7 +123,7 @@ class EditLessonInfoActivity : AppCompatActivity() {
                 showText(getString(R.string.couple_title_field_is_empty))
 
                 false
-            } else if (coupleTimeEditTextField.text.toString().isEmpty()) {
+            } else if (enterLessonTimeButton.text.toString().isEmpty()) {
                 showText(getString(R.string.couple_time_field_is_empty))
 
                 false
