@@ -307,8 +307,4 @@ class CoachActivity : AppCompatActivity(),
         db.repopulateCoach(studentsList)
         db.close()
     }
-
-    private fun sortStudentList() {
-
-    }
 }

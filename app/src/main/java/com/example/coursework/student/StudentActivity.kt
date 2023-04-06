@@ -3,12 +3,8 @@ package com.example.coursework.student
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
-import android.view.animation.TranslateAnimation
+import android.view.animation.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -26,7 +22,7 @@ import com.example.coursework.databinding.ActivityStudentBinding
 import com.example.coursework.db.DatabaseManager
 
 class StudentActivity : AppCompatActivity(),
-    CoupleAdapter.OnLayoutClickListener, CoupleAdapter.OnTrashCanClickListener, Animation.AnimationListener {
+    CoupleAdapter.OnLayoutClickListener, CoupleAdapter.OnTrashCanClickListener {
     private lateinit var binding: ActivityStudentBinding
 
     private lateinit var couplesList: MutableList<CoupleData>
@@ -45,10 +41,12 @@ class StudentActivity : AppCompatActivity(),
     private lateinit var rotateBackAnimation: RotateAnimation
     private lateinit var alphaInAnimation: AlphaAnimation
     private lateinit var alphaOutAnimations: AlphaAnimation
-    private lateinit var slideInAnimation: TranslateAnimation
-    private lateinit var slideOutAnimation: TranslateAnimation
+    private lateinit var animationController: LayoutAnimationController
+    private lateinit var addButtonRotateAnimation: RotateAnimation
+    private lateinit var addButtonRotationOutAnimation: RotateAnimation
 
-    private var whatDay = "STUB!"
+    private val addButtonAnimationSet = AnimationSet(true)
+    private val addButtonOutAnimationSet = AnimationSet(true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +54,12 @@ class StudentActivity : AppCompatActivity(),
         setContentView(binding.root)
 
         animationsInit()
+
+        addButtonAnimationSet.addAnimation(alphaInAnimation)
+        addButtonAnimationSet.addAnimation(addButtonRotateAnimation)
+
+        addButtonOutAnimationSet.addAnimation(alphaOutAnimations)
+        addButtonOutAnimationSet.addAnimation(addButtonRotationOutAnimation)
 
         rcViewsList = getRcViewsList()
         couplesList = getData()
@@ -366,30 +370,29 @@ class StudentActivity : AppCompatActivity(),
     private fun changeItemAppearance(
         addButton: ImageView, rcView: RecyclerView, openButton: ImageView, day: String
     ) {
-        slideAnimationInit(day)
-        whatDay = day
-
         if (addButton.visibility == View.GONE) {
-            addButton.startAnimation(alphaInAnimation)
+            addButton.startAnimation(addButtonAnimationSet)
             addButton.visibility = View.VISIBLE
 
             openButton.startAnimation(rotateAnimation)
             openButton.setImageResource(R.drawable.arrow_up_icon)
 
-            rcView.startAnimation(slideInAnimation)
+            rcView.visibility = View.VISIBLE
+
+            rcView.layoutAnimation = animationController
+            rcView.scheduleLayoutAnimation()
 
             displayOnOpen(day)
         } else {
-            addButton.startAnimation(alphaOutAnimations)
+            addButton.startAnimation(addButtonOutAnimationSet)
             addButton.visibility = View.GONE
 
             openButton.startAnimation(rotateBackAnimation)
             openButton.setImageResource(R.drawable.arrow_down_icon)
 
-            clearRcViewOnClose(day)
-
-            rcView.startAnimation(slideOutAnimation)
             rcView.visibility = View.GONE
+
+            clearRcViewOnClose(day)
         }
     }
 
@@ -446,6 +449,25 @@ class StudentActivity : AppCompatActivity(),
     }
 
     private fun animationsInit() {
+        animationController = AnimationUtils.loadLayoutAnimation(
+            this@StudentActivity, R.anim.recycler_view_fall_down_animation
+        )
+        binding.apply {
+            mondayHeader.layoutAnimation = animationController
+            tuesdayHeader.layoutAnimation = animationController
+            wednesdayHeader.layoutAnimation = animationController
+            thursdayHeader.layoutAnimation = animationController
+            fridayHeader.layoutAnimation = animationController
+            saturdayHeader.layoutAnimation = animationController
+
+            mondayHeader.scheduleLayoutAnimation()
+            tuesdayHeader.scheduleLayoutAnimation()
+            wednesdayHeader.scheduleLayoutAnimation()
+            thursdayHeader.scheduleLayoutAnimation()
+            fridayHeader.scheduleLayoutAnimation()
+            saturdayHeader.scheduleLayoutAnimation()
+        }
+
         rotateAnimation = RotateAnimation(
             180f,
             0f,
@@ -466,71 +488,29 @@ class StudentActivity : AppCompatActivity(),
         )
         rotateBackAnimation.duration = 500
 
+        addButtonRotateAnimation = RotateAnimation(
+            90f,
+            0f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        addButtonRotateAnimation.duration = 500
+
+        addButtonRotationOutAnimation = RotateAnimation(
+            0f,
+            90f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        addButtonRotationOutAnimation.duration = 500
+
         alphaInAnimation = AlphaAnimation(0f, 1f)
         alphaInAnimation.duration = 500
         alphaOutAnimations = AlphaAnimation(1f, 0f)
         alphaOutAnimations.duration = 500
-    }
-
-    private fun slideAnimationInit(day: String) {
-        val neededRcView = when (day) {
-            DaysConstants.MONDAY -> binding.mondayRcView
-            DaysConstants.TUESDAY -> binding.tuesdayRcView
-            DaysConstants.WEDNESDAY -> binding.wednesdayRcView
-            DaysConstants.THURSDAY -> binding.thursdayRcView
-            DaysConstants.FRIDAY -> binding.fridayRcView
-            DaysConstants.SATURDAY -> binding.saturdayRcView
-            else -> binding.saturdayRcView
-        }
-
-        val neededButton = when (day) {
-            DaysConstants.MONDAY -> binding.openMondayButton
-            DaysConstants.TUESDAY -> binding.openTuesdayButton
-            DaysConstants.WEDNESDAY -> binding.openWednesdayButton
-            DaysConstants.THURSDAY -> binding.openThursdayButton
-            DaysConstants.FRIDAY -> binding.openFridayButton
-            DaysConstants.SATURDAY -> binding.openSaturdayButton
-            else -> binding.openSaturdayButton
-        }
-
-        Log.d("Test height:", neededRcView.height.toFloat().toString())
-
-        slideInAnimation = TranslateAnimation(
-            0f,
-            0f,
-            -neededRcView.height.toFloat(),
-            -neededButton.y
-        )
-        slideInAnimation.duration = 500
-
-        slideInAnimation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(p0: Animation?) {
-                neededRcView.visibility = View.VISIBLE
-            }
-            override fun onAnimationEnd(p0: Animation?) {
-                // displayOnOpen(day) // TODO: Think about this
-            }
-            override fun onAnimationRepeat(p0: Animation?) {}
-        })
-
-        slideOutAnimation = TranslateAnimation(
-            0f,
-            0f,
-            neededRcView.height.toFloat(),
-            0f
-        )
-        slideOutAnimation.duration = 500
-    }
-
-    override fun onAnimationStart(p0: Animation?) {
-
-    }
-
-    override fun onAnimationEnd(p0: Animation?) {
-
-    }
-
-    override fun onAnimationRepeat(p0: Animation?) {
-
     }
 }
