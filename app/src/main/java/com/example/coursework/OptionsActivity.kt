@@ -39,15 +39,15 @@ class OptionsActivity : AppCompatActivity() {
             when (from) {
                 OptionsDataNames.COACH -> {
                     currentTypeOfActivityImage.setImageResource(R.drawable.coach)
-                    currentTypeOfActivityTextView.text = OptionsDataNames.COACH
+                    currentTypeOfActivityTextView.text = getString(R.string.coach)
                 }
                 OptionsDataNames.STUDENT -> {
                     currentTypeOfActivityImage.setImageResource(R.drawable.student)
-                    currentTypeOfActivityTextView.text = OptionsDataNames.STUDENT
+                    currentTypeOfActivityTextView.text = getString(R.string.student)
                 }
                 OptionsDataNames.SCHOOLKID -> {
                     currentTypeOfActivityImage.setImageResource(R.drawable.schoolkid)
-                    currentTypeOfActivityTextView.text = OptionsDataNames.SCHOOLKID
+                    currentTypeOfActivityTextView.text = getString(R.string.schoolkid)
                 }
                 OptionsDataNames.ITS_BAD ->
                     Log.d("From options:", "Trouble with image")

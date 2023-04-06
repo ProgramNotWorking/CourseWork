@@ -38,4 +38,5 @@
     <string name="couple_title_field_is_empty">Поле ввода названия пары пустое</string>
     <string name="couple_time_field_is_empty">Поле ввода времени пары пустое</string>
     <string name="audience_number_field_is_empty">Поле ввода номера аудитории пустое</string>
+    <string name="enter_lesson_title">Введите название урока</string>
 </resources>

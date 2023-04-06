@@ -38,4 +38,5 @@
     <string name="couple_title_field_is_empty">Couple title field is empty</string>
     <string name="couple_time_field_is_empty">Couple time field is empty</string>
     <string name="audience_number_field_is_empty">Audience number field is empty</string>
+    <string name="enter_lesson_title">Enter lesson title</string>
 </resources>
