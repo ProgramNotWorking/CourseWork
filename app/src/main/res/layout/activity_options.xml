@@ -58,41 +58,16 @@
         app:srcCompat="@drawable/coach" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/footerHolderLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/changeRoleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/ubuntu_bold"
-            android:text="@string/change_role"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainOptionsMenuHolderLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="150dp"
         android:background="@drawable/rounded_corners_layout"
         android:backgroundTint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/footerHolderLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/currentTypeOfActivityImage">
@@ -129,7 +104,7 @@
             android:textColorHighlight="@color/blue"
             android:textColorHint="@color/blue"
             android:textColorLink="@color/blue"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:thumbTint="@color/switch_selector"
             android:thumbTintMode="src_in"
             app:layout_constraintEnd_toEndOf="parent"
@@ -138,33 +113,48 @@
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <TextView
+            android:id="@+id/changeRoleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ubuntu_bold"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/change_role"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sortSwitch" />
+
+        <TextView
             android:id="@+id/clearDataTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:layout_weight="0.8"
             android:fontFamily="@font/ubuntu_bold"
             android:paddingLeft="20dp"
             android:text="@string/clear_data"
             android:textColor="@color/white"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/deleteButton"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageButton
             android:id="@+id/deleteButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="20dp"
             android:layout_weight="0.2"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="@color/red"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/clearDataTextView"
-            app:layout_constraintTop_toTopOf="@+id/clearDataTextView"
             app:srcCompat="@drawable/delete_trash_can_icon"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 

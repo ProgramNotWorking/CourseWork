@@ -1,6 +1,7 @@
 package com.example.coursework.coach
 
 import android.annotation.SuppressLint
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +27,7 @@ class EditStudentInfoActivity : AppCompatActivity() {
             binding.editNamePlainTextView.setText(
                 intent.getStringExtra(CoachIntentConstants.STUDENT_NAME)
             )
-            binding.editTimePlainTextView.setText(
+            binding.enterTimeButton.text = (
                 intent.getStringExtra(CoachIntentConstants.LESSON_TIME)
             )
 
@@ -44,7 +45,14 @@ class EditStudentInfoActivity : AppCompatActivity() {
                 finish()
             }
 
-            // TODO: Work on normal time type work(like if time = 123123 -> save is not working or smth)
+            enterTimeButton.setOnClickListener {
+                val timePickerDialog = TimePickerDialog(this@EditStudentInfoActivity, { _, hour, minute ->
+                    val time = String.format("%02d:%02d", hour, minute)
+                    enterTimeButton.text = time
+                }, 0, 0, true)
+                timePickerDialog.show()
+            }
+
             saveButton.setOnClickListener {
                 if (editNamePlainTextView.text.toString().isEmpty()) {
                     Toast.makeText(
@@ -52,7 +60,7 @@ class EditStudentInfoActivity : AppCompatActivity() {
                         getString(R.string.name_field_is_empty),
                         Toast.LENGTH_SHORT
                     ).show()
-                } else if (editTimePlainTextView.text.toString().isEmpty()) {
+                } else if (enterTimeButton.text.toString() == getString(R.string.enter_time)) {
                     Toast.makeText(
                         this@EditStudentInfoActivity,
                         getString(R.string.time_field_is_empty),
@@ -63,7 +71,7 @@ class EditStudentInfoActivity : AppCompatActivity() {
                         CoachIntentConstants.STUDENT_NAME, editNamePlainTextView.text.toString()
                     )
                     intent.putExtra(
-                        CoachIntentConstants.LESSON_TIME, editTimePlainTextView.text.toString()
+                       CoachIntentConstants.LESSON_TIME, enterTimeButton.text.toString()
                     )
 
                     setResult(RESULT_OK, intent)

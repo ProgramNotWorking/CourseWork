@@ -15,8 +15,11 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_corners"
         android:backgroundTint="@color/black"
         android:fontFamily="@font/ubuntu_bold"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:text="@string/save"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -64,7 +67,7 @@
     <EditText
         android:id="@+id/editNamePlainTextView"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="170dp"
         android:layout_marginEnd="10dp"
@@ -80,19 +83,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topHolderLayout" />
 
-    <EditText
-        android:id="@+id/editTimePlainTextView"
+    <Button
+        android:id="@+id/enterTimeButton"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corners"
         android:backgroundTint="@color/black"
-        android:ems="10"
         android:fontFamily="@font/ubuntu_bold"
-        android:gravity="center"
-        android:hint="@string/enter_time"
-        android:inputType="time"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="@string/enter_time"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/editNamePlainTextView"
         app:layout_constraintStart_toStartOf="@+id/editNamePlainTextView"
         app:layout_constraintTop_toBottomOf="@+id/editNamePlainTextView" />

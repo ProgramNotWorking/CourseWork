@@ -30,7 +30,7 @@
     <string name="saturday_reduction">Сб</string>
     <string name="change_role">Сменить род деятельности</string>
     <string name="sort_by_time">Сортировать по времени</string>
-    <string name="clear_data">Очистить информацию текущей роли</string>
+    <string name="clear_data">Очистить данные</string>
     <string name="data_cleared">Данные очищены</string>
     <string name="enter_couple_title">Введите название пары</string>
     <string name="enter_couple_time">Введите время пары</string>

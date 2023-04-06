@@ -88,7 +88,7 @@ class OptionsActivity : AppCompatActivity() {
                 }
             }
 
-            footerHolderLayout.setOnClickListener {
+            changeRoleTextView.setOnClickListener {
                 val intent = Intent(
                     this@OptionsActivity, MainActivity::class.java
                 )

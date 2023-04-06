@@ -33,12 +33,12 @@ class MainActivity : AppCompatActivity(), Animation.AnimationListener {
         )
         val editor = sharedPreferences.edit()
 
-         val slideOutAnimation = TranslateAnimation(
-             0f,
-             0f,
-             0f,
-             -1500f
-         )
+        val slideOutAnimation = TranslateAnimation(
+            0f,
+            0f,
+            0f,
+            -1500f
+        )
         slideOutAnimation.duration = 750
 
         val alphaAnimation = AlphaAnimation(1f, 0f)
@@ -51,7 +51,10 @@ class MainActivity : AppCompatActivity(), Animation.AnimationListener {
 
         // Clear this if u want test the result of all app
         //--------------------------------------------------//
-        editor.putString(SharedPreferencesConstants.ROLE_KEY, SharedPreferencesConstants.DEFAULT_VALUE)
+        editor.putString(
+            SharedPreferencesConstants.ROLE_KEY,
+            SharedPreferencesConstants.DEFAULT_VALUE
+        )
         editor.apply()
         //--------------------------------------------------//
 

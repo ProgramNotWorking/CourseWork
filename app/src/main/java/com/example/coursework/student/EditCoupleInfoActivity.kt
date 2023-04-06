@@ -48,7 +48,7 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                 coupleTitleEditTextField.setText(
                     intent.getStringExtra(StudentIntentConstants.COUPLE_TITLE)
                 )
-                coupleTimeEditTextField.setText(
+                enterCoupleTimeButton.text = (
                     intent.getStringExtra(StudentIntentConstants.COUPLE_TIME)
                 )
                 audienceNumberEditTextField.setText(
@@ -62,7 +62,7 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                         StudentIntentConstants.COUPLE_TITLE, coupleTitleEditTextField.text.toString()
                     )
                     intent.putExtra(
-                        StudentIntentConstants.COUPLE_TIME, coupleTimeEditTextField.text.toString()
+                        StudentIntentConstants.COUPLE_TIME, enterCoupleTimeButton.text.toString()
                     )
                     intent.putExtra(
                         StudentIntentConstants.AUDIENCE_NUMBER, audienceNumberEditTextField.text.toString()
@@ -105,7 +105,7 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                 showText(getString(R.string.couple_title_field_is_empty))
 
                 false
-            } else if (coupleTimeEditTextField.text.toString().isEmpty()) {
+            } else if (enterCoupleTimeButton.text.toString().isEmpty()) {
                 showText(getString(R.string.couple_time_field_is_empty))
 
                 false

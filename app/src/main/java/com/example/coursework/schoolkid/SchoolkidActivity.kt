@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.animation.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.ActivityResult
@@ -36,10 +37,29 @@ class SchoolkidActivity : AppCompatActivity(),
     private var editLessonTime = "STUB!"
     private var editAudienceNumber = "STUB!"
 
+    private lateinit var rotateAnimation: RotateAnimation
+    private lateinit var rotateBackAnimation: RotateAnimation
+    private lateinit var alphaInAnimation: AlphaAnimation
+    private lateinit var alphaOutAnimations: AlphaAnimation
+    private lateinit var animationController: LayoutAnimationController
+    private lateinit var addButtonRotateAnimation: RotateAnimation
+    private lateinit var addButtonRotationOutAnimation: RotateAnimation
+
+    private val addButtonAnimationSet = AnimationSet(true)
+    private val addButtonOutAnimationSet = AnimationSet(true)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySchoolkidBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        animationsInit()
+
+        addButtonAnimationSet.addAnimation(alphaInAnimation)
+        addButtonAnimationSet.addAnimation(addButtonRotateAnimation)
+
+        addButtonOutAnimationSet.addAnimation(alphaOutAnimations)
+        addButtonOutAnimationSet.addAnimation(addButtonRotationOutAnimation)
 
         rcViewsList = getRcViewsList()
         lessonsList = getData()
@@ -278,15 +298,26 @@ class SchoolkidActivity : AppCompatActivity(),
         addButton: ImageView, rcView: RecyclerView, openButton: ImageView, day: String
     ) {
         if (addButton.visibility == View.GONE) {
-            rcView.visibility = View.VISIBLE
+            addButton.startAnimation(addButtonAnimationSet)
             addButton.visibility = View.VISIBLE
+
+            openButton.startAnimation(rotateAnimation)
             openButton.setImageResource(R.drawable.arrow_up_icon)
+
+            rcView.visibility = View.VISIBLE
+
+            rcView.layoutAnimation = animationController
+            rcView.scheduleLayoutAnimation()
 
             displayOnOpen(day)
         } else {
-            rcView.visibility = View.GONE
+            addButton.startAnimation(addButtonOutAnimationSet)
             addButton.visibility = View.GONE
+
+            openButton.startAnimation(rotateBackAnimation)
             openButton.setImageResource(R.drawable.arrow_down_icon)
+
+            rcView.visibility = View.GONE
 
             clearRcViewOnClose(day)
         }
@@ -342,6 +373,72 @@ class SchoolkidActivity : AppCompatActivity(),
         intent.putExtra(SchoolkidIntentConstants.IS_EDIT, false)
         intent.putExtra(SchoolkidIntentConstants.WHAT_DAY, day)
         editLessonInfoLauncher.launch(intent)
+    }
+
+    private fun animationsInit() {
+        animationController = AnimationUtils.loadLayoutAnimation(
+            this@SchoolkidActivity, R.anim.recycler_view_fall_down_animation
+        )
+        binding.apply {
+            mondayHeader.layoutAnimation = animationController
+            tuesdayHeader.layoutAnimation = animationController
+            wednesdayHeader.layoutAnimation = animationController
+            thursdayHeader.layoutAnimation = animationController
+            fridayHeader.layoutAnimation = animationController
+            saturdayHeader.layoutAnimation = animationController
+
+            mondayHeader.scheduleLayoutAnimation()
+            tuesdayHeader.scheduleLayoutAnimation()
+            wednesdayHeader.scheduleLayoutAnimation()
+            thursdayHeader.scheduleLayoutAnimation()
+            fridayHeader.scheduleLayoutAnimation()
+            saturdayHeader.scheduleLayoutAnimation()
+        }
+
+        rotateAnimation = RotateAnimation(
+            180f,
+            0f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        rotateAnimation.duration = 500
+
+        rotateBackAnimation = RotateAnimation(
+            -180f,
+            0f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        rotateBackAnimation.duration = 500
+
+        addButtonRotateAnimation = RotateAnimation(
+            90f,
+            0f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        addButtonRotateAnimation.duration = 500
+
+        addButtonRotationOutAnimation = RotateAnimation(
+            0f,
+            90f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        addButtonRotationOutAnimation.duration = 500
+
+        alphaInAnimation = AlphaAnimation(0f, 1f)
+        alphaInAnimation.duration = 500
+        alphaOutAnimations = AlphaAnimation(1f, 0f)
+        alphaOutAnimations.duration = 500
     }
 
     private fun getRcViewsList(): ArrayList<RecyclerView> {
