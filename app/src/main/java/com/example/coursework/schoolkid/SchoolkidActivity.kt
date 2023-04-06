@@ -1,6 +1,7 @@
 package com.example.coursework.schoolkid
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.view.iterator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,7 @@ import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SchoolkidIntentConstants
 import com.example.coursework.databinding.ActivitySchoolkidBinding
 import com.example.coursework.db.DatabaseManager
+import java.time.LocalTime
 
 class SchoolkidActivity : AppCompatActivity(),
     SchoolAdapter.OnLayoutClickListener, SchoolAdapter.OnTrashCanClickListener {
@@ -48,6 +51,7 @@ class SchoolkidActivity : AppCompatActivity(),
     private val addButtonAnimationSet = AnimationSet(true)
     private val addButtonOutAnimationSet = AnimationSet(true)
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySchoolkidBinding.inflate(layoutInflater)
@@ -129,12 +133,15 @@ class SchoolkidActivity : AppCompatActivity(),
                                 lessonTitleIntent, lessonTimeIntent, audienceNumberIntent, dayIntent
                             )
                             lessonsList.add(addedLesson)
+
+                            clearRcViewOnClose(dayIntent!!)
+                            displayOnOpen(dayIntent)
                         } else {
                             for (lesson in lessonsList.indices) {
                                 if (
-                                    lessonsList[lesson].lessonTitle.equals(lessonTitleIntent) &&
-                                    lessonsList[lesson].lessonTime.equals(lessonTimeIntent) &&
-                                    lessonsList[lesson].audienceNumber.equals(audienceNumberIntent) &&
+                                    lessonsList[lesson].lessonTitle.equals(editLessonTitle) &&
+                                    lessonsList[lesson].lessonTime.equals(editLessonTime) &&
+                                    lessonsList[lesson].audienceNumber.equals(editAudienceNumber) &&
                                     lessonsList[lesson].day.equals(dayIntent)
                                 ) {
                                     val editedLesson = LessonData(
@@ -147,35 +154,8 @@ class SchoolkidActivity : AppCompatActivity(),
                                 }
                             }
 
-                            val neededRcViewIndex = when (dayIntent) {
-                                DaysConstants.MONDAY -> 0
-                                DaysConstants.TUESDAY -> 1
-                                DaysConstants.WEDNESDAY -> 2
-                                DaysConstants.THURSDAY -> 3
-                                DaysConstants.FRIDAY -> 4
-                                DaysConstants.SATURDAY -> 5
-                                else -> -1
-                            }
-
-                            for (item in rcViewsList[neededRcViewIndex]) {
-                                if (item.findViewById<TextView>(R.id.coupleTitleTextViewItem).text.toString()
-                                    == editLessonTitle &&
-                                    item.findViewById<TextView>(R.id.coupleTimeTextViewItem).text.toString()
-                                    == editLessonTime &&
-                                    item.findViewById<TextView>(R.id.audienceTextView).text.toString()
-                                    == editAudienceNumber) {
-
-                                    item.findViewById<TextView>(
-                                        R.id.coupleTitleTextViewItem
-                                    ).text = lessonTitleIntent
-                                    item.findViewById<TextView>(
-                                        R.id.coupleTimeTextViewItem
-                                    ).text = lessonTimeIntent
-                                    item.findViewById<TextView>(
-                                        R.id.audienceTextView
-                                    ).text = audienceNumberIntent
-                                }
-                            }
+                            clearRcViewOnClose(dayIntent!!)
+                            displayOnOpen(dayIntent)
                         }
                     }
                 }
@@ -240,6 +220,7 @@ class SchoolkidActivity : AppCompatActivity(),
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonsClickListenersInit() {
         binding.apply {
             openMondayButton.setOnClickListener { openInit(DaysConstants.MONDAY) }
@@ -257,6 +238,7 @@ class SchoolkidActivity : AppCompatActivity(),
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openInit(day: String) {
         binding.apply {
             when (day) {
@@ -294,6 +276,7 @@ class SchoolkidActivity : AppCompatActivity(),
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun changeItemAppearance(
         addButton: ImageView, rcView: RecyclerView, openButton: ImageView, day: String
     ) {
@@ -323,7 +306,12 @@ class SchoolkidActivity : AppCompatActivity(),
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun displayOnOpen(day: String) {
+        lessonsList.sortBy {
+            LocalTime.parse(it.lessonTime)
+        }
+
         for (lesson in lessonsList) {
             if (lesson.day.equals(day)) {
                 val showLesson = SchoolLesson(

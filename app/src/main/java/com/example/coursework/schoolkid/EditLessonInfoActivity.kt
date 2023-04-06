@@ -9,12 +9,9 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.getSystemService
 import com.example.coursework.R
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SchoolkidIntentConstants
-import com.example.coursework.constants.StudentIntentConstants
-import com.example.coursework.databinding.ActivityEditCoupleInfoBinding
 import com.example.coursework.databinding.ActivityEditLessonInfoBinding
 
 class EditLessonInfoActivity : AppCompatActivity() {
@@ -27,12 +24,20 @@ class EditLessonInfoActivity : AppCompatActivity() {
 
         onTouchCloseKeyboard()
 
-        val isEdit = if (intent.getBooleanExtra(SchoolkidIntentConstants.IS_EDIT, false)) {
+        if (intent.getBooleanExtra(SchoolkidIntentConstants.IS_EDIT, false)) {
+            binding.coupleTitleEditTextField.setText(
+                intent.getStringExtra(SchoolkidIntentConstants.LESSON_TITLE)
+            )
+            binding.enterLessonTimeButton.text = (
+                intent.getStringExtra(SchoolkidIntentConstants.LESSON_TIME)
+            )
+            binding.audienceNumberEditTextField.setText(
+                intent.getStringExtra(SchoolkidIntentConstants.AUDIENCE_NUMBER)
+            )
+
             intent.putExtra(SchoolkidIntentConstants.IS_ADDED, false)
-            true
         } else {
             intent.putExtra(SchoolkidIntentConstants.IS_ADDED, true)
-            false
         }
 
         binding.apply {
@@ -52,18 +57,6 @@ class EditLessonInfoActivity : AppCompatActivity() {
                 )
                 setResult(RESULT_CANCELED)
                 finish()
-            }
-
-            if (isEdit) {
-                coupleTitleEditTextField.setText(
-                    intent.getStringExtra(SchoolkidIntentConstants.LESSON_TITLE)
-                )
-                enterLessonTimeButton.text = (
-                    intent.getStringExtra(SchoolkidIntentConstants.LESSON_TIME)
-                )
-                audienceNumberEditTextField.setText(
-                    intent.getStringExtra(SchoolkidIntentConstants.AUDIENCE_NUMBER)
-                )
             }
 
             saveCoupleButton.setOnClickListener {

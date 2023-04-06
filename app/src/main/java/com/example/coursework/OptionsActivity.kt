@@ -51,7 +51,7 @@ class OptionsActivity : AppCompatActivity() {
                     Log.d("From options:", "Trouble with image")
             }
 
-            deleteButton.setOnClickListener {
+            clearDataTextView.setOnClickListener {
                 Toast.makeText(
                     this@OptionsActivity, getString(R.string.data_cleared), Toast.LENGTH_SHORT
                 ).show()
