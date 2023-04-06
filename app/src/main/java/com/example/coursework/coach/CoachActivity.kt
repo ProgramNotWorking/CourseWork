@@ -4,14 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.view.isNotEmpty
-import androidx.core.view.iterator
 import androidx.core.view.size
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coursework.OptionsActivity
@@ -21,6 +21,7 @@ import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SharedPreferencesConstants
 import com.example.coursework.databinding.ActivityCoachBinding
 import com.example.coursework.db.DatabaseManager
+import java.time.LocalTime
 
 class CoachActivity : AppCompatActivity(),
     LessonAdapter.OnDeleteClickListener,
@@ -40,6 +41,7 @@ class CoachActivity : AppCompatActivity(),
     private var editStudentName = "Stub"
     private var editLessonTime = "Stub"
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,35 +114,15 @@ class CoachActivity : AppCompatActivity(),
                     if (result.resultCode == RESULT_OK) {
                         intent = result.data
 
-                        if (intent.getBooleanExtra(CoachIntentConstants.IS_ADDED, false)) {
-                            val studentName = intent.getStringExtra(CoachIntentConstants.STUDENT_NAME)
-                            val lessonTime = intent.getStringExtra(CoachIntentConstants.LESSON_TIME)
+                        val studentName = intent.getStringExtra(CoachIntentConstants.STUDENT_NAME)
+                        val lessonTime = intent.getStringExtra(CoachIntentConstants.LESSON_TIME)
 
+                        if (intent.getBooleanExtra(CoachIntentConstants.IS_ADDED, false)) {
                             val student = StudentData(studentName, lessonTime, getDay())
                             studentsList.add(student)
 
-                            val lesson = Lesson(studentName, lessonTime)
-                            adapter.addLesson(lesson)
+                            displayLessons(false)
                         } else {
-                            val studentName = intent.getStringExtra(CoachIntentConstants.STUDENT_NAME)
-                            val lessonTime = intent.getStringExtra(CoachIntentConstants.LESSON_TIME)
-
-                            for (item in binding.rcView) {
-                                if (
-                                    item.findViewById<TextView>(R.id.nameTextViewItem).text.toString()
-                                    == editStudentName &&
-                                    item.findViewById<TextView>(R.id.timeTextViewItem).text.toString()
-                                    == editLessonTime
-                                ) {
-                                    item.findViewById<TextView>(R.id.nameTextViewItem).text =
-                                        studentName
-                                    item.findViewById<TextView>(R.id.timeTextViewItem).text =
-                                        lessonTime
-
-                                    break
-                                }
-                            }
-
                             val editStudent = StudentData(
                                 studentName, lessonTime, getDay()
                             )
@@ -154,6 +136,8 @@ class CoachActivity : AppCompatActivity(),
                                     break
                                 }
                             }
+
+                            displayLessons(false)
                         }
                     }
                 }
@@ -165,6 +149,7 @@ class CoachActivity : AppCompatActivity(),
         saveData()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun toTheNext() {
         if (whatDayIndex == 5) {
             whatDayIndex = 0
@@ -176,6 +161,7 @@ class CoachActivity : AppCompatActivity(),
         displayLessons(false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun toThePrevious() {
         if (whatDayIndex == 0) {
             whatDayIndex = 5
@@ -213,7 +199,12 @@ class CoachActivity : AppCompatActivity(),
         editStudentInfoLauncher.launch(intent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun displayLessons(isStart: Boolean) {
+        studentsList.sortBy {
+            LocalTime.parse(it.time)
+        }
+
         if (!isStart) {
             if (binding.rcView.isNotEmpty()) {
                 for (item in binding.rcView.size - 1 downTo 0) {

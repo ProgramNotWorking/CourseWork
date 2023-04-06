@@ -123,7 +123,7 @@ class EditLessonInfoActivity : AppCompatActivity() {
                 showText(getString(R.string.couple_title_field_is_empty))
 
                 false
-            } else if (enterLessonTimeButton.text.toString().isEmpty()) {
+            } else if (enterLessonTimeButton.text.toString() == getString(R.string.enter_time)) {
                 showText(getString(R.string.couple_time_field_is_empty))
 
                 false

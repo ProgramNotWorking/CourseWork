@@ -11,10 +11,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.example.coursework.R
 import com.example.coursework.constants.DaysConstants
-import com.example.coursework.constants.SchoolkidIntentConstants
 import com.example.coursework.constants.StudentIntentConstants
 import com.example.coursework.databinding.ActivityEditCoupleInfoBinding
-import com.example.coursework.schoolkid.SchoolLesson
 
 class EditCoupleInfoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditCoupleInfoBinding
@@ -26,12 +24,20 @@ class EditCoupleInfoActivity : AppCompatActivity() {
 
         onTouchCloseKeyboard()
 
-        val isEditStudent = if (intent.getBooleanExtra(StudentIntentConstants.IS_EDIT, false)) {
+        if (intent.getBooleanExtra(StudentIntentConstants.IS_EDIT, false)) {
+            binding.coupleTitleEditTextField.setText(
+                intent.getStringExtra(StudentIntentConstants.COUPLE_TITLE)
+            )
+            binding.enterCoupleTimeButton.text = (
+                intent.getStringExtra(StudentIntentConstants.COUPLE_TIME)
+            )
+            binding.audienceNumberEditTextField.setText(
+                intent.getStringExtra(StudentIntentConstants.AUDIENCE_NUMBER)
+            )
+
             intent.putExtra(StudentIntentConstants.IS_ADDED, false)
-            true
         } else {
             intent.putExtra(StudentIntentConstants.IS_ADDED, true)
-            false
         }
 
         binding.apply {
@@ -51,18 +57,6 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                 )
                 setResult(RESULT_CANCELED)
                 finish()
-            }
-
-            if (isEditStudent) {
-                coupleTitleEditTextField.setText(
-                    intent.getStringExtra(StudentIntentConstants.COUPLE_TITLE)
-                )
-                enterCoupleTimeButton.text = (
-                    intent.getStringExtra(StudentIntentConstants.COUPLE_TIME)
-                )
-                audienceNumberEditTextField.setText(
-                    intent.getStringExtra(StudentIntentConstants.AUDIENCE_NUMBER)
-                )
             }
 
             saveCoupleButton.setOnClickListener {
@@ -114,7 +108,7 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                 showText(getString(R.string.couple_title_field_is_empty))
 
                 false
-            } else if (enterCoupleTimeButton.text.toString().isEmpty()) {
+            } else if (enterCoupleTimeButton.text.toString() == getString(R.string.enter_couple_time)) {
                 showText(getString(R.string.couple_time_field_is_empty))
 
                 false

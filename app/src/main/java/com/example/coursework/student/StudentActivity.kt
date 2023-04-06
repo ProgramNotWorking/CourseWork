@@ -1,8 +1,10 @@
 package com.example.coursework.student
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.*
 import android.widget.ImageView
@@ -11,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.view.iterator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +23,7 @@ import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.StudentIntentConstants
 import com.example.coursework.databinding.ActivityStudentBinding
 import com.example.coursework.db.DatabaseManager
+import java.time.LocalTime
 
 class StudentActivity : AppCompatActivity(),
     CoupleAdapter.OnLayoutClickListener, CoupleAdapter.OnTrashCanClickListener {
@@ -48,6 +52,7 @@ class StudentActivity : AppCompatActivity(),
     private val addButtonAnimationSet = AnimationSet(true)
     private val addButtonOutAnimationSet = AnimationSet(true)
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStudentBinding.inflate(layoutInflater)
@@ -125,12 +130,15 @@ class StudentActivity : AppCompatActivity(),
                                 coupleTitleIntent, coupleTimeIntent, audienceNumberIntent, dayIntent
                             )
                             couplesList.add(addedCouple)
+
+                            clearRcViewOnClose(dayIntent!!)
+                            displayOnOpen(dayIntent)
                         } else {
                             for (couple in couplesList.indices) {
                                 if (
-                                    couplesList[couple].coupleTitle.equals(coupleTitleIntent) &&
-                                    couplesList[couple].coupleTime.equals(coupleTimeIntent) &&
-                                    couplesList[couple].audienceNumber.equals(audienceNumberIntent) &&
+                                    couplesList[couple].coupleTitle.equals(editCoupleTitle) &&
+                                    couplesList[couple].coupleTime.equals(editCoupleTime) &&
+                                    couplesList[couple].audienceNumber.equals(editAudienceNumber) &&
                                     couplesList[couple].day.equals(dayIntent)
                                 ) {
                                     val editedCouple = CoupleData(
@@ -143,35 +151,8 @@ class StudentActivity : AppCompatActivity(),
                                 }
                             }
 
-                            val neededRcViewIndex = when (dayIntent) {
-                                DaysConstants.MONDAY -> 0
-                                DaysConstants.TUESDAY -> 1
-                                DaysConstants.WEDNESDAY -> 2
-                                DaysConstants.THURSDAY -> 3
-                                DaysConstants.FRIDAY -> 4
-                                DaysConstants.SATURDAY -> 5
-                                else -> -1
-                            }
-
-                            for (item in rcViewsList[neededRcViewIndex]) {
-                                if (item.findViewById<TextView>(R.id.coupleTitleTextViewItem).text.toString()
-                                        == editCoupleTitle &&
-                                    item.findViewById<TextView>(R.id.coupleTimeTextViewItem).text.toString()
-                                        == editCoupleTime &&
-                                    item.findViewById<TextView>(R.id.audienceTextView).text.toString()
-                                        == editAudienceNumber) {
-
-                                    item.findViewById<TextView>(
-                                        R.id.coupleTitleTextViewItem
-                                    ).text = coupleTitleIntent
-                                    item.findViewById<TextView>(
-                                        R.id.coupleTimeTextViewItem
-                                    ).text = coupleTimeIntent
-                                    item.findViewById<TextView>(
-                                        R.id.audienceTextView
-                                    ).text = audienceNumberIntent
-                                }
-                            }
+                            clearRcViewOnClose(dayIntent!!)
+                            displayOnOpen(dayIntent)
                         }
                     }
 
@@ -307,6 +288,7 @@ class StudentActivity : AppCompatActivity(),
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonsClickListenersInit() {
         binding.apply {
             openMondayButton.setOnClickListener { openInit(DaysConstants.MONDAY) }
@@ -324,6 +306,7 @@ class StudentActivity : AppCompatActivity(),
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun openInit(day: String) {
         binding.apply {
             when (day) {
@@ -367,6 +350,7 @@ class StudentActivity : AppCompatActivity(),
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun changeItemAppearance(
         addButton: ImageView, rcView: RecyclerView, openButton: ImageView, day: String
     ) {
@@ -396,7 +380,12 @@ class StudentActivity : AppCompatActivity(),
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun displayOnOpen(day: String) {
+        couplesList.sortBy {
+            LocalTime.parse(it.coupleTime)
+        }
+
         for (couple in couplesList) {
             if (couple.day.equals(day)) {
                 val showCouple = Couple(
