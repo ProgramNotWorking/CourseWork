@@ -1,5 +1,6 @@
 package com.example.coursework
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.widget.Toast
 import com.example.coursework.coach.CoachActivity
 import com.example.coursework.constants.CoachIntentConstants
 import com.example.coursework.constants.SchoolkidIntentConstants
+import com.example.coursework.constants.SharedPreferencesConstants
 import com.example.coursework.constants.StudentIntentConstants
 import com.example.coursework.databinding.ActivityOptionsBinding
 import com.example.coursework.db.DatabaseManager
@@ -65,7 +67,8 @@ class OptionsActivity : AppCompatActivity() {
                         val intent = Intent(
                             this@OptionsActivity, CoachActivity::class.java
                         )
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         finish()
                     }
@@ -73,7 +76,8 @@ class OptionsActivity : AppCompatActivity() {
                         val intent = Intent(
                             this@OptionsActivity, StudentActivity::class.java
                         )
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         finish()
                     }
@@ -81,14 +85,26 @@ class OptionsActivity : AppCompatActivity() {
                         val intent = Intent(
                             this@OptionsActivity, SchoolkidActivity::class.java
                         )
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         finish()
                     }
                 }
             }
 
-            changeRoleTextView.setOnClickListener {
+            footerLayout.setOnClickListener {
+                val sharedPreferences = getSharedPreferences(
+                    SharedPreferencesConstants.MAIN_KEY, Context.MODE_PRIVATE
+                )
+                val editor = sharedPreferences.edit()
+
+                editor.putString(
+                    SharedPreferencesConstants.ROLE_KEY,
+                    SharedPreferencesConstants.DEFAULT_VALUE
+                )
+                editor.apply()
+
                 val intent = Intent(
                     this@OptionsActivity, MainActivity::class.java
                 )

@@ -1,6 +1,7 @@
 package com.example.coursework.student
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.coursework.R
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.StudentIntentConstants
@@ -48,7 +50,21 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                     val time = String.format("%02d:%02d", hour, minute)
                     enterCoupleTimeButton.text = time
                 }, 0, 0, true)
+                timePickerDialog.window?.setBackgroundDrawableResource(
+                    R.color.white
+                )
+
                 timePickerDialog.show()
+
+                val okButton = timePickerDialog.getButton(Dialog.BUTTON_POSITIVE)
+                val cancelButton = timePickerDialog.getButton(Dialog.BUTTON_NEGATIVE)
+
+                okButton.setTextColor(
+                    ContextCompat.getColor(this@EditCoupleInfoActivity, R.color.black)
+                )
+                cancelButton.setTextColor(
+                    ContextCompat.getColor(this@EditCoupleInfoActivity, R.color.black)
+                )
             }
 
             backButtonCouple.setOnClickListener {

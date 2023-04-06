@@ -51,11 +51,11 @@ class MainActivity : AppCompatActivity(), Animation.AnimationListener {
 
         // Clear this if u want test the result of all app
         //--------------------------------------------------//
-        editor.putString(
-            SharedPreferencesConstants.ROLE_KEY,
-            SharedPreferencesConstants.DEFAULT_VALUE
-        )
-        editor.apply()
+//        editor.putString(
+//            SharedPreferencesConstants.ROLE_KEY,
+//            SharedPreferencesConstants.DEFAULT_VALUE
+//        )
+//        editor.apply()
         //--------------------------------------------------//
 
         when (sharedPreferences.getString(
