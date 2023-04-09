@@ -15,9 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.iterator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.coursework.DatabaseHelperClass
-import com.example.coursework.OptionsActivity
-import com.example.coursework.R
+import com.example.coursework.*
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SchoolkidIntentConstants
 import com.example.coursework.constants.SharedPreferencesConstants
@@ -26,7 +24,8 @@ import com.example.coursework.db.DatabaseManager
 import java.time.LocalTime
 
 class SchoolkidActivity : AppCompatActivity(),
-    SchoolAdapter.OnLayoutClickListener, SchoolAdapter.OnTrashCanClickListener {
+    SchoolAdapter.OnLayoutClickListener, SchoolAdapter.OnTrashCanClickListener,
+    OnAnimationsDataReceivedListener {
     private lateinit var binding: ActivitySchoolkidBinding
 
     private lateinit var editLessonInfoLauncher: ActivityResultLauncher<Intent>
@@ -60,7 +59,7 @@ class SchoolkidActivity : AppCompatActivity(),
         binding = ActivitySchoolkidBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        animationsInit()
+        openAnimationHelperClass()
 
         addButtonAnimationSet.addAnimation(alphaInAnimation)
         addButtonAnimationSet.addAnimation(addButtonRotateAnimation)
@@ -366,72 +365,6 @@ class SchoolkidActivity : AppCompatActivity(),
         editLessonInfoLauncher.launch(intent)
     }
 
-    private fun animationsInit() {
-        animationController = AnimationUtils.loadLayoutAnimation(
-            this@SchoolkidActivity, R.anim.recycler_view_fall_down_animation
-        )
-        binding.apply {
-            mondayHeader.layoutAnimation = animationController
-            tuesdayHeader.layoutAnimation = animationController
-            wednesdayHeader.layoutAnimation = animationController
-            thursdayHeader.layoutAnimation = animationController
-            fridayHeader.layoutAnimation = animationController
-            saturdayHeader.layoutAnimation = animationController
-
-            mondayHeader.scheduleLayoutAnimation()
-            tuesdayHeader.scheduleLayoutAnimation()
-            wednesdayHeader.scheduleLayoutAnimation()
-            thursdayHeader.scheduleLayoutAnimation()
-            fridayHeader.scheduleLayoutAnimation()
-            saturdayHeader.scheduleLayoutAnimation()
-        }
-
-        rotateAnimation = RotateAnimation(
-            180f,
-            0f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f
-        )
-        rotateAnimation.duration = 500
-
-        rotateBackAnimation = RotateAnimation(
-            -180f,
-            0f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f
-        )
-        rotateBackAnimation.duration = 500
-
-        addButtonRotateAnimation = RotateAnimation(
-            90f,
-            0f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f
-        )
-        addButtonRotateAnimation.duration = 500
-
-        addButtonRotationOutAnimation = RotateAnimation(
-            0f,
-            90f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f
-        )
-        addButtonRotationOutAnimation.duration = 500
-
-        alphaInAnimation = AlphaAnimation(0f, 1f)
-        alphaInAnimation.duration = 500
-        alphaOutAnimations = AlphaAnimation(1f, 0f)
-        alphaOutAnimations.duration = 500
-    }
-
     private fun getRcViewsList(): ArrayList<RecyclerView> {
         binding.apply {
             return arrayListOf(
@@ -486,5 +419,36 @@ class SchoolkidActivity : AppCompatActivity(),
             saturdayRcView.layoutManager = GridLayoutManager(this@SchoolkidActivity, 1)
             saturdayRcView.adapter = adaptersList[5]
         }
+    }
+
+    private fun openAnimationHelperClass() {
+        val animationsHelperClass = AnimationsHelperClass(this@SchoolkidActivity)
+        animationsHelperClass.setAnimationsDataReceivedListener(this@SchoolkidActivity)
+
+        animationsHelperClass.headersAnimationInit(headersList = arrayListOf(
+            binding.mondayHeader, binding.tuesdayHeader, binding.wednesdayHeader,
+            binding.thursdayHeader, binding.fridayHeader, binding.saturdayHeader
+        ))
+    }
+
+    override fun rotateInit(
+        rotate: RotateAnimation,
+        rotateBack: RotateAnimation,
+        addButtonRotate: RotateAnimation,
+        addButtonBackRotation: RotateAnimation
+    ) {
+        rotateAnimation = rotate
+        rotateBackAnimation = rotateBack
+        addButtonRotateAnimation = addButtonRotate
+        addButtonRotationOutAnimation = addButtonBackRotation
+    }
+
+    override fun alphaInit(alphaIn: AlphaAnimation, alphaOut: AlphaAnimation) {
+        alphaInAnimation = alphaIn
+        alphaOutAnimations = alphaOut
+    }
+
+    override fun layoutAnimationInit(controller: LayoutAnimationController) {
+        animationController = controller
     }
 }
