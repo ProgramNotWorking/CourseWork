@@ -39,4 +39,8 @@
     <string name="couple_time_field_is_empty">Couple time field is empty</string>
     <string name="audience_number_field_is_empty">Audience number field is empty</string>
     <string name="enter_lesson_title">Enter lesson title</string>
+    <string name="data_cleaning">Data cleaning</string>
+    <string name="clearing_question">Are you sure you want delete the data?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
