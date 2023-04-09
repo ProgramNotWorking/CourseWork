@@ -79,7 +79,10 @@ class StudentActivity : AppCompatActivity(),
             bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.options -> {
-                        databaseHelper.saveData(SharedPreferencesConstants.STUDENT, couplesList, null)
+                        databaseHelper.saveData(
+                            SharedPreferencesConstants.STUDENT, couplesList,
+                            null, null
+                        )
 
                         val intent = Intent(
                             this@StudentActivity, OptionsActivity::class.java
@@ -90,8 +93,6 @@ class StudentActivity : AppCompatActivity(),
                         finish()
                     }
                     R.id.all_days -> {
-                        databaseHelper.saveData(SharedPreferencesConstants.STUDENT, couplesList, null)
-
                         // TODO: YEAH
                     }
                 }
@@ -125,7 +126,10 @@ class StudentActivity : AppCompatActivity(),
     override fun onStop() {
         super.onStop()
 
-        databaseHelper.saveData(SharedPreferencesConstants.STUDENT, couplesList, null)
+        databaseHelper.saveData(
+            SharedPreferencesConstants.STUDENT, couplesList,
+            null, null
+        )
     }
 
     override fun onLayoutClick(couple: Couple) {

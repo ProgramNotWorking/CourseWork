@@ -68,9 +68,6 @@ class EditCoupleInfoActivity : AppCompatActivity() {
             }
 
             backButtonCouple.setOnClickListener {
-                val intent = Intent(
-                    this@EditCoupleInfoActivity, StudentActivity::class.java
-                )
                 setResult(RESULT_CANCELED)
                 finish()
             }

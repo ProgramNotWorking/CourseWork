@@ -21,6 +21,7 @@ import com.example.coursework.databinding.ActivitySchoolkidBinding
 import com.example.coursework.db.DatabaseManager
 import com.example.coursework.helpers.AnimationsHelperClass
 import com.example.coursework.helpers.DatabaseHelperClass
+import com.example.coursework.helpers.StudentsHelper
 import java.time.LocalTime
 
 class SchoolkidActivity : AppCompatActivity(),
@@ -53,6 +54,8 @@ class SchoolkidActivity : AppCompatActivity(),
     private val addButtonAnimationSet = AnimationSet(true)
     private val addButtonOutAnimationSet = AnimationSet(true)
 
+    private val helper = StudentsHelper(this@SchoolkidActivity)
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +79,10 @@ class SchoolkidActivity : AppCompatActivity(),
             bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.options -> {
-                        databaseHelper.saveData(SharedPreferencesConstants.SCHOOLKID, null, lessonsList)
+                        databaseHelper.saveData(
+                            SharedPreferencesConstants.SCHOOLKID, null,
+                            lessonsList, null
+                        )
 
                         val intent = Intent(
                             this@SchoolkidActivity, OptionsActivity::class.java
@@ -87,8 +93,6 @@ class SchoolkidActivity : AppCompatActivity(),
                         finish()
                     }
                     R.id.all_days -> {
-                        databaseHelper.saveData(SharedPreferencesConstants.SCHOOLKID, null, lessonsList)
-
                         // YEAH YEAH YEAH YEAH YEAH YEAH YEAH
                     }
                 }
@@ -99,67 +103,21 @@ class SchoolkidActivity : AppCompatActivity(),
             buttonsClickListenersInit()
 
             editLessonInfoLauncher =
-                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                    result: ActivityResult ->
-                    if (result.resultCode == RESULT_OK) {
-                        intent = result.data
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
 
-                        val lessonTitleIntent = intent.getStringExtra(
-                            SchoolkidIntentConstants.LESSON_TITLE
-                        )
-                        val lessonTimeIntent = intent.getStringExtra(
-                            SchoolkidIntentConstants.LESSON_TIME
-                        )
-                        val audienceNumberIntent = intent.getStringExtra(
-                            SchoolkidIntentConstants.AUDIENCE_NUMBER
-                        )
-                        val dayIntent = intent.getStringExtra(
-                            SchoolkidIntentConstants.WHAT_DAY
-                        )
+                    intent = result.data
 
-                        if (intent.getBooleanExtra(SchoolkidIntentConstants.IS_ADDED, false)) {
-                            val lesson = SchoolLesson(
-                                lessonTitleIntent, lessonTimeIntent, audienceNumberIntent, dayIntent
-                            )
+                    val dayIntent = helper.getSchoolkidResult(
+                        intent,
+                        adaptersList,
+                        lessonsList,
+                        editLessonTitle,
+                        editLessonTime,
+                        editAudienceNumber
+                    )
 
-                            when (dayIntent) {
-                                DaysConstants.MONDAY -> adaptersList[0].addLesson(lesson)
-                                DaysConstants.TUESDAY -> adaptersList[1].addLesson(lesson)
-                                DaysConstants.WEDNESDAY -> adaptersList[2].addLesson(lesson)
-                                DaysConstants.THURSDAY -> adaptersList[3].addLesson(lesson)
-                                DaysConstants.FRIDAY -> adaptersList[4].addLesson(lesson)
-                                DaysConstants.SATURDAY -> adaptersList[5].addLesson(lesson)
-                            }
-
-                            val addedLesson = LessonData(
-                                lessonTitleIntent, lessonTimeIntent, audienceNumberIntent, dayIntent
-                            )
-                            lessonsList.add(addedLesson)
-
-                            clearRcViewOnClose(dayIntent!!)
-                            displayOnOpen(dayIntent)
-                        } else {
-                            for (lesson in lessonsList.indices) {
-                                if (
-                                    lessonsList[lesson].lessonTitle.equals(editLessonTitle) &&
-                                    lessonsList[lesson].lessonTime.equals(editLessonTime) &&
-                                    lessonsList[lesson].audienceNumber.equals(editAudienceNumber) &&
-                                    lessonsList[lesson].day.equals(dayIntent)
-                                ) {
-                                    val editedLesson = LessonData(
-                                        lessonTitleIntent, lessonTimeIntent,
-                                        audienceNumberIntent, dayIntent
-                                    )
-                                    lessonsList[lesson] = editedLesson
-
-                                    break
-                                }
-                            }
-
-                            clearRcViewOnClose(dayIntent!!)
-                            displayOnOpen(dayIntent)
-                        }
-                    }
+                    clearRcViewOnClose(dayIntent!!)
+                    displayOnOpen(dayIntent)
                 }
         }
     }
@@ -167,59 +125,22 @@ class SchoolkidActivity : AppCompatActivity(),
     override fun onStop() {
         super.onStop()
 
-        databaseHelper.saveData(SharedPreferencesConstants.SCHOOLKID, null, lessonsList)
+        databaseHelper.saveData(
+            SharedPreferencesConstants.SCHOOLKID, null,
+            lessonsList, null
+        )
     }
 
     override fun onLayoutClick(lesson: SchoolLesson) {
-        val intent = Intent(
-            this@SchoolkidActivity, EditLessonInfoActivity::class.java
-        )
-        intent.putExtra(SchoolkidIntentConstants.LESSON_TITLE, lesson.lessonTitle)
-        intent.putExtra(SchoolkidIntentConstants.LESSON_TIME, lesson.lessonTime)
-        intent.putExtra(SchoolkidIntentConstants.AUDIENCE_NUMBER, lesson.audienceNumber)
-        intent.putExtra(SchoolkidIntentConstants.WHAT_DAY, lesson.day)
-        intent.putExtra(SchoolkidIntentConstants.IS_EDIT, true)
-
         editLessonTitle = lesson.lessonTitle.toString()
         editLessonTime = lesson.lessonTitle.toString()
         editAudienceNumber = lesson.audienceNumber.toString()
 
-        editLessonInfoLauncher.launch(intent)
+        helper.startEdit(false, editLessonInfoLauncher, null, lesson)
     }
 
     override fun onTrashCanClick(lesson: SchoolLesson) {
-        when (lesson.day) {
-            DaysConstants.MONDAY -> adaptersList[0].removeLessonByData(
-                lesson.lessonTitle, lesson.lessonTime, lesson.audienceNumber
-            )
-            DaysConstants.TUESDAY -> adaptersList[1].removeLessonByData(
-                lesson.lessonTitle, lesson.lessonTime, lesson.audienceNumber
-            )
-            DaysConstants.WEDNESDAY -> adaptersList[2].removeLessonByData(
-                lesson.lessonTitle, lesson.lessonTime, lesson.audienceNumber
-            )
-            DaysConstants.THURSDAY -> adaptersList[3].removeLessonByData(
-                lesson.lessonTitle, lesson.lessonTime, lesson.audienceNumber
-            )
-            DaysConstants.FRIDAY -> adaptersList[4].removeLessonByData(
-                lesson.lessonTitle, lesson.lessonTime, lesson.audienceNumber
-            )
-            DaysConstants.SATURDAY -> adaptersList[5].removeLessonByData(
-                lesson.lessonTitle, lesson.lessonTime, lesson.audienceNumber
-            )
-        }
-
-        for (item in lessonsList.indices) {
-            if (
-                lessonsList[item].lessonTitle.equals(lesson.lessonTitle) &&
-                lessonsList[item].lessonTime.equals(lesson.lessonTime) &&
-                lessonsList[item].audienceNumber.equals(lesson.audienceNumber) &&
-                lessonsList[item].day.equals(lesson.day)
-            ) {
-                lessonsList.removeAt(item)
-                break
-            }
-        }
+        helper.deleteLesson(adaptersList, lesson, lessonsList)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -35,16 +35,25 @@ class DatabaseHelperClass(private val db: DatabaseManager) {
     fun saveData(
         whoSave: String,
         studentData: MutableList<CoupleData>?,
-        schoolkidData: MutableList<LessonData>?
+        schoolkidData: MutableList<LessonData>?,
+        coachData: MutableList<StudentData>?
     ) {
-        if (whoSave == SharedPreferencesConstants.STUDENT) {
-            db.open()
-            db.repopulateStudent(studentData)
-            db.close()
-        } else {
-            db.open()
-            db.repopulateSchoolkid(schoolkidData)
-            db.close()
+        when (whoSave) {
+            SharedPreferencesConstants.STUDENT -> {
+                db.open()
+                db.repopulateStudent(studentData)
+                db.close()
+            }
+            SharedPreferencesConstants.SCHOOLKID -> {
+                db.open()
+                db.repopulateSchoolkid(schoolkidData)
+                db.close()
+            }
+            SharedPreferencesConstants.COACH -> {
+                db.open()
+                db.repopulateCoach(coachData)
+                db.close()
+            }
         }
     }
 

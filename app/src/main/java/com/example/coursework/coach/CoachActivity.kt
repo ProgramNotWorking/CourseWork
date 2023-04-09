@@ -20,7 +20,10 @@ import com.example.coursework.constants.CoachIntentConstants
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SharedPreferencesConstants
 import com.example.coursework.databinding.ActivityCoachBinding
+import com.example.coursework.db.DatabaseHelper
 import com.example.coursework.db.DatabaseManager
+import com.example.coursework.helpers.DatabaseHelperClass
+import com.example.coursework.helpers.StudentsHelper
 import java.time.LocalTime
 
 class CoachActivity : AppCompatActivity(),
@@ -32,6 +35,7 @@ class CoachActivity : AppCompatActivity(),
 
     private lateinit var editStudentInfoLauncher: ActivityResultLauncher<Intent>
     private val db = DatabaseManager(this)
+    private val databaseHelper = DatabaseHelperClass(db)
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
@@ -40,6 +44,8 @@ class CoachActivity : AppCompatActivity(),
     private lateinit var studentsList: MutableList<StudentData>
     private var editStudentName = "Stub"
     private var editLessonTime = "Stub"
+
+    private val helper = StudentsHelper(this@CoachActivity)
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("ClickableViewAccessibility")
@@ -58,9 +64,7 @@ class CoachActivity : AppCompatActivity(),
         )
         setDayText()
 
-        db.open()
-        studentsList = db.readCoach()
-        db.close()
+        studentsList = databaseHelper.getCoachData()
 
         displayLessons(true)
 
@@ -83,7 +87,10 @@ class CoachActivity : AppCompatActivity(),
             bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.options -> {
-                        saveData()
+                        databaseHelper.saveData(
+                            SharedPreferencesConstants.COACH, null,
+                            null, studentsList
+                        )
 
                         val intent = Intent(
                             this@CoachActivity, OptionsActivity::class.java
@@ -110,43 +117,33 @@ class CoachActivity : AppCompatActivity(),
 
             editStudentInfoLauncher =
                 registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                        result: ActivityResult ->
-                    if (result.resultCode == RESULT_OK) {
-                        intent = result.data
+                    result: ActivityResult ->
 
-                        val studentName = intent.getStringExtra(CoachIntentConstants.STUDENT_NAME)
-                        val lessonTime = intent.getStringExtra(CoachIntentConstants.LESSON_TIME)
+                    intent = result.data
 
-                        if (intent.getBooleanExtra(CoachIntentConstants.IS_ADDED, false)) {
-                            val student = StudentData(studentName, lessonTime, getDay())
-                            studentsList.add(student)
+                    helper.getCoachResult(
+                        intent,
+                        getDay(),
+                        studentsList,
+                        editStudentName,
+                        editLessonTime
+                    )
 
-                            displayLessons(false)
-                        } else {
-                            val editStudent = StudentData(
-                                studentName, lessonTime, getDay()
-                            )
-                            for (student in studentsList.indices) {
-                                if (
-                                    studentsList[student].name.equals(editStudentName) &&
-                                    studentsList[student].time.equals(editLessonTime) &&
-                                    studentsList[student].day.equals(getDay())
-                                ) {
-                                    studentsList[student] = editStudent
-                                    break
-                                }
-                            }
-
-                            displayLessons(false)
-                        }
-                    }
+                    displayLessons(false)
                 }
         }
     }
 
     override fun onStop() {
         super.onStop()
-        saveData()
+
+        databaseHelper.saveData(
+            SharedPreferencesConstants.COACH, null,
+            null, studentsList
+        )
+
+        editor.putInt(SharedPreferencesConstants.COACH_WHAT_DAY, whatDayIndex)
+        editor.apply()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -286,14 +283,5 @@ class CoachActivity : AppCompatActivity(),
             5 -> DaysConstants.SATURDAY
             else -> "NONE"
         }
-    }
-
-    private fun saveData() {
-        editor.putInt(SharedPreferencesConstants.COACH_WHAT_DAY, whatDayIndex)
-        editor.apply()
-
-        db.open()
-        db.repopulateCoach(studentsList)
-        db.close()
     }
 }

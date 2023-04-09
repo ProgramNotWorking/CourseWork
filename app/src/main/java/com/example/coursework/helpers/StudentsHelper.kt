@@ -3,6 +3,8 @@ package com.example.coursework.helpers
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
+import com.example.coursework.coach.StudentData
+import com.example.coursework.constants.CoachIntentConstants
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SchoolkidIntentConstants
 import com.example.coursework.constants.StudentIntentConstants
@@ -90,7 +92,7 @@ class StudentsHelper(val context: Context) {
     fun deleteLesson(
         adaptersList: ArrayList<SchoolAdapter>,
         lesson: SchoolLesson,
-        lessonsList: ArrayList<LessonData>
+        lessonsList: MutableList<LessonData>
     ) {
         when (lesson.day) {
             DaysConstants.MONDAY -> adaptersList[0].removeLessonByData(
@@ -177,6 +179,89 @@ class StudentsHelper(val context: Context) {
         }
 
         return dayIntent
+    }
+
+    fun getSchoolkidResult(
+        intent: Intent,
+        adaptersList: ArrayList<SchoolAdapter>,
+        lessonsList: MutableList<LessonData>,
+        editLessonTitle: String,
+        editLessonTime: String,
+        editAudienceNumber: String
+    ): String? {
+        val lessonTitleIntent = intent.getStringExtra(SchoolkidIntentConstants.LESSON_TITLE)
+        val lessonTimeIntent = intent.getStringExtra(SchoolkidIntentConstants.LESSON_TIME)
+        val audienceNumberIntent = intent.getStringExtra(SchoolkidIntentConstants.AUDIENCE_NUMBER)
+        val dayIntent = intent.getStringExtra(SchoolkidIntentConstants.WHAT_DAY)
+
+        if (intent.getBooleanExtra(SchoolkidIntentConstants.IS_ADDED, false)) {
+            val lesson = SchoolLesson(
+                lessonTitleIntent, lessonTimeIntent, audienceNumberIntent, dayIntent
+            )
+
+            when (dayIntent) {
+                DaysConstants.MONDAY -> adaptersList[0].addLesson(lesson)
+                DaysConstants.TUESDAY -> adaptersList[1].addLesson(lesson)
+                DaysConstants.WEDNESDAY -> adaptersList[2].addLesson(lesson)
+                DaysConstants.THURSDAY -> adaptersList[3].addLesson(lesson)
+                DaysConstants.FRIDAY -> adaptersList[4].addLesson(lesson)
+                DaysConstants.SATURDAY -> adaptersList[5].addLesson(lesson)
+            }
+
+            val addedLesson = LessonData(
+                lessonTitleIntent, lessonTimeIntent, audienceNumberIntent, dayIntent
+            )
+            lessonsList.add(addedLesson)
+        } else {
+            for (lesson in lessonsList.indices) {
+                if (
+                    lessonsList[lesson].lessonTitle.equals(editLessonTitle) &&
+                    lessonsList[lesson].lessonTime.equals(editLessonTime) &&
+                    lessonsList[lesson].audienceNumber.equals(editAudienceNumber) &&
+                    lessonsList[lesson].day.equals(dayIntent)
+                ) {
+                    val editedLesson = LessonData(
+                        lessonTitleIntent, lessonTimeIntent,
+                        audienceNumberIntent, dayIntent
+                    )
+                    lessonsList[lesson] = editedLesson
+
+                    break
+                }
+            }
+        }
+
+        return dayIntent
+    }
+
+    fun getCoachResult(
+        intent: Intent,
+        day: String,
+        studentsList: MutableList<StudentData>,
+        editStudentName: String,
+        editLessonTime: String,
+    ) {
+        val studentName = intent.getStringExtra(CoachIntentConstants.STUDENT_NAME)
+        val lessonTime = intent.getStringExtra(CoachIntentConstants.LESSON_TIME)
+
+        if (intent.getBooleanExtra(CoachIntentConstants.IS_ADDED, false)) {
+            val student = StudentData(studentName, lessonTime, day)
+            studentsList.add(student)
+        } else {
+            val editStudent = StudentData(
+                studentName, lessonTime, day
+            )
+            for (student in studentsList.indices) {
+                if (
+                    studentsList[student].name.equals(editStudentName) &&
+                    studentsList[student].time.equals(editLessonTime) &&
+                    studentsList[student].day.equals(day)
+                ) {
+                    studentsList[student] = editStudent
+                    break
+                }
+            }
+        }
     }
 
 }
