@@ -7,12 +7,10 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.*
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.view.iterator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.*
@@ -21,6 +19,8 @@ import com.example.coursework.constants.SchoolkidIntentConstants
 import com.example.coursework.constants.SharedPreferencesConstants
 import com.example.coursework.databinding.ActivitySchoolkidBinding
 import com.example.coursework.db.DatabaseManager
+import com.example.coursework.helpers.AnimationsHelperClass
+import com.example.coursework.helpers.DatabaseHelperClass
 import java.time.LocalTime
 
 class SchoolkidActivity : AppCompatActivity(),

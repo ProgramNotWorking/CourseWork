@@ -19,6 +19,9 @@ import com.example.coursework.constants.SharedPreferencesConstants
 import com.example.coursework.constants.StudentIntentConstants
 import com.example.coursework.databinding.ActivityStudentBinding
 import com.example.coursework.db.DatabaseManager
+import com.example.coursework.helpers.AnimationsHelperClass
+import com.example.coursework.helpers.DatabaseHelperClass
+import com.example.coursework.helpers.StudentsHelper
 import java.time.LocalTime
 
 class StudentActivity : AppCompatActivity(),
@@ -30,6 +33,7 @@ class StudentActivity : AppCompatActivity(),
 
     private val db = DatabaseManager(this)
     private val databaseHelper = DatabaseHelperClass(db)
+
     private lateinit var editCoupleInfoLauncher: ActivityResultLauncher<Intent>
 
     private val adaptersList = convertAdaptersIntoList()
@@ -49,6 +53,8 @@ class StudentActivity : AppCompatActivity(),
 
     private val addButtonAnimationSet = AnimationSet(true)
     private val addButtonOutAnimationSet = AnimationSet(true)
+
+    private val helper = StudentsHelper(this@StudentActivity)
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,58 +104,20 @@ class StudentActivity : AppCompatActivity(),
             editCoupleInfoLauncher =
                 registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                     result: ActivityResult ->
-                    if (result.resultCode == RESULT_OK) {
-                        intent = result.data
 
-                        val coupleTitleIntent = intent.getStringExtra(StudentIntentConstants.COUPLE_TITLE)
-                        val coupleTimeIntent = intent.getStringExtra(StudentIntentConstants.COUPLE_TIME)
-                        val audienceNumberIntent = intent.getStringExtra(StudentIntentConstants.AUDIENCE_NUMBER)
-                        val dayIntent = intent.getStringExtra(StudentIntentConstants.WHAT_DAY)
+                    intent = result.data
 
-                        if (intent.getBooleanExtra(StudentIntentConstants.IS_ADDED, false)) {
-                            val couple = Couple(
-                                coupleTitleIntent, coupleTimeIntent, audienceNumberIntent, dayIntent
-                            )
+                    val dayIntent = helper.getStudentResult(
+                        intent,
+                        adaptersList,
+                        couplesList,
+                        editCoupleTitle,
+                        editCoupleTime,
+                        editAudienceNumber
+                    )
 
-                            when (dayIntent) {
-                                DaysConstants.MONDAY -> adaptersList[0].addCouple(couple)
-                                DaysConstants.TUESDAY -> adaptersList[1].addCouple(couple)
-                                DaysConstants.WEDNESDAY -> adaptersList[2].addCouple(couple)
-                                DaysConstants.THURSDAY -> adaptersList[3].addCouple(couple)
-                                DaysConstants.FRIDAY -> adaptersList[4].addCouple(couple)
-                                DaysConstants.SATURDAY -> adaptersList[5].addCouple(couple)
-                            }
-
-                            val addedCouple = CoupleData(
-                                coupleTitleIntent, coupleTimeIntent, audienceNumberIntent, dayIntent
-                            )
-                            couplesList.add(addedCouple)
-
-                            clearRcViewOnClose(dayIntent!!)
-                            displayOnOpen(dayIntent)
-                        } else {
-                            for (couple in couplesList.indices) {
-                                if (
-                                    couplesList[couple].coupleTitle.equals(editCoupleTitle) &&
-                                    couplesList[couple].coupleTime.equals(editCoupleTime) &&
-                                    couplesList[couple].audienceNumber.equals(editAudienceNumber) &&
-                                    couplesList[couple].day.equals(dayIntent)
-                                ) {
-                                    val editedCouple = CoupleData(
-                                        coupleTitleIntent, coupleTimeIntent,
-                                        audienceNumberIntent, dayIntent
-                                    )
-                                    couplesList[couple] = editedCouple
-
-                                    break
-                                }
-                            }
-
-                            clearRcViewOnClose(dayIntent!!)
-                            displayOnOpen(dayIntent)
-                        }
-                    }
-
+                    clearRcViewOnClose(dayIntent!!)
+                    displayOnOpen(dayIntent)
                 }
         }
     }
@@ -161,55 +129,17 @@ class StudentActivity : AppCompatActivity(),
     }
 
     override fun onLayoutClick(couple: Couple) {
-        val intent = Intent(
-            this@StudentActivity, EditCoupleInfoActivity::class.java
-        )
-        intent.putExtra(StudentIntentConstants.COUPLE_TITLE, couple.coupleTitle)
-        intent.putExtra(StudentIntentConstants.COUPLE_TIME, couple.coupleTime)
-        intent.putExtra(StudentIntentConstants.AUDIENCE_NUMBER, couple.audienceNumber)
-        intent.putExtra(StudentIntentConstants.WHAT_DAY, couple.day)
-        intent.putExtra(StudentIntentConstants.IS_EDIT, true)
-
         editCoupleTitle = couple.coupleTitle.toString()
         editCoupleTime = couple.coupleTime.toString()
         editAudienceNumber = couple.audienceNumber.toString()
 
-        editCoupleInfoLauncher.launch(intent)
+        helper.startEdit(
+            true, editCoupleInfoLauncher, couple, null
+        )
     }
 
     override fun onTrashCanClick(couple: Couple) {
-        when (couple.day) {
-            DaysConstants.MONDAY -> adaptersList[0].removeCoupleByData(
-                couple.coupleTitle, couple.coupleTime, couple.audienceNumber
-            )
-            DaysConstants.TUESDAY -> adaptersList[1].removeCoupleByData(
-                couple.coupleTitle, couple.coupleTime, couple.audienceNumber
-            )
-            DaysConstants.WEDNESDAY -> adaptersList[2].removeCoupleByData(
-                couple.coupleTitle, couple.coupleTime, couple.audienceNumber
-            )
-            DaysConstants.THURSDAY -> adaptersList[3].removeCoupleByData(
-                couple.coupleTitle, couple.coupleTime, couple.audienceNumber
-            )
-            DaysConstants.FRIDAY -> adaptersList[4].removeCoupleByData(
-                couple.coupleTitle, couple.coupleTime, couple.audienceNumber
-            )
-            DaysConstants.SATURDAY -> adaptersList[5].removeCoupleByData(
-                couple.coupleTitle, couple.coupleTime, couple.audienceNumber
-            )
-        }
-
-        for (item in couplesList.indices) {
-            if (
-                couplesList[item].coupleTitle.equals(couple.coupleTitle) &&
-                couplesList[item].coupleTime.equals(couple.coupleTime) &&
-                couplesList[item].audienceNumber.equals(couple.audienceNumber) &&
-                couplesList[item].day.equals(couple.day)
-            ) {
-                couplesList.removeAt(item)
-                break
-            }
-        }
+        helper.deleteCouple(adaptersList, couple, couplesList)
     }
 
     private fun convertAdaptersIntoList(): ArrayList<CoupleAdapter> {

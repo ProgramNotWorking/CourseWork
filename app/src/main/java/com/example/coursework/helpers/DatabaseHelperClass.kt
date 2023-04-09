@@ -1,12 +1,20 @@
-package com.example.coursework
+package com.example.coursework.helpers
 
-import android.content.Context
+import com.example.coursework.coach.StudentData
 import com.example.coursework.constants.SharedPreferencesConstants
 import com.example.coursework.db.DatabaseManager
 import com.example.coursework.schoolkid.LessonData
 import com.example.coursework.student.CoupleData
 
 class DatabaseHelperClass(private val db: DatabaseManager) {
+
+    fun getCoachData(): MutableList<StudentData> {
+        db.open()
+        val dataList = db.readCoach()
+        db.close()
+
+        return dataList
+    }
 
     fun getStudentData(): MutableList<CoupleData> {
         db.open()

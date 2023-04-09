@@ -1,4 +1,4 @@
-package com.example.coursework
+package com.example.coursework.helpers
 
 import android.content.Context
 import android.view.animation.AlphaAnimation
@@ -7,6 +7,8 @@ import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
 import android.view.animation.RotateAnimation
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.coursework.OnAnimationsDataReceivedListener
+import com.example.coursework.R
 
 class AnimationsHelperClass(val context: Context) {
     private var onAnimationsDataReceivedListener: OnAnimationsDataReceivedListener? = null
