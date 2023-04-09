@@ -4,34 +4,32 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.*
 import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.view.iterator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.coursework.OptionsActivity
-import com.example.coursework.R
+import com.example.coursework.*
 import com.example.coursework.constants.DaysConstants
+import com.example.coursework.constants.SharedPreferencesConstants
 import com.example.coursework.constants.StudentIntentConstants
 import com.example.coursework.databinding.ActivityStudentBinding
 import com.example.coursework.db.DatabaseManager
 import java.time.LocalTime
 
 class StudentActivity : AppCompatActivity(),
-    CoupleAdapter.OnLayoutClickListener, CoupleAdapter.OnTrashCanClickListener {
+    CoupleAdapter.OnLayoutClickListener, CoupleAdapter.OnTrashCanClickListener,
+    OnAnimationsDataReceivedListener {
     private lateinit var binding: ActivityStudentBinding
 
     private lateinit var couplesList: MutableList<CoupleData>
 
     private val db = DatabaseManager(this)
+    private val databaseHelper = DatabaseHelperClass(db)
     private lateinit var editCoupleInfoLauncher: ActivityResultLauncher<Intent>
 
     private val adaptersList = convertAdaptersIntoList()
@@ -58,7 +56,7 @@ class StudentActivity : AppCompatActivity(),
         binding = ActivityStudentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        animationsInit()
+        openAnimationHelperClass()
 
         addButtonAnimationSet.addAnimation(alphaInAnimation)
         addButtonAnimationSet.addAnimation(addButtonRotateAnimation)
@@ -67,7 +65,7 @@ class StudentActivity : AppCompatActivity(),
         addButtonOutAnimationSet.addAnimation(addButtonRotationOutAnimation)
 
         rcViewsList = getRcViewsList()
-        couplesList = getData()
+        couplesList = databaseHelper.getStudentData()
 
         binding.apply {
             connectAdaptersToRcViews()
@@ -75,7 +73,7 @@ class StudentActivity : AppCompatActivity(),
             bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.options -> {
-                        saveData()
+                        databaseHelper.saveData(SharedPreferencesConstants.STUDENT, couplesList, null)
 
                         val intent = Intent(
                             this@StudentActivity, OptionsActivity::class.java
@@ -86,13 +84,9 @@ class StudentActivity : AppCompatActivity(),
                         finish()
                     }
                     R.id.all_days -> {
-                        saveData()
+                        databaseHelper.saveData(SharedPreferencesConstants.STUDENT, couplesList, null)
 
                         // TODO: YEAH
-
-                        Toast.makeText(
-                            this@StudentActivity, "SUS?", Toast.LENGTH_SHORT
-                        ).show()
                     }
                 }
 
@@ -163,21 +157,7 @@ class StudentActivity : AppCompatActivity(),
     override fun onStop() {
         super.onStop()
 
-        saveData()
-    }
-
-    private fun saveData() {
-        db.open()
-        db.repopulateStudent(couplesList)
-        db.close()
-    }
-
-    private fun getData(): MutableList<CoupleData> {
-        db.open()
-        val data = db.readStudent()
-        db.close()
-
-        return data
+        databaseHelper.saveData(SharedPreferencesConstants.STUDENT, couplesList, null)
     }
 
     override fun onLayoutClick(couple: Couple) {
@@ -437,69 +417,34 @@ class StudentActivity : AppCompatActivity(),
         editCoupleInfoLauncher.launch(intent)
     }
 
-    private fun animationsInit() {
-        animationController = AnimationUtils.loadLayoutAnimation(
-            this@StudentActivity, R.anim.recycler_view_fall_down_animation
-        )
-        binding.apply {
-            mondayHeader.layoutAnimation = animationController
-            tuesdayHeader.layoutAnimation = animationController
-            wednesdayHeader.layoutAnimation = animationController
-            thursdayHeader.layoutAnimation = animationController
-            fridayHeader.layoutAnimation = animationController
-            saturdayHeader.layoutAnimation = animationController
+    private fun openAnimationHelperClass() {
+        val animationsHelperClass = AnimationsHelperClass(this@StudentActivity)
+        animationsHelperClass.setAnimationsDataReceivedListener(this@StudentActivity)
 
-            mondayHeader.scheduleLayoutAnimation()
-            tuesdayHeader.scheduleLayoutAnimation()
-            wednesdayHeader.scheduleLayoutAnimation()
-            thursdayHeader.scheduleLayoutAnimation()
-            fridayHeader.scheduleLayoutAnimation()
-            saturdayHeader.scheduleLayoutAnimation()
-        }
+        animationsHelperClass.headersAnimationInit(headersList = arrayListOf(
+            binding.mondayHeader, binding.tuesdayHeader, binding.wednesdayHeader,
+            binding.thursdayHeader, binding.fridayHeader, binding.saturdayHeader
+        ))
+    }
 
-        rotateAnimation = RotateAnimation(
-            180f,
-            0f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f
-        )
-        rotateAnimation.duration = 500
+    override fun rotateInit(
+        rotate: RotateAnimation,
+        rotateBack: RotateAnimation,
+        addButtonRotate: RotateAnimation,
+        addButtonBackRotation: RotateAnimation
+    ) {
+        rotateAnimation = rotate
+        rotateBackAnimation = rotateBack
+        addButtonRotateAnimation = addButtonRotate
+        addButtonRotationOutAnimation = addButtonBackRotation
+    }
 
-        rotateBackAnimation = RotateAnimation(
-            -180f,
-            0f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f
-        )
-        rotateBackAnimation.duration = 500
+    override fun alphaInit(alphaIn: AlphaAnimation, alphaOut: AlphaAnimation) {
+        alphaInAnimation = alphaIn
+        alphaOutAnimations = alphaOut
+    }
 
-        addButtonRotateAnimation = RotateAnimation(
-            90f,
-            0f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f
-        )
-        addButtonRotateAnimation.duration = 500
-
-        addButtonRotationOutAnimation = RotateAnimation(
-            0f,
-            90f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f
-        )
-        addButtonRotationOutAnimation.duration = 500
-
-        alphaInAnimation = AlphaAnimation(0f, 1f)
-        alphaInAnimation.duration = 500
-        alphaOutAnimations = AlphaAnimation(1f, 0f)
-        alphaOutAnimations.duration = 500
+    override fun layoutAnimationInit(controller: LayoutAnimationController) {
+        animationController = controller
     }
 }

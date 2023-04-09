@@ -15,10 +15,12 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.iterator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.coursework.DatabaseHelperClass
 import com.example.coursework.OptionsActivity
 import com.example.coursework.R
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SchoolkidIntentConstants
+import com.example.coursework.constants.SharedPreferencesConstants
 import com.example.coursework.databinding.ActivitySchoolkidBinding
 import com.example.coursework.db.DatabaseManager
 import java.time.LocalTime
@@ -35,6 +37,7 @@ class SchoolkidActivity : AppCompatActivity(),
     private lateinit var rcViewsList: ArrayList<RecyclerView>
 
     private val db = DatabaseManager(this)
+    private val databaseHelper = DatabaseHelperClass(db)
 
     private var editLessonTitle = "STUB!"
     private var editLessonTime = "STUB!"
@@ -66,7 +69,7 @@ class SchoolkidActivity : AppCompatActivity(),
         addButtonOutAnimationSet.addAnimation(addButtonRotationOutAnimation)
 
         rcViewsList = getRcViewsList()
-        lessonsList = getData()
+        lessonsList = databaseHelper.getSchoolkidData()
 
         binding.apply {
             connectAdapterToRcViews()
@@ -74,7 +77,7 @@ class SchoolkidActivity : AppCompatActivity(),
             bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.options -> {
-                        saveData()
+                        databaseHelper.saveData(SharedPreferencesConstants.SCHOOLKID, null, lessonsList)
 
                         val intent = Intent(
                             this@SchoolkidActivity, OptionsActivity::class.java
@@ -85,7 +88,7 @@ class SchoolkidActivity : AppCompatActivity(),
                         finish()
                     }
                     R.id.all_days -> {
-                        saveData()
+                        databaseHelper.saveData(SharedPreferencesConstants.SCHOOLKID, null, lessonsList)
 
                         // YEAH YEAH YEAH YEAH YEAH YEAH YEAH
                     }
@@ -165,7 +168,7 @@ class SchoolkidActivity : AppCompatActivity(),
     override fun onStop() {
         super.onStop()
 
-        saveData()
+        databaseHelper.saveData(SharedPreferencesConstants.SCHOOLKID, null, lessonsList)
     }
 
     override fun onLayoutClick(lesson: SchoolLesson) {
@@ -483,19 +486,5 @@ class SchoolkidActivity : AppCompatActivity(),
             saturdayRcView.layoutManager = GridLayoutManager(this@SchoolkidActivity, 1)
             saturdayRcView.adapter = adaptersList[5]
         }
-    }
-
-    private fun saveData() {
-        db.open()
-        db.repopulateSchoolkid(lessonsList)
-        db.close()
-    }
-
-    private fun getData(): MutableList<LessonData> {
-        db.open()
-        val dataList = db.readSchoolkid()
-        db.close()
-
-        return dataList
     }
 }
