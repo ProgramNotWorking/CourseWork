@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".alldays.AllDaysActivity">
+
+    <LinearLayout
+        android:id="@+id/mainSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/daysSeparator"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:background="@color/black"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/mondayTextViewLeft"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.16"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:text="@string/monday_reduction"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tuesdayTextViewLeft"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.16"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:text="@string/tuesday_reduction"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/wednesdayTextViewLeft"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.16"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:text="@string/wednesday_reduction"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/thursdayTextViewLeft"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.16"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:text="@string/thursday_reduction"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/fridayTextViewLeft"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.16"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:text="@string/friday_reduction"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/saturdayTextViewLeft"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.16"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:text="@string/saturday_reduction"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            tools:ignore="SpeakableTextPresentCheck">
+
+            <LinearLayout
+                android:id="@+id/tableSeparator"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mondayDaysRcView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.16" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tuesdayDaysRcView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.16" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/wednesdayDaysRcView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.16" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/thursdayDaysRcView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.16" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fridayDaysRcView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.16" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/saturdayDaysRcView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.16" />
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

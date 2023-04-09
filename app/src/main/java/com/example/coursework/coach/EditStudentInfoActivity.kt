@@ -40,11 +40,7 @@ class EditStudentInfoActivity : AppCompatActivity() {
 
         binding.apply {
             backButton.setOnClickListener {
-                val intent = Intent(
-                    this@EditStudentInfoActivity, CoachActivity::class.java
-                )
-                setResult(RESULT_CANCELED, intent)
-                finish()
+                goBack()
             }
 
             enterTimeButton.setOnClickListener {
@@ -95,6 +91,16 @@ class EditStudentInfoActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        goBack()
+    }
+
+    private fun goBack() {
+        setResult(RESULT_CANCELED)
+        finish()
     }
 
     @SuppressLint("ClickableViewAccessibility")

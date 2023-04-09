@@ -14,6 +14,8 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.*
+import com.example.coursework.alldays.AllDaysActivity
+import com.example.coursework.constants.AllDaysConstants
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SharedPreferencesConstants
 import com.example.coursework.constants.StudentIntentConstants
@@ -93,7 +95,28 @@ class StudentActivity : AppCompatActivity(),
                         finish()
                     }
                     R.id.all_days -> {
-                        // TODO: YEAH
+                        val intent = Intent(
+                            this@StudentActivity, AllDaysActivity::class.java
+                        )
+
+                        val titlesList = ArrayList<String>()
+                        val timesList = ArrayList<String>()
+                        val audiencesList = ArrayList<String>()
+                        val daysList = ArrayList<String>()
+
+                        for (couple in couplesList) {
+                            couple.coupleTitle?.let { it1 -> titlesList.add(it1) }
+                            couple.coupleTime?.let { it2 -> timesList.add(it2) }
+                            couple.audienceNumber?.let { it3 -> audiencesList.add(it3) }
+                            couple.day?.let { it4 -> daysList.add(it4) }
+                        }
+
+                        intent.putExtra(AllDaysConstants.TITLE, titlesList)
+                        intent.putExtra(AllDaysConstants.TIME, timesList)
+                        intent.putExtra(AllDaysConstants.AUDIENCE, audiencesList)
+                        intent.putExtra(AllDaysConstants.DAY, daysList)
+
+                        startActivity(intent)
                     }
                 }
 
@@ -108,17 +131,19 @@ class StudentActivity : AppCompatActivity(),
 
                     intent = result.data
 
-                    val dayIntent = helper.getStudentResult(
-                        intent,
-                        adaptersList,
-                        couplesList,
-                        editCoupleTitle,
-                        editCoupleTime,
-                        editAudienceNumber
-                    )
+                    if (result.resultCode == RESULT_OK) {
+                        val dayIntent = helper.getStudentResult(
+                            intent,
+                            adaptersList,
+                            couplesList,
+                            editCoupleTitle,
+                            editCoupleTime,
+                            editAudienceNumber
+                        )
 
-                    clearRcViewOnClose(dayIntent!!)
-                    displayOnOpen(dayIntent)
+                        clearRcViewOnClose(dayIntent!!)
+                        displayOnOpen(dayIntent)
+                    }
                 }
         }
     }
