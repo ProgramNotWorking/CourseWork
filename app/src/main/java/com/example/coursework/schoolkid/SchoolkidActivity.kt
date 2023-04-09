@@ -14,6 +14,8 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.*
+import com.example.coursework.alldays.AllDaysActivity
+import com.example.coursework.constants.AllDaysConstants
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SchoolkidIntentConstants
 import com.example.coursework.constants.SharedPreferencesConstants
@@ -93,7 +95,33 @@ class SchoolkidActivity : AppCompatActivity(),
                         finish()
                     }
                     R.id.all_days -> {
-                        // YEAH YEAH YEAH YEAH YEAH YEAH YEAH
+                        databaseHelper.saveData(
+                            SharedPreferencesConstants.SCHOOLKID, null,
+                            lessonsList, null
+                        )
+
+                        val intent = Intent(
+                            this@SchoolkidActivity, AllDaysActivity::class.java
+                        )
+
+                        val titlesList = ArrayList<String>()
+                        val timesList = ArrayList<String>()
+                        val audiencesList = ArrayList<String>()
+                        val daysList = ArrayList<String>()
+
+                        for (lesson in lessonsList) {
+                            lesson.lessonTitle?.let { it1 -> titlesList.add(it1) }
+                            lesson.lessonTime?.let { it2 -> timesList.add(it2) }
+                            lesson.audienceNumber?.let { it3 -> audiencesList.add(it3) }
+                            lesson.day?.let { it4 -> daysList.add(it4) }
+                        }
+
+                        intent.putExtra(AllDaysConstants.TITLE, titlesList)
+                        intent.putExtra(AllDaysConstants.TIME, timesList)
+                        intent.putExtra(AllDaysConstants.AUDIENCE, audiencesList)
+                        intent.putExtra(AllDaysConstants.DAY, daysList)
+
+                        startActivity(intent)
                     }
                 }
 
@@ -107,17 +135,19 @@ class SchoolkidActivity : AppCompatActivity(),
 
                     intent = result.data
 
-                    val dayIntent = helper.getSchoolkidResult(
-                        intent,
-                        adaptersList,
-                        lessonsList,
-                        editLessonTitle,
-                        editLessonTime,
-                        editAudienceNumber
-                    )
+                    if (result.resultCode == RESULT_OK) {
+                        val dayIntent = helper.getSchoolkidResult(
+                            intent,
+                            adaptersList,
+                            lessonsList,
+                            editLessonTitle,
+                            editLessonTime,
+                            editAudienceNumber
+                        )
 
-                    clearRcViewOnClose(dayIntent!!)
-                    displayOnOpen(dayIntent)
+                        clearRcViewOnClose(dayIntent!!)
+                        displayOnOpen(dayIntent)
+                    }
                 }
         }
     }
@@ -136,7 +166,9 @@ class SchoolkidActivity : AppCompatActivity(),
         editLessonTime = lesson.lessonTitle.toString()
         editAudienceNumber = lesson.audienceNumber.toString()
 
-        helper.startEdit(false, editLessonInfoLauncher, null, lesson)
+        helper.startEdit(
+            false, editLessonInfoLauncher, null, lesson
+        )
     }
 
     override fun onTrashCanClick(lesson: SchoolLesson) {

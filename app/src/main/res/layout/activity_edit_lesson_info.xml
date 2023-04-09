@@ -50,7 +50,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
-        android:id="@+id/coupleTitleEditTextField"
+        android:id="@+id/lessonTitleEditTextField"
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_marginStart="10dp"
@@ -69,7 +69,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
     <EditText
-        android:id="@+id/audienceNumberEditTextField"
+        android:id="@+id/lessonAudienceNumberEditTextField"
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_marginTop="20dp"
@@ -109,9 +109,9 @@
         android:paddingBottom="10dp"
         android:text="@string/enter_time"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/coupleTitleEditTextField"
-        app:layout_constraintStart_toStartOf="@+id/coupleTitleEditTextField"
-        app:layout_constraintTop_toBottomOf="@+id/coupleTitleEditTextField" />
+        app:layout_constraintEnd_toEndOf="@+id/lessonTitleEditTextField"
+        app:layout_constraintStart_toStartOf="@+id/lessonTitleEditTextField"
+        app:layout_constraintTop_toBottomOf="@+id/lessonTitleEditTextField" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

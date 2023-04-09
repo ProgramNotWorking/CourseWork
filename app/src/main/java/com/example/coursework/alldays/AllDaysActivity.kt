@@ -33,7 +33,7 @@ class AllDaysActivity : AppCompatActivity() {
 
         titlesList = intent?.getStringArrayListExtra(AllDaysConstants.TITLE) as ArrayList<String>
         timesList = intent?.getStringArrayListExtra(AllDaysConstants.TIME) as ArrayList<String>
-        audiencesList = intent?.getStringArrayListExtra(AllDaysConstants.AUDIENCE) as ArrayList<String>
+        audiencesList = intent?.getStringArrayListExtra(AllDaysConstants.AUDIENCE)
         daysList = intent?.getStringArrayListExtra(AllDaysConstants.DAY) as ArrayList<String>
 
         rcViewsList = helper.getRcViewsList()

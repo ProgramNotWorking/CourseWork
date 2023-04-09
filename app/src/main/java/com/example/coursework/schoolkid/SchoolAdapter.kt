@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
-import com.example.coursework.coach.LessonAdapter
 import com.example.coursework.databinding.CoupleStudentItemBinding
-import com.example.coursework.student.CoupleAdapter
 
 class SchoolAdapter(
     private val onLayoutClickListener: OnLayoutClickListener,

@@ -16,6 +16,8 @@ import androidx.core.view.size
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coursework.OptionsActivity
 import com.example.coursework.R
+import com.example.coursework.alldays.AllDaysActivity
+import com.example.coursework.constants.AllDaysConstants
 import com.example.coursework.constants.CoachIntentConstants
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SharedPreferencesConstants
@@ -108,7 +110,30 @@ class CoachActivity : AppCompatActivity(),
                         editStudentInfoLauncher.launch(intent)
                     }
                     R.id.all_days -> {
-                        // TODO: Intent to all days and activity as well
+                        databaseHelper.saveData(
+                            SharedPreferencesConstants.COACH, null,
+                            null, studentsList
+                        )
+
+                        val intent = Intent(
+                            this@CoachActivity, AllDaysActivity::class.java
+                        )
+
+                        val titlesList = ArrayList<String>()
+                        val timesList = ArrayList<String>()
+                        val daysList = ArrayList<String>()
+
+                        for (student in studentsList) {
+                            student.name?.let { it1 -> titlesList.add(it1) }
+                            student.time?.let { it2 -> timesList.add(it2) }
+                            student.day?.let { it3 -> daysList.add(it3) }
+                        }
+
+                        intent.putExtra(AllDaysConstants.TITLE, titlesList)
+                        intent.putExtra(AllDaysConstants.TIME, timesList)
+                        intent.putExtra(AllDaysConstants.DAY, daysList)
+
+                        startActivity(intent)
                     }
                 }
 
@@ -121,15 +146,17 @@ class CoachActivity : AppCompatActivity(),
 
                     intent = result.data
 
-                    helper.getCoachResult(
-                        intent,
-                        getDay(),
-                        studentsList,
-                        editStudentName,
-                        editLessonTime
-                    )
+                    if (result.resultCode == RESULT_OK) {
+                        helper.getCoachResult(
+                            intent,
+                            getDay(),
+                            studentsList,
+                            editStudentName,
+                            editLessonTime
+                        )
 
-                    displayLessons(false)
+                        displayLessons(false)
+                    }
                 }
         }
     }

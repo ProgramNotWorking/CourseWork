@@ -27,13 +27,13 @@ class EditLessonInfoActivity : AppCompatActivity() {
         onTouchCloseKeyboard()
 
         if (intent.getBooleanExtra(SchoolkidIntentConstants.IS_EDIT, false)) {
-            binding.coupleTitleEditTextField.setText(
+            binding.lessonTitleEditTextField.setText(
                 intent.getStringExtra(SchoolkidIntentConstants.LESSON_TITLE)
             )
             binding.enterLessonTimeButton.text = (
                 intent.getStringExtra(SchoolkidIntentConstants.LESSON_TIME)
             )
-            binding.audienceNumberEditTextField.setText(
+            binding.lessonAudienceNumberEditTextField.setText(
                 intent.getStringExtra(SchoolkidIntentConstants.AUDIENCE_NUMBER)
             )
 
@@ -68,20 +68,22 @@ class EditLessonInfoActivity : AppCompatActivity() {
             }
 
             backButtonCouple.setOnClickListener {
-                setResult(RESULT_CANCELED)
-                finish()
+                goBack()
             }
 
             saveCoupleButton.setOnClickListener {
                 if (completenessOfInformationTest()) {
                     intent.putExtra(
-                        SchoolkidIntentConstants.LESSON_TITLE, coupleTitleEditTextField.text.toString()
+                        SchoolkidIntentConstants.LESSON_TITLE,
+                        lessonTitleEditTextField.text.toString()
                     )
                     intent.putExtra(
-                        SchoolkidIntentConstants.LESSON_TIME, enterLessonTimeButton.text.toString()
+                        SchoolkidIntentConstants.LESSON_TIME,
+                        enterLessonTimeButton.text.toString()
                     )
                     intent.putExtra(
-                        SchoolkidIntentConstants.AUDIENCE_NUMBER, audienceNumberEditTextField.text.toString()
+                        SchoolkidIntentConstants.AUDIENCE_NUMBER,
+                        lessonAudienceNumberEditTextField.text.toString()
                     )
                     setDay()
 
@@ -90,6 +92,16 @@ class EditLessonInfoActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        goBack()
+    }
+
+    private fun goBack() {
+        setResult(RESULT_CANCELED)
+        finish()
     }
 
     private fun setDay() {
@@ -125,7 +137,7 @@ class EditLessonInfoActivity : AppCompatActivity() {
 
     private fun completenessOfInformationTest(): Boolean {
         binding.apply {
-            return if (coupleTitleEditTextField.text.toString().isEmpty()) {
+            return if (lessonTitleEditTextField.text.toString().isEmpty()) {
                 showText(getString(R.string.couple_title_field_is_empty))
 
                 false
@@ -133,7 +145,7 @@ class EditLessonInfoActivity : AppCompatActivity() {
                 showText(getString(R.string.couple_time_field_is_empty))
 
                 false
-            } else if (audienceNumberEditTextField.text.toString().isEmpty()) {
+            } else if (lessonAudienceNumberEditTextField.text.toString().isEmpty()) {
                 showText(getString(R.string.audience_number_field_is_empty))
 
                 false

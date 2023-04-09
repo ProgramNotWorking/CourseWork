@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
@@ -68,8 +67,7 @@ class EditCoupleInfoActivity : AppCompatActivity() {
             }
 
             backButtonCouple.setOnClickListener {
-                setResult(RESULT_CANCELED)
-                finish()
+                goBack()
             }
 
             saveCoupleButton.setOnClickListener {
@@ -90,6 +88,16 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        goBack()
+    }
+
+    private fun goBack() {
+        setResult(RESULT_CANCELED)
+        finish()
     }
 
     private fun setDay() {
