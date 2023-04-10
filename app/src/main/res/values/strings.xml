@@ -43,4 +43,8 @@
     <string name="clearing_question">Are you sure you want delete the data?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="annexe">Annexe</string>
+    <string name="distance_couple">Home</string>
+    <string name="cancel">Cancel</string>
+    <string name="annex_reduction">" Anx"</string>
 </resources>

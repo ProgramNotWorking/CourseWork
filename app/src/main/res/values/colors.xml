@@ -14,4 +14,6 @@
     <color name="red">#CB4154</color>
     <color name="blue">#00BFFF</color>
     <color name="green">#32CD32</color>
+
+    <color name="alpha100">#00ffffff</color>
 </resources>

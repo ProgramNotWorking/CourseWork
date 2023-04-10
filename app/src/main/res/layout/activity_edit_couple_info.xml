@@ -81,7 +81,7 @@
         android:inputType="number"
         android:textColor="@color/black"
         android:textColorHint="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/enterCoupleTimeButton"
+        app:layout_constraintEnd_toStartOf="@+id/coupleInfoEditButton"
         app:layout_constraintStart_toStartOf="@+id/enterCoupleTimeButton"
         app:layout_constraintTop_toBottomOf="@+id/enterCoupleTimeButton" />
 
@@ -112,5 +112,14 @@
         app:layout_constraintEnd_toEndOf="@+id/coupleTitleEditTextField"
         app:layout_constraintStart_toStartOf="@+id/coupleTitleEditTextField"
         app:layout_constraintTop_toBottomOf="@+id/coupleTitleEditTextField" />
+
+    <ImageView
+        android:id="@+id/coupleInfoEditButton"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/enterCoupleTimeButton"
+        app:layout_constraintTop_toBottomOf="@+id/enterCoupleTimeButton"
+        app:srcCompat="@drawable/plus_box_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
@@ -63,6 +64,18 @@ class OptionsActivity : AppCompatActivity() {
                 val builder = AlertDialog.Builder(this@OptionsActivity)
                 .setTitle(getString(R.string.data_cleaning))
                 .setMessage(getString(R.string.clearing_question))
+
+                .setTitle(
+                    Html.fromHtml("<font color='#FF000000'>" +
+                            getString(R.string.data_cleaning) +
+                            "</font>")
+                )
+
+                .setMessage(
+                    Html.fromHtml("<font color='#FF000000'>" +
+                            getString(R.string.clearing_question) +
+                            "</font>")
+                )
 
                 .setPositiveButton(getString(R.string.yes)) { _, _ ->
                     Toast.makeText(

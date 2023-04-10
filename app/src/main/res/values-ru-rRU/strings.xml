@@ -43,4 +43,8 @@
     <string name="clearing_question">Вы уверены, что хотите удалить данные?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="annexe">Пристройка</string>
+    <string name="distance_couple">Дистант</string>
+    <string name="cancel">Отмена</string>
+    <string name="annex_reduction">" П"</string>
 </resources>

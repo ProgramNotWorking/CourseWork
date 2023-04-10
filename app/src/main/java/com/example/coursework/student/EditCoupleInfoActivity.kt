@@ -1,13 +1,16 @@
 package com.example.coursework.student
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.coursework.R
@@ -17,6 +20,8 @@ import com.example.coursework.databinding.ActivityEditCoupleInfoBinding
 
 class EditCoupleInfoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditCoupleInfoBinding
+
+    private var isAnnex = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +71,10 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                 )
             }
 
+            coupleInfoEditButton.setOnClickListener {
+                showCoupleAudienceOptionsDialog()
+            }
+
             backButtonCouple.setOnClickListener {
                 goBack()
             }
@@ -78,9 +87,17 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                     intent.putExtra(
                         StudentIntentConstants.COUPLE_TIME, enterCoupleTimeButton.text.toString()
                     )
-                    intent.putExtra(
-                        StudentIntentConstants.AUDIENCE_NUMBER, audienceNumberEditTextField.text.toString()
-                    )
+                    if (isAnnex) {
+                        val text = audienceNumberEditTextField.text.toString() +
+                                getString(R.string.annex_reduction)
+                        intent.putExtra(
+                            StudentIntentConstants.AUDIENCE_NUMBER, text
+                        )
+                    } else {
+                        intent.putExtra(
+                            StudentIntentConstants.AUDIENCE_NUMBER, audienceNumberEditTextField.text.toString()
+                        )
+                    }
                     setDay()
 
                     setResult(RESULT_OK, intent)
@@ -121,6 +138,35 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                 StudentIntentConstants.WHAT_DAY, DaysConstants.SATURDAY
             )
         }
+    }
+
+    private fun showCoupleAudienceOptionsDialog() {
+        val dialogView = LayoutInflater.from(this@EditCoupleInfoActivity).inflate(
+            R.layout.dialog_window_for_couple_audience, null
+        )
+
+        val dialog = AlertDialog.Builder(this@EditCoupleInfoActivity)
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        dialogView.findViewById<Button>(R.id.annexe).setOnClickListener {
+            binding.audienceNumberEditTextField.append(getString(R.string.annexe))
+
+            dialog.dismiss()
+        }
+
+        dialogView.findViewById<Button>(R.id.button_distant).setOnClickListener {
+            isAnnex = true
+
+            dialog.dismiss()
+        }
+
+        dialogView.findViewById<Button>(R.id.button_cancel).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun completenessOfInformationTest(): Boolean {
