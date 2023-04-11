@@ -5,30 +5,86 @@
     android:id="@+id/mainCoupleLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/grey1"
     tools:context=".student.EditCoupleInfoActivity">
 
-    <Button
+    <androidx.cardview.widget.CardView
+        android:id="@+id/coupleTitleHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/grey2"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+        <EditText
+            android:id="@+id/coupleTitleEditTextField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="6dp"
+            android:backgroundTint="@color/grey2"
+            android:ems="10"
+            android:fontFamily="@font/ubuntu_bold"
+            android:gravity="center"
+            android:hint="@string/enter_couple_title"
+            android:inputType="textPersonName"
+            android:textColor="@color/grey5"
+            android:textColorHighlight="@color/grey5"
+            android:textColorHint="@color/grey5"
+            android:textColorLink="@color/grey5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck"
+            tools:layout_editor_absoluteX="10dp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/saveCoupleButton"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="6dp"
         android:background="@drawable/rounded_corners"
-        android:backgroundTint="@color/black"
-        android:fontFamily="@font/ubuntu_bold"
-        android:text="@string/save"
-        android:textSize="20sp"
+        android:backgroundTint="@color/grey2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/saveCoupleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ubuntu_bold"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/save"
+            android:textColor="@color/grey5"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/grey2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -49,77 +105,68 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/coupleTitleEditTextField"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="170dp"
-        android:layout_marginEnd="10dp"
-        android:backgroundTint="@color/black"
-        android:ems="10"
-        android:fontFamily="@font/ubuntu_bold"
-        android:gravity="center"
-        android:hint="@string/enter_couple_title"
-        android:inputType="textPersonName"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
-
-    <EditText
-        android:id="@+id/audienceNumberEditTextField"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@color/black"
-        android:ems="10"
-        android:fontFamily="@font/ubuntu_bold"
-        android:gravity="center"
-        android:hint="@string/enter_audience_number"
-        android:inputType="number"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        app:layout_constraintEnd_toStartOf="@+id/coupleInfoEditButton"
-        app:layout_constraintStart_toStartOf="@+id/enterCoupleTimeButton"
-        app:layout_constraintTop_toBottomOf="@+id/enterCoupleTimeButton" />
-
-    <ImageView
-        android:id="@+id/backButtonCouple"
-        android:layout_width="65dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="10dp"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back_arrow_icon" />
-
-    <Button
-        android:id="@+id/enterCoupleTimeButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="@color/black"
-        android:fontFamily="@font/ubuntu_bold"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="@string/enter_couple_time"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/coupleTitleEditTextField"
-        app:layout_constraintStart_toStartOf="@+id/coupleTitleEditTextField"
-        app:layout_constraintTop_toBottomOf="@+id/coupleTitleEditTextField" />
-
     <ImageView
         android:id="@+id/coupleInfoEditButton"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/enterCoupleTimeButton"
-        app:layout_constraintTop_toBottomOf="@+id/enterCoupleTimeButton"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coupleAudienceHolder"
         app:srcCompat="@drawable/plus_box_icon" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/enterCoupleTimeButton"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/grey2"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coupleTitleHolder">
+
+        <TextView
+            android:id="@+id/enterCoupleTimeText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/ubuntu_bold"
+            android:gravity="center"
+            android:text="@string/enter_couple_time"
+            android:textColor="@color/grey5"
+            android:textSize="19sp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/coupleAudienceHolder"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/grey2"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enterCoupleTimeButton">
+
+        <EditText
+            android:id="@+id/audienceNumberEditTextField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/grey2"
+            android:ems="10"
+            android:fontFamily="@font/ubuntu_bold"
+            android:gravity="center"
+            android:hint="@string/enter_audience_number"
+            android:inputType="number"
+            android:textColor="@color/grey5"
+            android:textColorHighlight="@color/grey5"
+            android:textColorHint="@color/grey5"
+            android:textColorLink="@color/grey5" />
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

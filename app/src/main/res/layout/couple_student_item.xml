@@ -7,72 +7,81 @@
     android:background="@drawable/rounded_corners"
     android:backgroundTint="@color/black">
 
-    <LinearLayout
-        android:id="@+id/coupleHolder"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_corners"
-        android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:backgroundTint="@color/grey3"
+        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/coupleTitleTextViewItem"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/coupleHolder"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:fontFamily="@font/ubuntu_bold"
-            android:paddingStart="10dp"
-            android:text="@string/stub"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            tools:ignore="RtlSymmetry" />
-
-        <TextView
-            android:id="@+id/coupleTimeTextViewItem"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:fontFamily="@font/ubuntu_bold"
-            android:gravity="center"
-            android:text="@string/stub"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/audienceTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:fontFamily="@font/ubuntu_bold"
-            android:paddingEnd="10dp"
-            android:text="@string/stub"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            tools:ignore="RtlSymmetry" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/deleteCoupleItemButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="0.1"
+            android:layout_margin="6dp"
             android:background="@drawable/rounded_corners"
-            android:backgroundTint="@color/white">
+            android:backgroundTint="@color/grey2"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
-            <ImageView
-                android:id="@+id/trashCanImageView"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/coupleTitleTextViewItem"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/delete_trash_can_icon" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+                android:layout_weight="0.5"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingStart="10dp"
+                android:text="@string/stub"
+                android:textColor="@color/grey5"
+                android:textSize="18sp"
+                tools:ignore="RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/coupleTimeTextViewItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:text="@string/stub"
+                android:textColor="@color/grey5"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/audienceTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:fontFamily="@font/ubuntu_bold"
+                android:paddingEnd="10dp"
+                android:text="@string/stub"
+                android:textColor="@color/grey5"
+                android:textSize="18sp"
+                tools:ignore="RtlSymmetry" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/deleteCoupleItemButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="0.1"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="@color/grey4">
+
+                <ImageView
+                    android:id="@+id/trashCanImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/delete_trash_can_icon" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

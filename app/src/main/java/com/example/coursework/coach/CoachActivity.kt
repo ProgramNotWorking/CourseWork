@@ -21,8 +21,7 @@ import com.example.coursework.constants.AllDaysConstants
 import com.example.coursework.constants.CoachIntentConstants
 import com.example.coursework.constants.DaysConstants
 import com.example.coursework.constants.SharedPreferencesConstants
-import com.example.coursework.databinding.ActivityCoachBinding
-import com.example.coursework.db.DatabaseHelper
+import com.example.coursework.databinding.ActivityCoachV2Binding
 import com.example.coursework.db.DatabaseManager
 import com.example.coursework.helpers.DatabaseHelperClass
 import com.example.coursework.helpers.StudentsHelper
@@ -32,7 +31,7 @@ class CoachActivity : AppCompatActivity(),
     LessonAdapter.OnDeleteClickListener,
     LessonAdapter.OnEditClickListener
 {
-    private lateinit var binding: ActivityCoachBinding
+    private lateinit var binding: ActivityCoachV2Binding
     private val adapter = LessonAdapter(this@CoachActivity, this@CoachActivity)
 
     private lateinit var editStudentInfoLauncher: ActivityResultLauncher<Intent>
@@ -53,7 +52,7 @@ class CoachActivity : AppCompatActivity(),
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCoachBinding.inflate(layoutInflater)
+        binding = ActivityCoachV2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
         sharedPreferences = getSharedPreferences(
@@ -79,12 +78,12 @@ class CoachActivity : AppCompatActivity(),
                 override fun onSwipeLeft() = toTheNext()
             })
 
-            nextDayButton.setOnClickListener {
-                toTheNext()
-            }
-            previousDayButton.setOnClickListener {
-                toThePrevious()
-            }
+//            nextDayButton.setOnClickListener {
+//                toTheNext()
+//            }
+//            previousDayButton.setOnClickListener {
+//                toThePrevious()
+//            }
 
             bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {

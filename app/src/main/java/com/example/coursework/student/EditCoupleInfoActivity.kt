@@ -7,6 +7,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
@@ -34,7 +35,7 @@ class EditCoupleInfoActivity : AppCompatActivity() {
             binding.coupleTitleEditTextField.setText(
                 intent.getStringExtra(StudentIntentConstants.COUPLE_TITLE)
             )
-            binding.enterCoupleTimeButton.text = (
+            binding.enterCoupleTimeText.text = (
                 intent.getStringExtra(StudentIntentConstants.COUPLE_TIME)
             )
             binding.audienceNumberEditTextField.setText(
@@ -52,10 +53,10 @@ class EditCoupleInfoActivity : AppCompatActivity() {
             enterCoupleTimeButton.setOnClickListener {
                 val timePickerDialog = TimePickerDialog(this@EditCoupleInfoActivity, { _, hour, minute ->
                     val time = String.format("%02d:%02d", hour, minute)
-                    enterCoupleTimeButton.text = time
+                    enterCoupleTimeText.text = time
                 }, 0, 0, true)
                 timePickerDialog.window?.setBackgroundDrawableResource(
-                    R.color.white
+                    R.color.grey1
                 )
 
                 timePickerDialog.show()
@@ -64,19 +65,15 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                 val cancelButton = timePickerDialog.getButton(Dialog.BUTTON_NEGATIVE)
 
                 okButton.setTextColor(
-                    ContextCompat.getColor(this@EditCoupleInfoActivity, R.color.black)
+                    ContextCompat.getColor(this@EditCoupleInfoActivity, R.color.grey5)
                 )
                 cancelButton.setTextColor(
-                    ContextCompat.getColor(this@EditCoupleInfoActivity, R.color.black)
+                    ContextCompat.getColor(this@EditCoupleInfoActivity, R.color.grey5)
                 )
             }
 
             coupleInfoEditButton.setOnClickListener {
                 showCoupleAudienceOptionsDialog()
-            }
-
-            backButtonCouple.setOnClickListener {
-                goBack()
             }
 
             saveCoupleButton.setOnClickListener {
@@ -85,11 +82,12 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                         StudentIntentConstants.COUPLE_TITLE, coupleTitleEditTextField.text.toString()
                     )
                     intent.putExtra(
-                        StudentIntentConstants.COUPLE_TIME, enterCoupleTimeButton.text.toString()
+                        StudentIntentConstants.COUPLE_TIME, enterCoupleTimeText.text.toString()
                     )
                     if (isAnnex) {
                         val text = audienceNumberEditTextField.text.toString() +
                                 getString(R.string.annex_reduction)
+
                         intent.putExtra(
                             StudentIntentConstants.AUDIENCE_NUMBER, text
                         )
@@ -175,7 +173,7 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                 showText(getString(R.string.couple_title_field_is_empty))
 
                 false
-            } else if (enterCoupleTimeButton.text.toString() == getString(R.string.enter_couple_time)) {
+            } else if (enterCoupleTimeText.text.toString() == getString(R.string.enter_couple_time)) {
                 showText(getString(R.string.couple_time_field_is_empty))
 
                 false

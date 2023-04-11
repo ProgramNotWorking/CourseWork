@@ -4,16 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/grey1"
     tools:context=".schoolkid.SchoolkidActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:backgroundTint="@color/black"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        android:background="@drawable/rounded_corners"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="6dp"
+        app:backgroundTint="@color/grey2"
+        app:itemIconTint="@color/grey5"
+        app:itemTextColor="@color/grey5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +28,7 @@
         android:id="@+id/mainHolderScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/grey1"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +50,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/rounded_corners"
-                android:backgroundTint="@color/black">
+                android:backgroundTint="@color/grey2">
 
                 <ImageView
                     android:id="@+id/openMondayButton"
@@ -65,7 +70,7 @@
                     android:fontFamily="@font/ubuntu_bold"
                     android:paddingBottom="10dp"
                     android:text="@string/monday"
-                    android:textColor="@color/white"
+                    android:textColor="@color/grey5"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -87,6 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_corners_layout"
+                    android:backgroundTint="@color/grey3"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +106,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/rounded_corners"
-                android:backgroundTint="@color/black">
+                android:backgroundTint="@color/grey2">
 
                 <ImageView
                     android:id="@+id/openTuesdayButton"
@@ -120,7 +126,7 @@
                     android:fontFamily="@font/ubuntu_bold"
                     android:paddingBottom="10dp"
                     android:text="@string/tuesday"
-                    android:textColor="@color/white"
+                    android:textColor="@color/grey5"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -142,6 +148,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_corners_layout"
+                    android:backgroundTint="@color/grey3"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -155,7 +162,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/rounded_corners"
-                android:backgroundTint="@color/black">
+                android:backgroundTint="@color/grey2">
 
                 <ImageView
                     android:id="@+id/openWednesdayButton"
@@ -175,7 +182,7 @@
                     android:fontFamily="@font/ubuntu_bold"
                     android:paddingBottom="10dp"
                     android:text="@string/wednesday"
-                    android:textColor="@color/white"
+                    android:textColor="@color/grey5"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -197,6 +204,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_corners_layout"
+                    android:backgroundTint="@color/grey3"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -210,7 +218,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/rounded_corners"
-                android:backgroundTint="@color/black">
+                android:backgroundTint="@color/grey2">
 
                 <ImageView
                     android:id="@+id/openThursdayButton"
@@ -230,7 +238,7 @@
                     android:fontFamily="@font/ubuntu_bold"
                     android:paddingBottom="10dp"
                     android:text="@string/thursday"
-                    android:textColor="@color/white"
+                    android:textColor="@color/grey5"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -252,6 +260,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_corners_layout"
+                    android:backgroundTint="@color/grey3"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -265,7 +274,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/rounded_corners"
-                android:backgroundTint="@color/black">
+                android:backgroundTint="@color/grey2">
 
                 <ImageView
                     android:id="@+id/openFridayButton"
@@ -285,7 +294,7 @@
                     android:fontFamily="@font/ubuntu_bold"
                     android:paddingBottom="10dp"
                     android:text="@string/friday"
-                    android:textColor="@color/white"
+                    android:textColor="@color/grey5"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -307,6 +316,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_corners_layout"
+                    android:backgroundTint="@color/grey3"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -320,7 +330,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/rounded_corners"
-                android:backgroundTint="@color/black">
+                android:backgroundTint="@color/grey2">
 
                 <ImageView
                     android:id="@+id/openSaturdayButton"
@@ -340,7 +350,7 @@
                     android:fontFamily="@font/ubuntu_bold"
                     android:paddingBottom="10dp"
                     android:text="@string/saturday"
-                    android:textColor="@color/white"
+                    android:textColor="@color/grey5"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -362,6 +372,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_corners_layout"
+                    android:backgroundTint="@color/grey3"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

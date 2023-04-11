@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/grey1"
     tools:context=".OptionsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,22 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
-        android:background="@color/black"
+        android:background="@color/grey2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/backButtonOptions"
-            android:layout_width="65dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/rounded_corners"
-            android:backgroundTint="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/back_arrow_icon" />
 
         <TextView
             android:id="@+id/optionsHeaderTextView"
@@ -37,7 +25,7 @@
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/ubuntu_bold"
             android:text="@string/options"
-            android:textColor="@color/white"
+            android:textColor="@color/grey5"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +49,7 @@
         android:id="@+id/footerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:background="@color/grey2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -75,7 +63,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="@string/change_role"
-            android:textColor="@color/white"
+            android:textColor="@color/grey5"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +94,7 @@
             android:fontFamily="@font/ubuntu_bold"
             android:gravity="center"
             android:text="@string/clear_data"
-            android:textColor="@color/white"
+            android:textColor="@color/grey5"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -121,7 +109,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/rounded_corners"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="@color/grey2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/currentTypeOfActivityImage">
@@ -134,7 +122,7 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/ubuntu_bold"
             android:text="@string/stub"
-            android:textColor="@color/white"
+            android:textColor="@color/grey5"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

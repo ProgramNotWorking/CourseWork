@@ -15,5 +15,11 @@
     <color name="blue">#00BFFF</color>
     <color name="green">#32CD32</color>
 
-    <color name="alpha100">#00ffffff</color>
+    <color name="alpha100">#00FFFFFF</color>
+
+    <color name="grey1">#161616</color>
+    <color name="grey2">#2C2C2C</color>
+    <color name="grey3">#525252</color>
+    <color name="grey4">#7F7F7F</color>
+    <color name="grey5">#BDBDBD</color>
 </resources>

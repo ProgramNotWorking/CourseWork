@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
@@ -13,14 +12,14 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.coursework.R
 import com.example.coursework.constants.CoachIntentConstants
-import com.example.coursework.databinding.ActivityEditStudentInfoBinding
+import com.example.coursework.databinding.ActivityEditStudentInfoV2Binding
 
 class EditStudentInfoActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityEditStudentInfoBinding
+    private lateinit var binding: ActivityEditStudentInfoV2Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityEditStudentInfoBinding.inflate(layoutInflater)
+        binding = ActivityEditStudentInfoV2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
         onTouchCloseKeyboard()
@@ -29,7 +28,7 @@ class EditStudentInfoActivity : AppCompatActivity() {
             binding.editNamePlainTextView.setText(
                 intent.getStringExtra(CoachIntentConstants.STUDENT_NAME)
             )
-            binding.enterTimeButton.text = (
+            binding.enterTimeText.text = (
                 intent.getStringExtra(CoachIntentConstants.LESSON_TIME)
             )
 
@@ -39,17 +38,13 @@ class EditStudentInfoActivity : AppCompatActivity() {
         }
 
         binding.apply {
-            backButton.setOnClickListener {
-                goBack()
-            }
-
             enterTimeButton.setOnClickListener {
                 val timePickerDialog = TimePickerDialog(this@EditStudentInfoActivity, { _, hour, minute ->
                     val time = String.format("%02d:%02d", hour, minute)
-                    enterTimeButton.text = time
+                    enterTimeText.text = time
                 }, 0, 0, true)
                 timePickerDialog.window?.setBackgroundDrawableResource(
-                    R.color.white
+                    R.color.grey1
                 )
 
                 timePickerDialog.show()
@@ -58,10 +53,10 @@ class EditStudentInfoActivity : AppCompatActivity() {
                 val cancelButton = timePickerDialog.getButton(Dialog.BUTTON_NEGATIVE)
 
                 okButton.setTextColor(
-                    ContextCompat.getColor(this@EditStudentInfoActivity, R.color.black)
+                    ContextCompat.getColor(this@EditStudentInfoActivity, R.color.grey5)
                 )
                 cancelButton.setTextColor(
-                    ContextCompat.getColor(this@EditStudentInfoActivity, R.color.black)
+                    ContextCompat.getColor(this@EditStudentInfoActivity, R.color.grey5)
                 )
             }
 
@@ -72,7 +67,7 @@ class EditStudentInfoActivity : AppCompatActivity() {
                         getString(R.string.name_field_is_empty),
                         Toast.LENGTH_SHORT
                     ).show()
-                } else if (enterTimeButton.text.toString() == getString(R.string.enter_time)) {
+                } else if (enterTimeText.text.toString() == getString(R.string.enter_time)) {
                     Toast.makeText(
                         this@EditStudentInfoActivity,
                         getString(R.string.time_field_is_empty),
@@ -83,7 +78,7 @@ class EditStudentInfoActivity : AppCompatActivity() {
                         CoachIntentConstants.STUDENT_NAME, editNamePlainTextView.text.toString()
                     )
                     intent.putExtra(
-                       CoachIntentConstants.LESSON_TIME, enterTimeButton.text.toString()
+                       CoachIntentConstants.LESSON_TIME, enterTimeText.text.toString()
                     )
 
                     setResult(RESULT_OK, intent)
