@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
@@ -65,10 +64,6 @@ class EditLessonInfoActivity : AppCompatActivity() {
                 cancelButton.setTextColor(
                     ContextCompat.getColor(this@EditLessonInfoActivity, R.color.black)
                 )
-            }
-
-            backButtonCouple.setOnClickListener {
-                goBack()
             }
 
             saveCoupleButton.setOnClickListener {

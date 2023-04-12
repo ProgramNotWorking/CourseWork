@@ -87,7 +87,7 @@ class AllDaysActivity : AppCompatActivity() {
         }
 
         fun connectAdaptersToRcViews() = with(binding) {
-            val countItemsList = arrayListOf( 1, 1, 1, 1, 1, 1 )
+            val countItemsList = arrayListOf( 0, 0, 0, 0, 0, 0 )
 
             for (item in daysList) {
                 when (item) {
@@ -100,7 +100,15 @@ class AllDaysActivity : AppCompatActivity() {
                 }
             }
 
-            val spanCount = countItemsList.maxOrNull() ?: 1
+            var isNull = true
+            for (item in countItemsList) {
+                if (item > 0) isNull = false
+            }
+            val spanCount = if (!isNull) {
+                countItemsList.maxOrNull() ?: 1
+            } else {
+                1
+            }
 
             mondayDaysRcView.layoutManager = GridLayoutManager(context, spanCount)
             mondayDaysRcView.adapter = adaptersList[0]

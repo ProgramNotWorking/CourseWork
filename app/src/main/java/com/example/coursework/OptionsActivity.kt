@@ -5,8 +5,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
+import android.view.LayoutInflater
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -45,15 +46,15 @@ class OptionsActivity : AppCompatActivity() {
         binding.apply {
             when (from) {
                 OptionsDataNames.COACH -> {
-                    currentTypeOfActivityImage.setImageResource(R.drawable.coach)
+                    currentTypeOfActivityImage.setImageResource(R.drawable.coach_gradient)
                     currentTypeOfActivityTextView.text = getString(R.string.coach)
                 }
                 OptionsDataNames.STUDENT -> {
-                    currentTypeOfActivityImage.setImageResource(R.drawable.student)
+                    currentTypeOfActivityImage.setImageResource(R.drawable.student_gradient)
                     currentTypeOfActivityTextView.text = getString(R.string.student)
                 }
                 OptionsDataNames.SCHOOLKID -> {
-                    currentTypeOfActivityImage.setImageResource(R.drawable.schoolkid)
+                    currentTypeOfActivityImage.setImageResource(R.drawable.schoolkid_gradient)
                     currentTypeOfActivityTextView.text = getString(R.string.schoolkid)
                 }
                 OptionsDataNames.ITS_BAD ->
@@ -61,39 +62,7 @@ class OptionsActivity : AppCompatActivity() {
             }
 
             clearDataTextView.setOnClickListener {
-                val builder = AlertDialog.Builder(this@OptionsActivity)
-                .setTitle(getString(R.string.data_cleaning))
-                .setMessage(getString(R.string.clearing_question))
-
-                .setTitle(
-                    Html.fromHtml("<font color='#FF000000'>" +
-                            getString(R.string.data_cleaning) +
-                            "</font>")
-                )
-
-                .setMessage(
-                    Html.fromHtml("<font color='#FF000000'>" +
-                            getString(R.string.clearing_question) +
-                            "</font>")
-                )
-
-                .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                    Toast.makeText(
-                        this@OptionsActivity, getString(R.string.data_cleared), Toast.LENGTH_SHORT
-                    ).show()
-
-                    clearData()
-                }
-                .setNegativeButton(getString(R.string.no), null)
-
-                val dialog = builder.create()
-                dialog.window?.setBackgroundDrawableResource(R.color.white)
-                dialog.findViewById<TextView>(android.R.id.title)?.setTextColor(R.color.black)
-                dialog.show()
-            }
-
-            backButtonOptions.setOnClickListener {
-                goBack()
+                showDialogWindow()
             }
 
             footerLayout.setOnClickListener {
@@ -118,6 +87,32 @@ class OptionsActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("InflateParams")
+    private fun showDialogWindow() {
+        val dialogView = LayoutInflater.from(this@OptionsActivity).inflate(
+            R.layout.dialog_window_for_data_cleaning, null
+        )
+
+        val dialog = AlertDialog.Builder(this@OptionsActivity)
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        dialogView.findViewById<TextView>(R.id.confirmClearingButton).setOnClickListener {
+            clearData()
+
+            dialog.dismiss()
+        }
+        dialogView.findViewById<TextView>(R.id.refusalClearingButton).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialogView.findViewById<ImageView>(R.id.crossImageView).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         goBack()
@@ -131,6 +126,10 @@ class OptionsActivity : AppCompatActivity() {
             OptionsDataNames.STUDENT -> db.clearStudentTable()
             OptionsDataNames.SCHOOLKID -> db.clearSchoolkidTable()
         }
+
+        Toast.makeText(
+            this@OptionsActivity, getString(R.string.data_cleared), Toast.LENGTH_SHORT
+        ).show()
 
         db.close()
     }

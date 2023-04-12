@@ -5,7 +5,7 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/grey2"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,9 +27,8 @@
             android:fontFamily="@font/ubuntu_bold"
             android:gravity="center"
             android:text="@string/choose_occupation"
-            android:textColor="@color/black"
+            android:textColor="@color/grey5"
             android:textSize="26sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -62,7 +61,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/coach" />
+                    app:srcCompat="@drawable/coach_gradient" />
 
                 <TextView
                     android:id="@+id/coachDesc"
@@ -71,7 +70,7 @@
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/ubuntu_bold"
                     android:text="@string/coach"
-                    android:textColor="@color/black"
+                    android:textColor="@color/grey5"
                     android:textSize="26sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -97,7 +96,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/student" />
+                    app:srcCompat="@drawable/student_gradient" />
 
                 <TextView
                     android:id="@+id/studentDesc"
@@ -106,7 +105,7 @@
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/ubuntu_bold"
                     android:text="@string/student"
-                    android:textColor="@color/black"
+                    android:textColor="@color/grey5"
                     android:textSize="26sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -132,7 +131,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/schoolkid" />
+                    app:srcCompat="@drawable/schoolkid_gradient" />
 
                 <TextView
                     android:id="@+id/schoolkidDesc"
@@ -141,7 +140,7 @@
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/ubuntu_bold"
                     android:text="@string/schoolkid"
-                    android:textColor="@color/black"
+                    android:textColor="@color/grey5"
                     android:textSize="26sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"

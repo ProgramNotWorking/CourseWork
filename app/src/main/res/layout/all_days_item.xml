@@ -7,7 +7,7 @@
     android:background="@drawable/rounded_corners">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="match_parent"
         android:layout_margin="6dp"
         android:layout_marginStart="6dp"

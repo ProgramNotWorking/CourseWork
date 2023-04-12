@@ -29,10 +29,11 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="6dp"
             android:layout_marginBottom="6dp"
-            android:backgroundTint="@color/grey2"
+            android:backgroundTint="@color/grey5"
+            android:drawableStart="@drawable/edit_pen_icon"
+            android:drawablePadding="10dp"
             android:ems="10"
             android:fontFamily="@font/ubuntu_bold"
-            android:gravity="center"
             android:hint="@string/enter_couple_title"
             android:inputType="textPersonName"
             android:textColor="@color/grey5"
@@ -130,14 +131,18 @@
         app:layout_constraintTop_toBottomOf="@+id/coupleTitleHolder">
 
         <TextView
+            android:paddingStart="10dp"
+            android:paddingEnd="0dp"
             android:id="@+id/enterCoupleTimeText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:drawablePadding="10dp"
             android:fontFamily="@font/ubuntu_bold"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text="@string/enter_couple_time"
             android:textColor="@color/grey5"
-            android:textSize="19sp" />
+            android:textSize="19sp"
+            app:drawableStartCompat="@drawable/clock_icon" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -157,16 +162,27 @@
             android:id="@+id/audienceNumberEditTextField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/grey2"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="6dp"
+            android:backgroundTint="@color/grey5"
+            android:drawableStart="@drawable/audience_door_icon"
+            android:drawablePadding="10dp"
             android:ems="10"
             android:fontFamily="@font/ubuntu_bold"
-            android:gravity="center"
             android:hint="@string/enter_audience_number"
             android:inputType="number"
             android:textColor="@color/grey5"
             android:textColorHighlight="@color/grey5"
             android:textColorHint="@color/grey5"
-            android:textColorLink="@color/grey5" />
+            android:textColorLink="@color/grey5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck"
+            tools:layout_editor_absoluteX="10dp"/>
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

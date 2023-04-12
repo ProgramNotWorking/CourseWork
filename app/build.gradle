@@ -37,6 +37,8 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.cardview:cardview:1.0.0'
+
     def version = "2.5.1"
     implementation "com.google.android.material:material:1.8.0"
 
