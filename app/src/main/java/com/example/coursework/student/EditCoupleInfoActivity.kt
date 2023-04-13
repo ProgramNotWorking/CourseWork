@@ -7,11 +7,12 @@ import android.app.TimePickerDialog
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.coursework.R
@@ -84,18 +85,9 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                     intent.putExtra(
                         StudentIntentConstants.COUPLE_TIME, enterCoupleTimeText.text.toString()
                     )
-                    if (isAnnex) {
-                        val text = audienceNumberEditTextField.text.toString() +
-                                getString(R.string.annex_reduction)
-
-                        intent.putExtra(
-                            StudentIntentConstants.AUDIENCE_NUMBER, text
-                        )
-                    } else {
-                        intent.putExtra(
-                            StudentIntentConstants.AUDIENCE_NUMBER, audienceNumberEditTextField.text.toString()
-                        )
-                    }
+                    intent.putExtra(
+                        StudentIntentConstants.AUDIENCE_NUMBER, audienceNumberEditTextField.text.toString()
+                    )
                     setDay()
 
                     setResult(RESULT_OK, intent)
@@ -148,19 +140,22 @@ class EditCoupleInfoActivity : AppCompatActivity() {
             .setCancelable(true)
             .create()
 
-        dialogView.findViewById<Button>(R.id.annexe).setOnClickListener {
-            binding.audienceNumberEditTextField.append(getString(R.string.annexe))
+        dialogView.findViewById<TextView>(R.id.annexeButton).setOnClickListener {
+            var text = binding.audienceNumberEditTextField.text.toString()
+            text += getString(R.string.annex_reduction)
+
+            binding.audienceNumberEditTextField.setText(text)
 
             dialog.dismiss()
         }
 
-        dialogView.findViewById<Button>(R.id.button_distant).setOnClickListener {
-            isAnnex = true
+        dialogView.findViewById<TextView>(R.id.distanceButton).setOnClickListener {
+            binding.audienceNumberEditTextField.setText(R.string.distance_couple)
 
             dialog.dismiss()
         }
 
-        dialogView.findViewById<Button>(R.id.button_cancel).setOnClickListener {
+        dialogView.findViewById<ImageView>(R.id.closeEditCoupleDialogButton).setOnClickListener {
             dialog.dismiss()
         }
 

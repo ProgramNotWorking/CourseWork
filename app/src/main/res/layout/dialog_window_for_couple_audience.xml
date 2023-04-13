@@ -1,62 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:cardCornerRadius="50dp">
+    app:cardBackgroundColor="@color/grey2"
+    app:cardCornerRadius="0dp">
 
-    <Button
-        android:id="@+id/annexe"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="@color/black"
-        android:fontFamily="@font/ubuntu_bold"
-        android:text="@string/annexe"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button_distant"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="@color/black"
-        android:fontFamily="@font/ubuntu_bold"
-        android:text="@string/distance_couple"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/annexe"
-        app:layout_constraintStart_toStartOf="@+id/annexe"
-        app:layout_constraintTop_toBottomOf="@+id/annexe" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/button_cancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="@color/black"
-        android:fontFamily="@font/ubuntu_bold"
-        android:text="@string/cancel"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/button_distant"
-        app:layout_constraintStart_toStartOf="@+id/button_distant"
-        app:layout_constraintTop_toBottomOf="@+id/button_distant" />
+            <TextView
+                android:id="@+id/titleEditCoupleDialog"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/closeEditCoupleDialogButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                app:srcCompat="@drawable/cross_icon" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/annexeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/ubuntu_bold"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="0dp"
+            android:paddingBottom="5dp"
+            android:text="@string/annexe"
+            android:textColor="@color/grey5"
+            android:textSize="20sp"
+            app:drawableStartCompat="@drawable/annexe_icon" />
+
+        <TextView
+            android:id="@+id/distanceButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/ubuntu_bold"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="0dp"
+            android:paddingBottom="10dp"
+            android:text="@string/distance_couple"
+            android:textColor="@color/grey5"
+            android:textSize="20sp"
+            app:drawableStartCompat="@drawable/home_icon" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
