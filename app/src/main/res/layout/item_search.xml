@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        app:cardBackgroundColor="@color/grey2"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey3">
+
+                <TextView
+                    android:id="@+id/daySearchTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_bold"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/stub"
+                    android:textColor="@color/grey5"
+                    android:textColorHighlight="@color/grey5"
+                    android:textColorHint="@color/grey5"
+                    android:textColorLink="@color/grey5"
+                    android:textSize="22sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/titleSearchTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:text="@string/stub"
+                android:textColor="@color/grey5"
+                android:textColorHighlight="@color/grey5"
+                android:textColorHint="@color/grey5"
+                android:textColorLink="@color/grey5"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/timeSearchTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/stub"
+                android:textColor="@color/grey5"
+                android:textColorHighlight="@color/grey5"
+                android:textColorHint="@color/grey5"
+                android:textColorLink="@color/grey5"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/audienceSearchTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:text="@string/stub"
+                android:textColor="@color/grey5"
+                android:textColorHighlight="@color/grey5"
+                android:textColorHint="@color/grey5"
+                android:textColorLink="@color/grey5"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

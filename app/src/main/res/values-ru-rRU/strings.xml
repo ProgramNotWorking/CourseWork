@@ -47,4 +47,6 @@
     <string name="distance_couple">Дистант</string>
     <string name="cancel">Отмена</string>
     <string name="annex_reduction">" П"</string>
+    <string name="search">Поиск</string>
+    <string name="nothing_found">Ничего не найдено:(</string>
 </resources>

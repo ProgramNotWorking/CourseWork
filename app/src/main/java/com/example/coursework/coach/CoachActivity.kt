@@ -17,14 +17,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coursework.OptionsActivity
 import com.example.coursework.R
 import com.example.coursework.alldays.AllDaysActivity
-import com.example.coursework.constants.AllDaysConstants
-import com.example.coursework.constants.CoachIntentConstants
-import com.example.coursework.constants.DaysConstants
-import com.example.coursework.constants.SharedPreferencesConstants
+import com.example.coursework.constants.*
 import com.example.coursework.databinding.ActivityCoachV2Binding
 import com.example.coursework.db.DatabaseManager
 import com.example.coursework.helpers.DatabaseHelperClass
 import com.example.coursework.helpers.StudentsHelper
+import com.example.coursework.search_system.SearchActivity
 import java.time.LocalTime
 
 class CoachActivity : AppCompatActivity(),
@@ -78,12 +76,28 @@ class CoachActivity : AppCompatActivity(),
                 override fun onSwipeLeft() = toTheNext()
             })
 
-//            nextDayButton.setOnClickListener {
-//                toTheNext()
-//            }
-//            previousDayButton.setOnClickListener {
-//                toThePrevious()
-//            }
+            searchButtonCoach.setOnClickListener {
+                val intent = Intent(
+                    this@CoachActivity, SearchActivity::class.java
+                )
+                intent.putExtra(CoachIntentConstants.FROM_COACH, true)
+
+                val titlesList = ArrayList<String>()
+                val timesList = ArrayList<String>()
+                val daysList = ArrayList<String>()
+
+                for (student in studentsList) {
+                    student.name?.let { it1 -> titlesList.add(it1) }
+                    student.time?.let { it2 -> timesList.add(it2) }
+                    student.day?.let { it3 -> daysList.add(it3) }
+                }
+
+                intent.putExtra(SearchIntentConstants.TITLES_LIST, titlesList)
+                intent.putExtra(SearchIntentConstants.TIMES_LIST, timesList)
+                intent.putExtra(SearchIntentConstants.DAYS_LIST, daysList)
+
+                startActivity(intent)
+            }
 
             bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {

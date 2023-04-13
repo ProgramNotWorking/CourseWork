@@ -164,7 +164,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="6dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="6dp"
+            android:layout_marginEnd="26dp"
             android:layout_marginBottom="6dp"
             android:backgroundTint="@color/grey5"
             android:drawableStart="@drawable/audience_door_icon"

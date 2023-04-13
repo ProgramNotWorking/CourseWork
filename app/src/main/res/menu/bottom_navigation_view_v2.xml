@@ -15,4 +15,11 @@
         android:id="@+id/all_days"
         />
 
+    <item
+        android:title="@string/search"
+        android:orderInCategory="3"
+        android:icon="@drawable/search_icon"
+        android:id="@+id/search_bottom_nav"
+        />
+
 </menu>

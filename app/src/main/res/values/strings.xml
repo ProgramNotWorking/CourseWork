@@ -47,4 +47,6 @@
     <string name="distance_couple">Home</string>
     <string name="cancel">Cancel</string>
     <string name="annex_reduction">" Anx"</string>
+    <string name="search">Search</string>
+    <string name="nothing_found">Nothing found:(</string>
 </resources>

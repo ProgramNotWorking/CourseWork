@@ -15,15 +15,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.*
 import com.example.coursework.alldays.AllDaysActivity
-import com.example.coursework.constants.AllDaysConstants
-import com.example.coursework.constants.DaysConstants
-import com.example.coursework.constants.SharedPreferencesConstants
-import com.example.coursework.constants.StudentIntentConstants
+import com.example.coursework.constants.*
 import com.example.coursework.databinding.ActivityStudentBinding
 import com.example.coursework.db.DatabaseManager
 import com.example.coursework.helpers.AnimationsHelperClass
 import com.example.coursework.helpers.DatabaseHelperClass
 import com.example.coursework.helpers.StudentsHelper
+import com.example.coursework.search_system.SearchActivity
 import java.time.LocalTime
 
 class StudentActivity : AppCompatActivity(),
@@ -115,6 +113,31 @@ class StudentActivity : AppCompatActivity(),
                         intent.putExtra(AllDaysConstants.TIME, timesList)
                         intent.putExtra(AllDaysConstants.AUDIENCE, audiencesList)
                         intent.putExtra(AllDaysConstants.DAY, daysList)
+
+                        startActivity(intent)
+                    }
+                    R.id.search_bottom_nav -> {
+                        val intent = Intent(
+                            this@StudentActivity, SearchActivity::class.java
+                        )
+                        intent.putExtra(StudentIntentConstants.FROM_STUDENT, true)
+
+                        val titlesList = ArrayList<String>()
+                        val timesList = ArrayList<String>()
+                        val audiencesList = ArrayList<String>()
+                        val daysList = ArrayList<String>()
+
+                        for (couple in couplesList) {
+                            couple.coupleTitle?.let { it1 -> titlesList.add(it1) }
+                            couple.coupleTime?.let { it2 -> timesList.add(it2) }
+                            couple.audienceNumber?.let { it3 -> audiencesList.add(it3) }
+                            couple.day?.let { it4 -> daysList.add(it4) }
+                        }
+
+                        intent.putExtra(SearchIntentConstants.TITLES_LIST, titlesList)
+                        intent.putExtra(SearchIntentConstants.TIMES_LIST, timesList)
+                        intent.putExtra(SearchIntentConstants.AUDIENCES_LIST, audiencesList)
+                        intent.putExtra(SearchIntentConstants.DAYS_LIST, daysList)
 
                         startActivity(intent)
                     }
