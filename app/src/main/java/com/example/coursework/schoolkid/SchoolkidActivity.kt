@@ -201,17 +201,17 @@ class SchoolkidActivity : AppCompatActivity(),
     @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonsClickListenersInit() {
         binding.apply {
-            openMondayButton.setOnClickListener { openInit(DaysConstants.MONDAY) }
+            mondayHeader.setOnClickListener { openInit(DaysConstants.MONDAY) }
             addMondayButton.setOnClickListener { startEditActivity(DaysConstants.MONDAY) }
-            openTuesdayButton.setOnClickListener { openInit(DaysConstants.TUESDAY) }
+            tuesdayHeader.setOnClickListener { openInit(DaysConstants.TUESDAY) }
             addTuesdayButton.setOnClickListener { startEditActivity(DaysConstants.TUESDAY) }
-            openWednesdayButton.setOnClickListener { openInit(DaysConstants.WEDNESDAY) }
+            wednesdayHeader.setOnClickListener { openInit(DaysConstants.WEDNESDAY) }
             addWednesdayButton.setOnClickListener { startEditActivity(DaysConstants.WEDNESDAY) }
-            openThursdayButton.setOnClickListener { openInit(DaysConstants.THURSDAY) }
+            thursdayHeader.setOnClickListener { openInit(DaysConstants.THURSDAY) }
             addThursdayButton.setOnClickListener { startEditActivity(DaysConstants.THURSDAY) }
-            openFridayButton.setOnClickListener { openInit(DaysConstants.FRIDAY) }
+            fridayHeader.setOnClickListener { openInit(DaysConstants.FRIDAY) }
             addFridayButton.setOnClickListener { startEditActivity(DaysConstants.FRIDAY) }
-            openSaturdayButton.setOnClickListener { openInit(DaysConstants.SATURDAY) }
+            saturdayHeader.setOnClickListener { openInit(DaysConstants.SATURDAY) }
             addSaturdayButton.setOnClickListener { startEditActivity(DaysConstants.SATURDAY) }
         }
     }

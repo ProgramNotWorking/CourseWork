@@ -71,6 +71,7 @@ class StudentActivity : AppCompatActivity(),
         addButtonOutAnimationSet.addAnimation(addButtonRotationOutAnimation)
 
         rcViewsList = getRcViewsList()
+        db.clearStudentTable()
         couplesList = databaseHelper.getStudentData()
 
         binding.apply {
@@ -101,18 +102,21 @@ class StudentActivity : AppCompatActivity(),
                         val timesList = ArrayList<String>()
                         val audiencesList = ArrayList<String>()
                         val daysList = ArrayList<String>()
+                        val teachersList = ArrayList<String>()
 
                         for (couple in couplesList) {
                             couple.coupleTitle?.let { it1 -> titlesList.add(it1) }
                             couple.coupleTime?.let { it2 -> timesList.add(it2) }
                             couple.audienceNumber?.let { it3 -> audiencesList.add(it3) }
                             couple.day?.let { it4 -> daysList.add(it4) }
+                            couple.teacherName?.let { it5 -> teachersList.add(it5) }
                         }
 
                         intent.putExtra(AllDaysConstants.TITLE, titlesList)
                         intent.putExtra(AllDaysConstants.TIME, timesList)
                         intent.putExtra(AllDaysConstants.AUDIENCE, audiencesList)
                         intent.putExtra(AllDaysConstants.DAY, daysList)
+                        intent.putExtra(AllDaysConstants.TEACHER_NAME, teachersList)
 
                         startActivity(intent)
                     }
@@ -126,18 +130,21 @@ class StudentActivity : AppCompatActivity(),
                         val timesList = ArrayList<String>()
                         val audiencesList = ArrayList<String>()
                         val daysList = ArrayList<String>()
+                        val teachersList = ArrayList<String>()
 
                         for (couple in couplesList) {
                             couple.coupleTitle?.let { it1 -> titlesList.add(it1) }
                             couple.coupleTime?.let { it2 -> timesList.add(it2) }
                             couple.audienceNumber?.let { it3 -> audiencesList.add(it3) }
                             couple.day?.let { it4 -> daysList.add(it4) }
+                            couple.teacherName?.let { it5 -> teachersList.add(it5) }
                         }
 
                         intent.putExtra(SearchIntentConstants.TITLES_LIST, titlesList)
                         intent.putExtra(SearchIntentConstants.TIMES_LIST, timesList)
                         intent.putExtra(SearchIntentConstants.AUDIENCES_LIST, audiencesList)
                         intent.putExtra(SearchIntentConstants.DAYS_LIST, daysList)
+                        intent.putExtra(SearchIntentConstants.TEACHERS_LIST, teachersList)
 
                         startActivity(intent)
                     }
@@ -253,17 +260,17 @@ class StudentActivity : AppCompatActivity(),
     @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonsClickListenersInit() {
         binding.apply {
-            openMondayButton.setOnClickListener { openInit(DaysConstants.MONDAY) }
+            mondayHeader.setOnClickListener { openInit(DaysConstants.MONDAY) }
             addMondayButton.setOnClickListener { startEditActivity(DaysConstants.MONDAY) }
-            openTuesdayButton.setOnClickListener { openInit(DaysConstants.TUESDAY) }
+            tuesdayHeader.setOnClickListener { openInit(DaysConstants.TUESDAY) }
             addTuesdayButton.setOnClickListener { startEditActivity(DaysConstants.TUESDAY) }
-            openWednesdayButton.setOnClickListener { openInit(DaysConstants.WEDNESDAY) }
+            wednesdayHeader.setOnClickListener { openInit(DaysConstants.WEDNESDAY) }
             addWednesdayButton.setOnClickListener { startEditActivity(DaysConstants.WEDNESDAY) }
-            openThursdayButton.setOnClickListener { openInit(DaysConstants.THURSDAY) }
+            thursdayHeader.setOnClickListener { openInit(DaysConstants.THURSDAY) }
             addThursdayButton.setOnClickListener { startEditActivity(DaysConstants.THURSDAY) }
-            openFridayButton.setOnClickListener { openInit(DaysConstants.FRIDAY) }
+            fridayHeader.setOnClickListener { openInit(DaysConstants.FRIDAY) }
             addFridayButton.setOnClickListener { startEditActivity(DaysConstants.FRIDAY) }
-            openSaturdayButton.setOnClickListener { openInit(DaysConstants.SATURDAY) }
+            saturdayHeader.setOnClickListener { openInit(DaysConstants.SATURDAY) }
             addSaturdayButton.setOnClickListener { startEditActivity(DaysConstants.SATURDAY) }
         }
     }
@@ -345,13 +352,14 @@ class StudentActivity : AppCompatActivity(),
     @RequiresApi(Build.VERSION_CODES.O)
     private fun displayOnOpen(day: String) {
         couplesList.sortBy {
-            LocalTime.parse(it.coupleTime)
+            LocalTime.parse(it.coupleTime?.substring(0, 5))
         }
 
         for (couple in couplesList) {
             if (couple.day.equals(day)) {
                 val showCouple = Couple(
-                    couple.coupleTitle, couple.coupleTime, couple.audienceNumber, couple.day
+                    couple.coupleTitle, couple.coupleTime, couple.audienceNumber,
+                    couple.day, couple.teacherName
                 )
                 when (day) {
                     DaysConstants.MONDAY -> adaptersList[0].addCouple(showCouple)

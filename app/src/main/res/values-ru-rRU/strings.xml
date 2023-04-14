@@ -49,4 +49,6 @@
     <string name="annex_reduction">" П"</string>
     <string name="search">Поиск</string>
     <string name="nothing_found">Ничего не найдено:(</string>
+    <string name="enter_teacher_name">Введите имя преподавателя</string>
+    <string name="teacher_name_field_is_empty">Поле имени преподавателя пустое</string>
 </resources>

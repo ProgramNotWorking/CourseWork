@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
 import com.example.coursework.databinding.CoupleStudentItemBinding
 
-
 class CoupleAdapter(
     private val onLayoutClickListener: OnLayoutClickListener,
     private val onDeleteClickListener: OnTrashCanClickListener

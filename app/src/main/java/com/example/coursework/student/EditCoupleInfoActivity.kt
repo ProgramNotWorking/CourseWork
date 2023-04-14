@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -22,8 +21,6 @@ import com.example.coursework.databinding.ActivityEditCoupleInfoBinding
 
 class EditCoupleInfoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditCoupleInfoBinding
-
-    private var isAnnex = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +39,9 @@ class EditCoupleInfoActivity : AppCompatActivity() {
             binding.audienceNumberEditTextField.setText(
                 intent.getStringExtra(StudentIntentConstants.AUDIENCE_NUMBER)
             )
+            binding.teacherEditTextField.setText(
+                intent.getStringExtra(StudentIntentConstants.TEACHER_NAME)
+            )
 
             intent.putExtra(StudentIntentConstants.IS_ADDED, false)
         } else {
@@ -52,12 +52,42 @@ class EditCoupleInfoActivity : AppCompatActivity() {
             dayTitleCoupleTextView.text = setDayText()
 
             enterCoupleTimeButton.setOnClickListener {
-                val timePickerDialog = TimePickerDialog(this@EditCoupleInfoActivity, { _, hour, minute ->
-                    val time = String.format("%02d:%02d", hour, minute)
-                    enterCoupleTimeText.text = time
-                }, 0, 0, true)
+                val timePickerDialog = TimePickerDialog(
+                    this@EditCoupleInfoActivity,
+                    { _, hour, minute ->
+                        val endTimePickerDialog = TimePickerDialog(
+                            this@EditCoupleInfoActivity,
+                            { _, endHour, endMinute ->
+                                val timeRange = String.format("%02d:%02d-%02d:%02d", hour, minute, endHour, endMinute)
+                                enterCoupleTimeText.text = timeRange
+                            },
+                            hour,
+                            minute,
+                            true
+                        )
+                        endTimePickerDialog.window?.setBackgroundDrawableResource(
+                            R.color.grey2
+                        )
+
+                        endTimePickerDialog.show()
+
+                        val okButton = endTimePickerDialog.getButton(Dialog.BUTTON_POSITIVE)
+                        val cancelButton = endTimePickerDialog.getButton(Dialog.BUTTON_NEGATIVE)
+
+                        okButton.setTextColor(
+                            ContextCompat.getColor(this@EditCoupleInfoActivity, R.color.grey5)
+                        )
+                        cancelButton.setTextColor(
+                            ContextCompat.getColor(this@EditCoupleInfoActivity, R.color.grey5)
+                        )
+                    },
+                    12,
+                    0,
+                    true
+                )
+
                 timePickerDialog.window?.setBackgroundDrawableResource(
-                    R.color.grey1
+                    R.color.grey2
                 )
 
                 timePickerDialog.show()
@@ -87,6 +117,9 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                     )
                     intent.putExtra(
                         StudentIntentConstants.AUDIENCE_NUMBER, audienceNumberEditTextField.text.toString()
+                    )
+                    intent.putExtra(
+                        StudentIntentConstants.TEACHER_NAME, teacherEditTextField.text.toString()
                     )
                     setDay()
 
@@ -174,6 +207,10 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                 false
             } else if (audienceNumberEditTextField.text.toString().isEmpty()) {
                 showText(getString(R.string.audience_number_field_is_empty))
+
+                false
+            } else if (teacherEditTextField.text.toString().isEmpty()) {
+                showText(getString(R.string.teacher_name_field_is_empty))
 
                 false
             } else {

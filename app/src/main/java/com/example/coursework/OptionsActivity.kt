@@ -65,7 +65,7 @@ class OptionsActivity : AppCompatActivity() {
                 showDialogWindow()
             }
 
-            footerLayout.setOnClickListener {
+            changeRoleTextView.setOnClickListener {
                 val sharedPreferences = getSharedPreferences(
                     SharedPreferencesConstants.MAIN_KEY, Context.MODE_PRIVATE
                 )

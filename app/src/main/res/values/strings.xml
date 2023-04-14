@@ -49,4 +49,6 @@
     <string name="annex_reduction">" Anx"</string>
     <string name="search">Search</string>
     <string name="nothing_found">Nothing found:(</string>
+    <string name="enter_teacher_name">Enter teacher name</string>
+    <string name="teacher_name_field_is_empty">Teacher name field is empty</string>
 </resources>

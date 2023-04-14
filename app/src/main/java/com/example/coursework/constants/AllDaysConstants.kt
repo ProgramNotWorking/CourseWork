@@ -5,4 +5,5 @@ object AllDaysConstants {
     const val TIME = "time"
     const val AUDIENCE = "audience"
     const val DAY = "day"
+    const val TEACHER_NAME = "teacher_name"
 }

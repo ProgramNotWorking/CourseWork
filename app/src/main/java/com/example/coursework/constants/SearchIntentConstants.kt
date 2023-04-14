@@ -5,4 +5,5 @@ object SearchIntentConstants {
     const val TIMES_LIST = "times"
     const val AUDIENCES_LIST = "audiences"
     const val DAYS_LIST = "days_list"
+    const val TEACHERS_LIST = "teachers_list"
 }

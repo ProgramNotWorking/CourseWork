@@ -12,11 +12,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.coursework.R
 import com.example.coursework.coach.CoachActivity
-import com.example.coursework.constants.CoachIntentConstants
-import com.example.coursework.constants.SchoolkidIntentConstants
-import com.example.coursework.constants.SearchIntentConstants
-import com.example.coursework.constants.StudentIntentConstants
+import com.example.coursework.constants.*
 import com.example.coursework.databinding.ActivitySearchBinding
 import com.example.coursework.schoolkid.SchoolkidActivity
 import com.example.coursework.student.StudentActivity
@@ -133,8 +131,18 @@ class SearchActivity : AppCompatActivity() {
                     audiencesList?.get(item) == text ||
                     daysList[item] == text
                 ) {
+                    val tempDay = when (daysList[item]) {
+                        DaysConstants.MONDAY -> getString(R.string.monday)
+                        DaysConstants.TUESDAY -> getString(R.string.tuesday)
+                        DaysConstants.WEDNESDAY -> getString(R.string.wednesday)
+                        DaysConstants.THURSDAY -> getString(R.string.thursday)
+                        DaysConstants.FRIDAY -> getString(R.string.friday)
+                        DaysConstants.SATURDAY -> getString(R.string.saturday)
+                        else -> getString(R.string.stub)
+                    }
+
                     val showItem = ItemSearch(
-                        titlesList[item], timesList[item], audiencesList?.get(item), daysList[item]
+                        titlesList[item], timesList[item], audiencesList?.get(item), tempDay
                     )
                     adapter.addItem(showItem)
                     itemsCounter++
@@ -162,7 +170,7 @@ class SearchActivity : AppCompatActivity() {
         } else if (intent.getBooleanExtra(SchoolkidIntentConstants.FROM_SCHOOLKID, false)) {
             SearchConstants.SCHOOLKID
         } else {
-            SearchConstants.SUS
+            SearchConstants.AMOGUS
         }
     }
 
@@ -184,5 +192,5 @@ object SearchConstants {
     const val STUDENT = "student"
     const val SCHOOLKID = "schoolkid"
 
-    const val SUS = "its_bad"
+    const val AMOGUS = "its_bad"
 }

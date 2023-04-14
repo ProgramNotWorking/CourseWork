@@ -35,6 +35,7 @@ class StudentsHelper(val context: Context) {
             intent.putExtra(StudentIntentConstants.COUPLE_TIME, couple.coupleTime)
             intent.putExtra(StudentIntentConstants.AUDIENCE_NUMBER, couple.audienceNumber)
             intent.putExtra(StudentIntentConstants.WHAT_DAY, couple.day)
+            intent.putExtra(StudentIntentConstants.TEACHER_NAME, couple.teacherName)
             intent.putExtra(StudentIntentConstants.IS_EDIT, true)
         } else {
             intent = Intent(
@@ -140,10 +141,11 @@ class StudentsHelper(val context: Context) {
         val coupleTimeIntent = intent.getStringExtra(StudentIntentConstants.COUPLE_TIME)
         val audienceNumberIntent = intent.getStringExtra(StudentIntentConstants.AUDIENCE_NUMBER)
         val dayIntent = intent.getStringExtra(StudentIntentConstants.WHAT_DAY)
+        val teacherNameIntent = intent.getStringExtra(StudentIntentConstants.TEACHER_NAME)
 
         if (intent.getBooleanExtra(StudentIntentConstants.IS_ADDED, false)) {
             val couple = Couple(
-                coupleTitleIntent, coupleTimeIntent, audienceNumberIntent, dayIntent
+                coupleTitleIntent, coupleTimeIntent, audienceNumberIntent, dayIntent, teacherNameIntent
             )
 
             when (dayIntent) {
@@ -156,7 +158,7 @@ class StudentsHelper(val context: Context) {
             }
 
             val addedCouple = CoupleData(
-                coupleTitleIntent, coupleTimeIntent, audienceNumberIntent, dayIntent
+                coupleTitleIntent, coupleTimeIntent, audienceNumberIntent, dayIntent, teacherNameIntent
             )
             couplesList.add(addedCouple)
         } else {
@@ -169,7 +171,7 @@ class StudentsHelper(val context: Context) {
                 ) {
                     val editedCouple = CoupleData(
                         coupleTitleIntent, coupleTimeIntent,
-                        audienceNumberIntent, dayIntent
+                        audienceNumberIntent, dayIntent, teacherNameIntent
                     )
                     couplesList[couple] = editedCouple
 

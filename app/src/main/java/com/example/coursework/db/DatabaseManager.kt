@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.example.coursework.coach.Lesson
 import com.example.coursework.coach.StudentData
 import com.example.coursework.schoolkid.LessonData
-import com.example.coursework.student.Couple
 import com.example.coursework.student.CoupleData
 
 class DatabaseManager(context: Context) {
@@ -112,8 +110,9 @@ class DatabaseManager(context: Context) {
                 val dataTime = cursor?.getString(cursor.getColumnIndex(DatabaseNames.STUDENT_COLUMN_TIME))
                 val dataAudience = cursor?.getString(cursor.getColumnIndex(DatabaseNames.STUDENT_COLUMN_AUDIENCE))
                 val dataDay = cursor?.getString(cursor.getColumnIndex(DatabaseNames.STUDENT_COLUMN_DAY))
+                val dataTeacher = cursor?.getString(cursor.getColumnIndex(DatabaseNames.STUDENT_COLUMN_TEACHER_NAME))
 
-                val dataCouple = CoupleData(dataName, dataTime, dataAudience, dataDay)
+                val dataCouple = CoupleData(dataName, dataTime, dataAudience, dataDay, dataTeacher)
                 dataList.add(dataCouple)
             }
         }
@@ -183,6 +182,7 @@ class DatabaseManager(context: Context) {
             put(DatabaseNames.STUDENT_COLUMN_TIME, couple.coupleTime)
             put(DatabaseNames.STUDENT_COLUMN_AUDIENCE, couple.audienceNumber)
             put(DatabaseNames.STUDENT_COLUMN_DAY, couple.day)
+            put(DatabaseNames.STUDENT_COLUMN_TEACHER_NAME, couple.teacherName)
         }
         db?.insert(DatabaseNames.STUDENT_TABLE_NAME, null, values)
     }
