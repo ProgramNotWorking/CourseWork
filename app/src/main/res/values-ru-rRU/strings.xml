@@ -56,4 +56,6 @@
     <string name="code_field_is_empty">Поле ввода кода пустое</string>
     <string name="wrong_code">Неверный код</string>
     <string name="enter_timetable_code">Введите код расписания</string>
+    <string name="not_specified">Не указана</string>
+    <string name="teacher_not_specified">Не указано</string>
 </resources>

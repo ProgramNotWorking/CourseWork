@@ -56,4 +56,6 @@
     <string name="code_field_is_empty">Code field is empty</string>
     <string name="wrong_code">Wrong code</string>
     <string name="enter_timetable_code">Enter timetable code</string>
+    <string name="not_specified">Not specified</string>
+    <string name="teacher_not_specified">Not specified</string>
 </resources>

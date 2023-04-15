@@ -58,10 +58,25 @@
             android:paddingStart="10dp"
             android:paddingTop="5dp"
             android:paddingEnd="0dp"
-            android:paddingBottom="10dp"
+            android:paddingBottom="5dp"
             android:text="@string/distance_couple"
             android:textColor="@color/grey5"
             android:textSize="20sp"
             app:drawableStartCompat="@drawable/home_icon" />
+
+        <TextView
+            android:id="@+id/notSpecifiedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/ubuntu_bold"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="0dp"
+            android:paddingBottom="10dp"
+            android:text="@string/not_specified"
+            android:textColor="@color/grey5"
+            android:textSize="20sp"
+            app:drawableStartCompat="@drawable/not_specified_icon" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -33,6 +35,8 @@ class OptionsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOptionsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        onTouchCloseKeyboard()
 
         from = if (intent.getBooleanExtra(CoachIntentConstants.FROM_COACH, false))
             OptionsDataNames.COACH
@@ -232,6 +236,18 @@ class OptionsActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun onTouchCloseKeyboard() {
+        binding.optionsMainHolder.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                keyboard.hideSoftInputFromWindow(binding.optionsMainHolder.windowToken, 0)
+            }
+
+            true
         }
     }
 }

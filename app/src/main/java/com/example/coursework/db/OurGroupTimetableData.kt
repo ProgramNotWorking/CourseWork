@@ -19,8 +19,8 @@ class OurGroupTimetableData {
             "333", DaysConstants.TUESDAY, "Леженина"),
         CoupleData("Английский", "15:10-16:45",
             "404 П", DaysConstants.TUESDAY, "Утицких"),
-        CoupleData("Хуйня на которую ходит только Даня", "16:55-18:30",
-            "NONE", DaysConstants.TUESDAY, "ХЗ Кто там блять"),
+        CoupleData("Физ-ра", "16:55-18:30",
+            "NONE", DaysConstants.TUESDAY, "Тамбовцев"),
     )
 
     fun getOurGroupData(): ArrayList<CoupleData> = data

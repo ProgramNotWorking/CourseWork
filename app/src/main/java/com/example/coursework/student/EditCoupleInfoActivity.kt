@@ -115,12 +115,24 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                     intent.putExtra(
                         StudentIntentConstants.COUPLE_TIME, enterCoupleTimeText.text.toString()
                     )
-                    intent.putExtra(
-                        StudentIntentConstants.AUDIENCE_NUMBER, audienceNumberEditTextField.text.toString()
-                    )
-                    intent.putExtra(
-                        StudentIntentConstants.TEACHER_NAME, teacherEditTextField.text.toString()
-                    )
+                    if (audienceNumberEditTextField.text.toString().isEmpty()) {
+                        intent.putExtra(
+                            StudentIntentConstants.AUDIENCE_NUMBER, getString(R.string.not_specified)
+                        )
+                    } else {
+                        intent.putExtra(
+                            StudentIntentConstants.AUDIENCE_NUMBER, audienceNumberEditTextField.text.toString()
+                        )
+                    }
+                    if (teacherEditTextField.text.toString().isEmpty()) {
+                        intent.putExtra(
+                            StudentIntentConstants.TEACHER_NAME, getString(R.string.teacher_not_specified)
+                        )
+                    } else {
+                        intent.putExtra(
+                            StudentIntentConstants.TEACHER_NAME, teacherEditTextField.text.toString()
+                        )
+                    }
                     setDay()
 
                     setResult(RESULT_OK, intent)
@@ -188,6 +200,12 @@ class EditCoupleInfoActivity : AppCompatActivity() {
             dialog.dismiss()
         }
 
+        dialogView.findViewById<TextView>(R.id.notSpecifiedButton).setOnClickListener {
+            binding.audienceNumberEditTextField.setText(getString(R.string.not_specified))
+
+            dialog.dismiss()
+        }
+
         dialogView.findViewById<ImageView>(R.id.closeEditCoupleDialogButton).setOnClickListener {
             dialog.dismiss()
         }
@@ -203,14 +221,6 @@ class EditCoupleInfoActivity : AppCompatActivity() {
                 false
             } else if (enterCoupleTimeText.text.toString() == getString(R.string.enter_couple_time)) {
                 showText(getString(R.string.couple_time_field_is_empty))
-
-                false
-            } else if (audienceNumberEditTextField.text.toString().isEmpty()) {
-                showText(getString(R.string.audience_number_field_is_empty))
-
-                false
-            } else if (teacherEditTextField.text.toString().isEmpty()) {
-                showText(getString(R.string.teacher_name_field_is_empty))
 
                 false
             } else {
