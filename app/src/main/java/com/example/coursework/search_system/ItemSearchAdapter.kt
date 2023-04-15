@@ -22,6 +22,11 @@ class ItemSearchAdapter: RecyclerView.Adapter<ItemSearchAdapter.ItemHolder>() {
             } else {
                 audienceSearchTextView.visibility = View.GONE
             }
+            if (item.teacherName != null) {
+                teacherNameSearchTextView.text = item.teacherName
+            } else {
+                teacherNameSearchTextView.visibility = View.GONE
+            }
             daySearchTextView.text = item.day
         }
     }

@@ -1,6 +1,8 @@
 package com.example.coursework.student
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,6 +20,7 @@ import com.example.coursework.alldays.AllDaysActivity
 import com.example.coursework.constants.*
 import com.example.coursework.databinding.ActivityStudentBinding
 import com.example.coursework.db.DatabaseManager
+import com.example.coursework.db.OurGroupTimetableData
 import com.example.coursework.helpers.AnimationsHelperClass
 import com.example.coursework.helpers.DatabaseHelperClass
 import com.example.coursework.helpers.StudentsHelper
@@ -70,9 +73,26 @@ class StudentActivity : AppCompatActivity(),
         addButtonOutAnimationSet.addAnimation(alphaOutAnimations)
         addButtonOutAnimationSet.addAnimation(addButtonRotationOutAnimation)
 
+        val sharedPreferences = getSharedPreferences(
+            SharedPreferencesConstants.LOAD_KEY, Context.MODE_PRIVATE
+        )
+        val editor = sharedPreferences.edit()
+
+        couplesList = if (sharedPreferences.getBoolean(
+                SharedPreferencesConstants.IS_NEED_LOAD, false
+            )) {
+            editor.putBoolean(
+                SharedPreferencesConstants.IS_NEED_LOAD, false
+            )
+            editor.apply()
+
+            val data = OurGroupTimetableData()
+            data.getOurGroupData()
+        } else {
+            databaseHelper.getStudentData()
+        }
+
         rcViewsList = getRcViewsList()
-        db.clearStudentTable()
-        couplesList = databaseHelper.getStudentData()
 
         binding.apply {
             connectAdaptersToRcViews()

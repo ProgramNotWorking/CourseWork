@@ -4,5 +4,6 @@ data class ItemSearch(
     var title: String,
     var time: String,
     var audience: String?,
-    var day: String
+    var day: String,
+    var teacherName: String?
 )

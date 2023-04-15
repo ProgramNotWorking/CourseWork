@@ -51,4 +51,9 @@
     <string name="nothing_found">Ничего не найдено:(</string>
     <string name="enter_teacher_name">Введите имя преподавателя</string>
     <string name="teacher_name_field_is_empty">Поле имени преподавателя пустое</string>
+    <string name="load_timetable">Загрузить расписание</string>
+    <string name="info_dialog_text">Введите код что бы загрузить определенное расписание (это действие удалит текущее расписание)</string>
+    <string name="code_field_is_empty">Поле ввода кода пустое</string>
+    <string name="wrong_code">Неверный код</string>
+    <string name="enter_timetable_code">Введите код расписания</string>
 </resources>

@@ -77,6 +77,20 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/teacherNameSearchTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:text="@string/stub"
+                android:textColor="@color/grey5"
+                android:textColorHighlight="@color/grey5"
+                android:textColorHint="@color/grey5"
+                android:textColorLink="@color/grey5"
+                android:textSize="18sp" />
+
+            <TextView
                 android:id="@+id/audienceSearchTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -23,6 +23,7 @@ class AllDaysActivity : AppCompatActivity() {
     private lateinit var timesList: ArrayList<String>
     private var audiencesList: ArrayList<String>? = null
     private lateinit var daysList: ArrayList<String>
+    private var teacherNamesList: ArrayList<String>? = null
 
     private lateinit var itemsList: ArrayList<ItemData>
 
@@ -35,6 +36,7 @@ class AllDaysActivity : AppCompatActivity() {
         timesList = intent?.getStringArrayListExtra(AllDaysConstants.TIME) as ArrayList<String>
         audiencesList = intent?.getStringArrayListExtra(AllDaysConstants.AUDIENCE)
         daysList = intent?.getStringArrayListExtra(AllDaysConstants.DAY) as ArrayList<String>
+        teacherNamesList = intent?.getStringArrayListExtra(AllDaysConstants.TEACHER_NAME)
 
         rcViewsList = helper.getRcViewsList()
         adaptersList = helper.convertAdaptersIntoList()
@@ -55,7 +57,8 @@ class AllDaysActivity : AppCompatActivity() {
 
         for (item in titlesList.indices) {
             val tempData = ItemData(
-                titlesList[item], timesList[item], audiencesList?.get(item), daysList[item]
+                titlesList[item], timesList[item], audiencesList?.get(item),
+                daysList[item], teacherNamesList?.get(item)
             )
             dataList.add(tempData)
         }

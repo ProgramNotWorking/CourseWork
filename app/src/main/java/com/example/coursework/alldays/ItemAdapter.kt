@@ -22,6 +22,11 @@ class ItemAdapter: RecyclerView.Adapter<ItemAdapter.ItemHolder>() {
             } else {
                 audienceTextViewNullMaybe.visibility = View.GONE
             }
+            if (item.teacherName != null) {
+                teacherNameTextView.text = item.teacherName
+            } else {
+                teacherNameTextView.visibility = View.GONE
+            }
         }
     }
 

@@ -61,8 +61,16 @@ class OptionsActivity : AppCompatActivity() {
                     Log.d("From options:", "Trouble with image")
             }
 
+            getInfoButton.setOnClickListener {
+                showInfoDialogWindow()
+            }
+
+            loadTimetableButton.setOnClickListener {
+                load()
+            }
+
             clearDataTextView.setOnClickListener {
-                showDialogWindow()
+                showCleaningDialogWindow()
             }
 
             changeRoleTextView.setOnClickListener {
@@ -87,8 +95,69 @@ class OptionsActivity : AppCompatActivity() {
         }
     }
 
+    private fun load() {
+        if (binding.loadCodeInputField.text.toString().isEmpty()) {
+            Toast.makeText(
+                this@OptionsActivity,
+                getString(R.string.code_field_is_empty),
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            when (binding.loadCodeInputField.text.toString()) {
+                "3.4" -> {
+                    clearData()
+
+                    val sharedPreferences = getSharedPreferences(
+                        SharedPreferencesConstants.LOAD_KEY, Context.MODE_PRIVATE
+                    )
+                    val editor = sharedPreferences.edit()
+
+                    editor.putBoolean(
+                        SharedPreferencesConstants.IS_NEED_LOAD, true
+                    )
+                    editor.apply()
+
+                    Toast.makeText(
+                        this@OptionsActivity,
+                        androidx.appcompat.R.string.abc_action_mode_done,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                "ANAL?" -> {
+                    val intent = Intent(
+                        this@OptionsActivity, EasterEggActivity::class.java
+                    )
+                    startActivity(intent)
+                }
+                else -> {
+                    Toast.makeText(
+                        this@OptionsActivity,
+                        getString(R.string.wrong_code),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            binding.loadCodeInputField.text = null
+        }
+    }
+
     @SuppressLint("InflateParams")
-    private fun showDialogWindow() {
+    private fun showInfoDialogWindow() {
+        val dialogView = LayoutInflater.from(this@OptionsActivity).inflate(
+            R.layout.info_dialog_form, null
+        )
+
+        val dialog = AlertDialog.Builder(this@OptionsActivity)
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        dialog.show()
+    }
+
+    @SuppressLint("InflateParams")
+    private fun showCleaningDialogWindow() {
         val dialogView = LayoutInflater.from(this@OptionsActivity).inflate(
             R.layout.dialog_window_for_data_cleaning, null
         )
@@ -100,6 +169,10 @@ class OptionsActivity : AppCompatActivity() {
 
         dialogView.findViewById<TextView>(R.id.confirmClearingButton).setOnClickListener {
             clearData()
+
+            Toast.makeText(
+                this@OptionsActivity, getString(R.string.data_cleared), Toast.LENGTH_SHORT
+            ).show()
 
             dialog.dismiss()
         }
@@ -126,10 +199,6 @@ class OptionsActivity : AppCompatActivity() {
             OptionsDataNames.STUDENT -> db.clearStudentTable()
             OptionsDataNames.SCHOOLKID -> db.clearSchoolkidTable()
         }
-
-        Toast.makeText(
-            this@OptionsActivity, getString(R.string.data_cleared), Toast.LENGTH_SHORT
-        ).show()
 
         db.close()
     }

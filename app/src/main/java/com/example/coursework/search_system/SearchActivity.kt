@@ -36,6 +36,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var timesList: ArrayList<String>
     private var audiencesList: ArrayList<String>? = null
     private lateinit var daysList: ArrayList<String>
+    private var teachesNamesList: ArrayList<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +86,7 @@ class SearchActivity : AppCompatActivity() {
         timesList = intent?.getStringArrayListExtra(SearchIntentConstants.TIMES_LIST) as ArrayList<String>
         audiencesList = intent?.getStringArrayListExtra(SearchIntentConstants.AUDIENCES_LIST)
         daysList = intent?.getStringArrayListExtra(SearchIntentConstants.DAYS_LIST) as ArrayList<String>
+        teachesNamesList = intent?.getStringArrayListExtra(SearchIntentConstants.TEACHERS_LIST)
     }
 
     private fun goBack() {
@@ -129,7 +131,8 @@ class SearchActivity : AppCompatActivity() {
                 if (titlesList[item] == text ||
                     timesList[item] == text ||
                     audiencesList?.get(item) == text ||
-                    daysList[item] == text
+                    daysList[item] == text ||
+                    teachesNamesList?.get(item) == text
                 ) {
                     val tempDay = when (daysList[item]) {
                         DaysConstants.MONDAY -> getString(R.string.monday)
@@ -142,7 +145,8 @@ class SearchActivity : AppCompatActivity() {
                     }
 
                     val showItem = ItemSearch(
-                        titlesList[item], timesList[item], audiencesList?.get(item), tempDay
+                        titlesList[item], timesList[item],
+                        audiencesList?.get(item), tempDay, teachesNamesList?.get(item)
                     )
                     adapter.addItem(showItem)
                     itemsCounter++
