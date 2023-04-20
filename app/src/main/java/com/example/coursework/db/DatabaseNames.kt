@@ -7,6 +7,7 @@ object DatabaseNames: BaseColumns {
     const val COACH_COLUMN_NAME = "coach_name"
     const val COACH_COLUMN_TIME = "coach_time"
     const val COACH_COLUMN_DAY = "coach_day"
+    const val COACH_COLUMN_DESCRIPTION = "coach_description"
 
     const val STUDENT_TABLE_NAME = "student_table"
     const val STUDENT_COLUMN_TITLE = "student_title"
@@ -21,7 +22,7 @@ object DatabaseNames: BaseColumns {
     const val SCHOOLKID_COLUMN_AUDIENCE = "schoolkid_audience"
     const val SCHOOLKID_COLUMN_DAY = "schoolkid_day"
 
-    const val DATABASE_VERSION = 2
+    const val DATABASE_VERSION = 4
     const val DATABASE = "Info.db"
 
     const val CREATE_COACH_TABLE = "CREATE TABLE $COACH_TABLE_NAME (" +

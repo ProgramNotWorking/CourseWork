@@ -58,4 +58,6 @@
     <string name="enter_timetable_code">Enter timetable code</string>
     <string name="not_specified">Not specified</string>
     <string name="teacher_not_specified">Not specified</string>
+    <string name="description_if_needed">Enter description if needed</string>
+    <string name="no_desc_provided">No description provided</string>
 </resources>

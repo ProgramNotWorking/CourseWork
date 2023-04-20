@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "509837565878",
+    "firebase_url": "https://timetabledatabase-106f9-default-rtdb.firebaseio.com",
+    "project_id": "timetabledatabase-106f9",
+    "storage_bucket": "timetabledatabase-106f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509837565878:android:be53670ac6f5b37e07ab17",
+        "android_client_info": {
+          "package_name": "com.example.coursework"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "509837565878-r04k3ukipfh22pfihn2f6shd5s4a2ue8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJo_fEFzoABRA9_zMUy6SLyF0TKXdJS4A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "509837565878-r04k3ukipfh22pfihn2f6shd5s4a2ue8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

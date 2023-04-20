@@ -127,7 +127,7 @@ class OptionsActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-                "ANAL?" -> {
+                "CAPYBARA" -> {
                     val intent = Intent(
                         this@OptionsActivity, EasterEggActivity::class.java
                     )

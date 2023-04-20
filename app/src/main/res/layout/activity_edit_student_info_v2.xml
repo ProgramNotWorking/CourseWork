@@ -72,7 +72,7 @@
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="10dp"
         android:backgroundTint="@color/grey2"
         app:cardCornerRadius="10dp"
@@ -120,17 +120,58 @@
 
         <TextView
             android:id="@+id/enterTimeText"
-            android:paddingStart="10dp"
-            android:paddingEnd="0dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:drawablePadding="10dp"
             android:fontFamily="@font/ubuntu_bold"
             android:gravity="center_vertical"
-            android:text="@string/enter_couple_time"
+            android:paddingStart="10dp"
+            android:paddingEnd="0dp"
+            android:text="@string/enter_time"
             android:textColor="@color/grey5"
             android:textSize="19sp"
             app:drawableStartCompat="@drawable/clock_icon" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/lessonAddressHolder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="@color/grey2"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/enterTimeButton"
+        app:layout_constraintStart_toStartOf="@+id/enterTimeButton"
+        app:layout_constraintTop_toBottomOf="@+id/enterTimeButton"
+        app:layout_constraintBottom_toTopOf="@id/saveButton">
+
+        <EditText
+            android:id="@+id/editDescriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="6dp"
+            android:backgroundTint="@color/grey2"
+            android:drawableTop="@drawable/description_icon"
+            android:ems="10"
+            android:fontFamily="@font/ubuntu_bold"
+            android:gravity="center|top"
+            android:hint="@string/description_if_needed"
+            android:inputType="textMultiLine"
+            android:textColor="@color/grey5"
+            android:textColorHighlight="@color/grey5"
+            android:textColorHint="@color/grey5"
+            android:textColorLink="@color/grey5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck"
+            tools:layout_editor_absoluteX="10dp" />
+
     </androidx.cardview.widget.CardView>
 
 

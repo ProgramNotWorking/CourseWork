@@ -31,6 +31,9 @@ class EditStudentInfoActivity : AppCompatActivity() {
             binding.enterTimeText.text = (
                 intent.getStringExtra(CoachIntentConstants.LESSON_TIME)
             )
+            binding.editDescriptionTextView.setText(
+                intent.getStringExtra(CoachIntentConstants.DESCRIPTION)
+            )
 
             intent.putExtra(CoachIntentConstants.IS_ADDED, false)
         } else {
@@ -61,29 +64,47 @@ class EditStudentInfoActivity : AppCompatActivity() {
             }
 
             saveButton.setOnClickListener {
-                if (editNamePlainTextView.text.toString().isEmpty()) {
-                    Toast.makeText(
-                        this@EditStudentInfoActivity,
-                        getString(R.string.name_field_is_empty),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else if (enterTimeText.text.toString() == getString(R.string.enter_time)) {
-                    Toast.makeText(
-                        this@EditStudentInfoActivity,
-                        getString(R.string.time_field_is_empty),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
+                if (completenessOfInformationTest()) {
                     intent.putExtra(
                         CoachIntentConstants.STUDENT_NAME, editNamePlainTextView.text.toString()
                     )
                     intent.putExtra(
-                       CoachIntentConstants.LESSON_TIME, enterTimeText.text.toString()
+                        CoachIntentConstants.LESSON_TIME, enterTimeText.text.toString()
+                    )
+                    intent.putExtra(
+                        CoachIntentConstants.DESCRIPTION,
+                        editDescriptionTextView.text.toString().ifEmpty {
+                            getString(R.string.no_desc_provided)
+                        }
                     )
 
                     setResult(RESULT_OK, intent)
                     finish()
                 }
+            }
+        }
+    }
+
+    private fun completenessOfInformationTest(): Boolean {
+        binding.apply {
+            return if (editNamePlainTextView.text.toString().isEmpty()) {
+                Toast.makeText(
+                    this@EditStudentInfoActivity,
+                    getString(R.string.name_field_is_empty),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                false
+            } else if (enterTimeText.text.toString() == getString(R.string.enter_time)) {
+                Toast.makeText(
+                    this@EditStudentInfoActivity,
+                    getString(R.string.time_field_is_empty),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                false
+            } else {
+                true
             }
         }
     }

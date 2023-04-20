@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -210,7 +211,7 @@ class CoachActivity : AppCompatActivity(),
         displayLessons(false)
     }
 
-    override fun onDeleteClick(lesson: Lesson) { // TODO: Check this
+    override fun onDeleteClick(lesson: Lesson) {
         adapter.removeLessonByData(lesson.name, lesson.time)
 
         for (student in studentsList.indices) {

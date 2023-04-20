@@ -58,4 +58,6 @@
     <string name="enter_timetable_code">Введите код расписания</string>
     <string name="not_specified">Не указана</string>
     <string name="teacher_not_specified">Не указано</string>
+    <string name="description_if_needed">Введите описание если нужно</string>
+    <string name="no_desc_provided">Описание отсутствует</string>
 </resources>

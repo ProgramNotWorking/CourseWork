@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.*
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,10 +22,14 @@ import com.example.coursework.constants.*
 import com.example.coursework.databinding.ActivityStudentBinding
 import com.example.coursework.db.DatabaseManager
 import com.example.coursework.db.OurGroupTimetableData
+import com.example.coursework.db.TestUserData
 import com.example.coursework.helpers.AnimationsHelperClass
 import com.example.coursework.helpers.DatabaseHelperClass
 import com.example.coursework.helpers.StudentsHelper
 import com.example.coursework.search_system.SearchActivity
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 import java.time.LocalTime
 
 class StudentActivity : AppCompatActivity(),
@@ -59,11 +64,16 @@ class StudentActivity : AppCompatActivity(),
 
     private val helper = StudentsHelper(this@StudentActivity)
 
+    private lateinit var firebase: DatabaseReference
+    private val testKey = "TEST_KEY_FIREBASE"
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStudentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        firebase = FirebaseDatabase.getInstance().getReference(testKey)
 
         openAnimationHelperClass()
 
@@ -174,6 +184,37 @@ class StudentActivity : AppCompatActivity(),
             }
 
             buttonsClickListenersInit()
+
+            uploadStudentTimetableButton.setOnClickListener {
+                if (uploadTimetableStudentEditTextView.text.toString().isEmpty()) {
+                    Toast.makeText(
+                        this@StudentActivity,
+                        getString(R.string.code_field_is_empty),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    for (item in couplesList) {
+                        val tempUserData = item.coupleTitle?.let { it1 ->
+                            item.coupleTime?.let { it2 ->
+                                item.audienceNumber?.let { it3 ->
+                                    item.day?.let { it4 ->
+                                        TestUserData(
+                                            uploadTimetableStudentEditTextView.text.toString(),
+                                            it1,
+                                            it2,
+                                            it3,
+                                            it4,
+                                            item.teacherName,
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+                        firebase.push().setValue(tempUserData)
+                    }
+                }
+            }
 
             editCoupleInfoLauncher =
                 registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
