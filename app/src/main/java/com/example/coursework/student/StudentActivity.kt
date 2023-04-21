@@ -2,7 +2,6 @@ package com.example.coursework.student
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,14 +21,13 @@ import com.example.coursework.constants.*
 import com.example.coursework.databinding.ActivityStudentBinding
 import com.example.coursework.db.DatabaseManager
 import com.example.coursework.db.OurGroupTimetableData
-import com.example.coursework.db.TestUserData
+import com.example.coursework.firebase.StudentTimetableData
 import com.example.coursework.helpers.AnimationsHelperClass
 import com.example.coursework.helpers.DatabaseHelperClass
 import com.example.coursework.helpers.StudentsHelper
 import com.example.coursework.search_system.SearchActivity
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
 import java.time.LocalTime
 
 class StudentActivity : AppCompatActivity(),
@@ -64,8 +62,7 @@ class StudentActivity : AppCompatActivity(),
 
     private val helper = StudentsHelper(this@StudentActivity)
 
-    private lateinit var firebase: DatabaseReference
-    private val testKey = "TEST_KEY_FIREBASE"
+    private val firebase = FirebaseDatabase.getInstance().getReference("student")
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +70,7 @@ class StudentActivity : AppCompatActivity(),
         binding = ActivityStudentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        firebase = FirebaseDatabase.getInstance().getReference(testKey)
+        var userReference: DatabaseReference
 
         openAnimationHelperClass()
 
@@ -193,12 +190,14 @@ class StudentActivity : AppCompatActivity(),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    for (item in couplesList) {
-                        val tempUserData = item.coupleTitle?.let { it1 ->
+                    val key = uploadTimetableStudentEditTextView.text.toString()
+
+                    for ((index, item) in couplesList.withIndex()) {
+                        val savedStudentData = item.coupleTitle?.let { it1 ->
                             item.coupleTime?.let { it2 ->
                                 item.audienceNumber?.let { it3 ->
                                     item.day?.let { it4 ->
-                                        TestUserData(
+                                        StudentTimetableData(
                                             uploadTimetableStudentEditTextView.text.toString(),
                                             it1,
                                             it2,
@@ -211,7 +210,7 @@ class StudentActivity : AppCompatActivity(),
                             }
                         }
 
-                        firebase.push().setValue(tempUserData)
+                        firebase.child(key).child(index.toString()).setValue(savedStudentData)
                     }
                 }
             }
