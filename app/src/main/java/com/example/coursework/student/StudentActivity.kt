@@ -1,12 +1,16 @@
 package com.example.coursework.student
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -16,6 +20,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.*
+import com.example.coursework.R
 import com.example.coursework.alldays.AllDaysActivity
 import com.example.coursework.constants.*
 import com.example.coursework.databinding.ActivityStudentBinding
@@ -26,8 +31,7 @@ import com.example.coursework.helpers.AnimationsHelperClass
 import com.example.coursework.helpers.DatabaseHelperClass
 import com.example.coursework.helpers.StudentsHelper
 import com.example.coursework.search_system.SearchActivity
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import java.time.LocalTime
 
 class StudentActivity : AppCompatActivity(),
@@ -63,6 +67,7 @@ class StudentActivity : AppCompatActivity(),
     private val helper = StudentsHelper(this@StudentActivity)
 
     private val firebase = FirebaseDatabase.getInstance().getReference("student")
+    private lateinit var getDataCode: String
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +75,8 @@ class StudentActivity : AppCompatActivity(),
         binding = ActivityStudentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var userReference: DatabaseReference
-
         openAnimationHelperClass()
+        onTouchCloseKeyboard()
 
         addButtonAnimationSet.addAnimation(alphaInAnimation)
         addButtonAnimationSet.addAnimation(addButtonRotateAnimation)
@@ -85,16 +89,17 @@ class StudentActivity : AppCompatActivity(),
         )
         val editor = sharedPreferences.edit()
 
-        couplesList = if (sharedPreferences.getBoolean(
-                SharedPreferencesConstants.IS_NEED_LOAD, false
-            )) {
+        getDataCode = sharedPreferences.getString(
+            SharedPreferencesConstants.LOAD_CODE, "NONE"
+        ).toString()
+
+        couplesList = if (sharedPreferences.getBoolean(SharedPreferencesConstants.IS_NEED_LOAD, false)) {
             editor.putBoolean(
                 SharedPreferencesConstants.IS_NEED_LOAD, false
             )
             editor.apply()
 
-            val data = OurGroupTimetableData()
-            data.getOurGroupData()
+            getDataFromDB()
         } else {
             databaseHelper.getStudentData()
         }
@@ -116,7 +121,8 @@ class StudentActivity : AppCompatActivity(),
                             this@StudentActivity, OptionsActivity::class.java
                         )
                         intent.putExtra(StudentIntentConstants.FROM_STUDENT, true)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         finish()
                     }
@@ -198,7 +204,6 @@ class StudentActivity : AppCompatActivity(),
                                 item.audienceNumber?.let { it3 ->
                                     item.day?.let { it4 ->
                                         StudentTimetableData(
-                                            uploadTimetableStudentEditTextView.text.toString(),
                                             it1,
                                             it2,
                                             it3,
@@ -212,12 +217,17 @@ class StudentActivity : AppCompatActivity(),
 
                         firebase.child(key).child(index.toString()).setValue(savedStudentData)
                     }
+
+                    Toast.makeText(
+                        this@StudentActivity,
+                        getString(R.string.timetable_created),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
             editCoupleInfoLauncher =
-                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                    result: ActivityResult ->
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
 
                     intent = result.data
 
@@ -471,10 +481,12 @@ class StudentActivity : AppCompatActivity(),
         val animationsHelperClass = AnimationsHelperClass(this@StudentActivity)
         animationsHelperClass.setAnimationsDataReceivedListener(this@StudentActivity)
 
-        animationsHelperClass.headersAnimationInit(headersList = arrayListOf(
-            binding.mondayHeader, binding.tuesdayHeader, binding.wednesdayHeader,
-            binding.thursdayHeader, binding.fridayHeader, binding.saturdayHeader
-        ))
+        animationsHelperClass.headersAnimationInit(
+            headersList = arrayListOf(
+                binding.mondayHeader, binding.tuesdayHeader, binding.wednesdayHeader,
+                binding.thursdayHeader, binding.fridayHeader, binding.saturdayHeader
+            )
+        )
     }
 
     override fun rotateInit(
@@ -496,5 +508,50 @@ class StudentActivity : AppCompatActivity(),
 
     override fun layoutAnimationInit(controller: LayoutAnimationController) {
         animationController = controller
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun onTouchCloseKeyboard() {
+        binding.mainHolderScrollView.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                keyboard.hideSoftInputFromWindow(binding.mainHolderScrollView.windowToken, 0)
+            }
+
+            true
+        }
+    }
+
+    private fun getDataFromDB(): MutableList<CoupleData> {
+        val dataList = mutableListOf<CoupleData>()
+
+        firebase.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (code in snapshot.children) {
+                    if (code.key == getDataCode) {
+                        for (item in code.children) {
+                            val tempStudent = item.getValue(StudentTimetableData::class.java)
+                            val tempCoupleData = CoupleData(
+                                tempStudent?.coupleTitle,
+                                tempStudent?.coupleTime,
+                                tempStudent?.audienceNumber,
+                                tempStudent?.day,
+                                tempStudent?.teacherName
+                            )
+
+                            dataList.add(tempCoupleData)
+                        }
+
+                        break
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Firebase get data:", "Error with getting data")
+            }
+        })
+
+        return dataList
     }
 }

@@ -60,4 +60,5 @@
     <string name="teacher_not_specified">Not specified</string>
     <string name="description_if_needed">Enter description if needed</string>
     <string name="no_desc_provided">No description provided</string>
+    <string name="timetable_created">Timatable has created</string>
 </resources>

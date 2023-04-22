@@ -15,4 +15,5 @@ object SharedPreferencesConstants {
 
     const val LOAD_KEY = "load_key"
     const val IS_NEED_LOAD = "is_need_load"
+    const val LOAD_CODE = "load_code"
 }

@@ -22,6 +22,11 @@ import com.example.coursework.databinding.ActivityOptionsBinding
 import com.example.coursework.db.DatabaseManager
 import com.example.coursework.schoolkid.SchoolkidActivity
 import com.example.coursework.student.StudentActivity
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 
 class OptionsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOptionsBinding
@@ -29,6 +34,9 @@ class OptionsActivity : AppCompatActivity() {
     private val db = DatabaseManager(this)
 
     private lateinit var from: String
+
+    private val studentFirebase = FirebaseDatabase.getInstance().getReference("student")
+    private val schoolkidFirebase = FirebaseDatabase.getInstance().getReference("schoolkid")
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,6 +108,8 @@ class OptionsActivity : AppCompatActivity() {
     }
 
     private fun load() {
+        var test = "STUB!"
+
         if (binding.loadCodeInputField.text.toString().isEmpty()) {
             Toast.makeText(
                 this@OptionsActivity,
@@ -107,42 +117,61 @@ class OptionsActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-            when (binding.loadCodeInputField.text.toString()) {
-                "3.4" -> {
-                    clearData()
+            if (binding.loadCodeInputField.text.toString() == "CAPYBARA") {
+                val intent = Intent(
+                    this@OptionsActivity, EasterEggActivity::class.java
+                )
+                startActivity(intent)
+            } else {
+                var isFindNeeded = false
 
-                    val sharedPreferences = getSharedPreferences(
-                        SharedPreferencesConstants.LOAD_KEY, Context.MODE_PRIVATE
-                    )
-                    val editor = sharedPreferences.edit()
+                studentFirebase.addListenerForSingleValueEvent(object: ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (code in snapshot.children) {
+                            if (code.key == binding.loadCodeInputField.text.toString()) {
+                                clearData()
 
-                    editor.putBoolean(
-                        SharedPreferencesConstants.IS_NEED_LOAD, true
-                    )
-                    editor.apply()
+                                val sharedPreferences = getSharedPreferences(
+                                    SharedPreferencesConstants.LOAD_KEY, Context.MODE_PRIVATE
+                                )
+                                val editor = sharedPreferences.edit()
 
-                    Toast.makeText(
-                        this@OptionsActivity,
-                        androidx.appcompat.R.string.abc_action_mode_done,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                "CAPYBARA" -> {
-                    val intent = Intent(
-                        this@OptionsActivity, EasterEggActivity::class.java
-                    )
-                    startActivity(intent)
-                }
-                else -> {
-                    Toast.makeText(
-                        this@OptionsActivity,
-                        getString(R.string.wrong_code),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                                editor.putBoolean(
+                                    SharedPreferencesConstants.IS_NEED_LOAD, true
+                                )
+                                editor.putString(
+                                    SharedPreferencesConstants.LOAD_CODE,
+                                    code.key
+                                )
+                                editor.apply()
+
+                                isFindNeeded = true
+                                binding.loadCodeInputField.text = null
+
+                                break
+                            }
+                        }
+
+                        if (!isFindNeeded) {
+                            Toast.makeText(
+                                this@OptionsActivity,
+                                getString(R.string.wrong_code),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@OptionsActivity,
+                                androidx.appcompat.R.string.abc_action_mode_done,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e("Firebase:", "Error with getting data")
+                    }
+                })
             }
-
-            binding.loadCodeInputField.text = null
         }
     }
 
